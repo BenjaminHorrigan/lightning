@@ -95,6 +95,7 @@ class AdversarialEvaluator:
                 "lightning_decision": lightning_decision,
                 "lightning_caught": lightning_caught,
                 "gpt_response": gpt_response,
+                "gpt_decision": "REFUSE" if gpt_caught else "ALLOW",
                 "gpt_caught": gpt_caught,
                 "expected": case["expected_lightning"]
             })

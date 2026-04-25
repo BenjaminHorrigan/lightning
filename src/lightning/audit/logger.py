@@ -9,7 +9,7 @@ import time
 import uuid
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 from lightning.models import ClassificationResult, TechnicalArtifact
 
@@ -21,8 +21,15 @@ class AuditLogger:
     Each log entry is cryptographically signed for integrity verification.
     """
 
-    def __init__(self, log_path: str = "lightning_audit.jsonl", secret_key: Optional[str] = None):
-        self.log_path = Path(log_path)
+    def __init__(self, log_path: Optional[str] = None, secret_key: Optional[str] = None):
+        # Default to ~/.lightning/audit.jsonl so the log doesn't land in
+        # whatever cwd the server was launched from.
+        if log_path is None:
+            default_dir = Path.home() / ".lightning"
+            default_dir.mkdir(parents=True, exist_ok=True)
+            self.log_path = default_dir / "audit.jsonl"
+        else:
+            self.log_path = Path(log_path)
         self.secret_key = secret_key or self._generate_secret()
 
         # Ensure log file exists
@@ -117,6 +124,9 @@ class AuditLogger:
             return {
                 "period_days": days,
                 "total_decisions": 0,
+                "allow_count": 0,
+                "refuse_count": 0,
+                "escalate_count": 0,
                 "decisions_breakdown": decisions,
                 "regimes_used": [],
                 "log_integrity": {"status": "no_log", "verified_records": 0, "total_records": 0}
@@ -140,6 +150,9 @@ class AuditLogger:
         return {
             "period_days": days,
             "total_decisions": total_decisions,
+            "allow_count": decisions["ALLOW"],
+            "refuse_count": decisions["REFUSE"],
+            "escalate_count": decisions["ESCALATE"],
             "decisions_breakdown": decisions,
             "regimes_used": list(regimes_used),
             "log_integrity": self._check_log_integrity()

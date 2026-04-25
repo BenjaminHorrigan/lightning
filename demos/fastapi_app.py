@@ -210,10 +210,9 @@ async def get_audit_summary(days: int = 30):
         logger = get_audit_logger()
         summary = logger.get_audit_summary(days=days)
 
-        return {
-            "success": True,
-            "summary": summary
-        }
+        # Return summary fields at top level so the JS can read
+        # data.allow_count etc. without nesting.
+        return {"success": True, **summary}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Audit summary failed: {str(e)}")
 
