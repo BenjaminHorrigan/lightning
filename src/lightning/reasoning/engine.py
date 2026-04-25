@@ -331,9 +331,17 @@ def _atoms_to_proof_tree(
             continue
 
         args = _parse_atom_args(atom)
-        if len(args) != 3:
+        # Support both signatures:
+        #   classified/3 — (Element, Category, CitationKey)        [legacy]
+        #   classified/4 — (Element, Regime, Category, Reasoning)  [phase0 vocab]
+        if len(args) == 3:
+            element, classification, citation_key = args
+        elif len(args) == 4:
+            element, regime, category, reasoning = args
+            classification = f"{regime.upper()}_{category}"
+            citation_key = reasoning
+        else:
             continue
-        element, classification, citation_key = args
 
         controlled_elements.append(element)
         if top_level is None:

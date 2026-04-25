@@ -221,8 +221,10 @@ def generate_substance_atoms(config: RegimeConfig, csv_data: List[Dict[str, Any]
     for row in csv_data:
         canonical_name = normalize_name(row["canonical_name"])
         
-        # Core substance facts
-        atoms.append(f'substance("{canonical_name}").')
+        # KB metadata only — do NOT assert substance/1 here. The artifact
+        # injects substance/1 facts; if we asserted them in the KB, every
+        # rule that joins on substance(S) would fire for every loaded
+        # substance regardless of input.
         atoms.append(f'schedule("{canonical_name}", "{config.regime_name}", "{config.schedule_value}").')
         
         # Optional CAS number
@@ -260,7 +262,9 @@ def generate_substance_atoms(config: RegimeConfig, csv_data: List[Dict[str, Any]
             
         if "threshold_kg" in row and row["threshold_kg"]:
             try:
-                threshold = float(row["threshold_kg"])
+                # Clingo's standard ASP only handles integer arithmetic, so
+                # quantize to int. Sub-kg thresholds round up to 1 kg.
+                threshold = max(1, int(round(float(row["threshold_kg"]))))
                 atoms.append(f'quantity_threshold("{canonical_name}", {threshold}, "kg").')
             except ValueError:
                 pass  # Skip invalid threshold values
