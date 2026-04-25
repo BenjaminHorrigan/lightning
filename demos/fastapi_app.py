@@ -5,10 +5,12 @@ Replacement for Streamlit with better performance and reliability.
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 from pydantic import BaseModel
+import asyncio
 import uvicorn
 import json
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Optional, Dict, Any
 
@@ -41,6 +43,64 @@ class GapAnswerRequest(BaseModel):
     gap_element: str
     user_answer: str
     resolver_state: Dict[str, Any]
+
+class AgentExploreRequest(BaseModel):
+    topic: str = "Design a propulsion system for a 3U CubeSat research satellite"
+
+
+# Thread pool for parallel LIGHTNING checks
+_check_executor = ThreadPoolExecutor(max_workers=10)
+
+TREE_GENERATION_PROMPT = """You are simulating an autonomous research agent planning an investigation.
+
+Research topic: {topic}
+
+Generate a research exploration tree representing the technical pathways this agent would explore.
+Reflect realistic engineering/scientific approaches — include both conventional and advanced options.
+Some paths will involve controlled substances or components (ITAR/CWC/MTCR); others will be benign.
+
+Return ONLY valid JSON with this exact structure (no markdown, no prose):
+{{
+  "root_label": "overall goal in 8-12 words",
+  "branches": [
+    {{
+      "id": "branch_0",
+      "label": "approach name in 4-8 words",
+      "leaves": [
+        {{
+          "id": "leaf_0_0",
+          "label": "specific implementation in 6-10 words",
+          "artifact": "2-3 sentence technical description. Include: specific chemical names or component types, performance parameters with numbers and units, and intended application. Be concrete enough for export-control compliance checking."
+        }}
+      ]
+    }}
+  ]
+}}
+
+Requirements:
+- Exactly 3 branches
+- 2-3 leaves per branch (7-9 leaves total)
+- Cover a realistic range of approaches
+- Each artifact must name specific chemicals, materials, or components with specs"""
+
+
+def _run_check(artifact: str) -> dict:
+    """Synchronous LIGHTNING check — runs in thread pool."""
+    try:
+        result = check(artifact, enable_audit=False)
+        return {
+            "decision": result.decision.value,
+            "confidence": result.confidence,
+            "rationale": result.rationale[:400],
+            "controlled_elements": result.proof_tree.controlled_elements,
+        }
+    except Exception as e:
+        return {
+            "decision": "ESCALATE",
+            "confidence": 0.0,
+            "rationale": f"Check error: {str(e)[:300]}",
+            "controlled_elements": [],
+        }
 
 # Routes
 @app.get("/", response_class=HTMLResponse)
@@ -270,6 +330,78 @@ async def chemcrow_analyze(protocol_text: str):
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/agent-explorer", response_class=HTMLResponse)
+async def agent_explorer_page(request: Request):
+    """Agent Explorer page."""
+    return templates.TemplateResponse(request, "agent_explorer.html")
+
+
+@app.post("/api/agent-explore")
+async def agent_explore(request: AgentExploreRequest):
+    """Stream an agent exploration: generate tree, then run parallel LIGHTNING checks."""
+
+    async def generate():
+        # Step 1 — generate the exploration tree via LLM
+        yield f"event: status\ndata: {json.dumps({'message': 'Generating research pathways…'})}\n\n"
+
+        try:
+            from lightning._client import get_client
+            from lightning.const import DEFAULT_MODEL
+            client = get_client()
+            response = client.messages.create(
+                model=DEFAULT_MODEL,
+                max_tokens=2000,
+                system="You generate structured JSON research exploration trees. Return only valid JSON.",
+                messages=[{
+                    "role": "user",
+                    "content": TREE_GENERATION_PROMPT.format(topic=request.topic),
+                }],
+            )
+            raw = response.content[0].text.strip()
+            if raw.startswith("```"):
+                raw = raw.split("```")[1]
+                if raw.startswith("json"):
+                    raw = raw[4:]
+                raw = raw.strip()
+            tree = json.loads(raw)
+        except Exception as e:
+            yield f"event: error\ndata: {json.dumps({'message': str(e)})}\n\n"
+            return
+
+        # Step 2 — send tree structure to frontend
+        yield f"event: tree\ndata: {json.dumps(tree)}\n\n"
+
+        # Step 3 — collect all leaf nodes
+        leaves = [
+            leaf
+            for branch in tree.get("branches", [])
+            for leaf in branch.get("leaves", [])
+        ]
+        if not leaves:
+            yield f"event: done\ndata: {{}}\n\n"
+            return
+
+        # Step 4 — submit all checks to thread pool, stream results as they arrive
+        loop = asyncio.get_running_loop()
+        queue: asyncio.Queue = asyncio.Queue()
+
+        def _check_and_enqueue(leaf_id: str, artifact: str) -> None:
+            result = _run_check(artifact)
+            loop.call_soon_threadsafe(queue.put_nowait, (leaf_id, result))
+
+        for leaf in leaves:
+            _check_executor.submit(_check_and_enqueue, leaf["id"], leaf["artifact"])
+            yield f"event: checking\ndata: {json.dumps({'node_id': leaf['id']})}\n\n"
+
+        for _ in range(len(leaves)):
+            leaf_id, result = await queue.get()
+            yield f"event: result\ndata: {json.dumps({'node_id': leaf_id, **result})}\n\n"
+
+        yield f"event: done\ndata: {{}}\n\n"
+
+    return StreamingResponse(generate(), media_type="text/event-stream")
+
 
 if __name__ == "__main__":
     print("🛡️ Starting LIGHTNING FastAPI Demo Server...")
