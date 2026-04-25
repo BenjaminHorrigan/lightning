@@ -2,24 +2,13 @@
 % CWC Schedule 2 classification rules
 % Source: CWC Annex on Chemicals — Schedule 2 (dual-use precursors)
 % =============================================================================
+% schedule_1.lp emits classified(Sub, "CWC_Schedule_2_threshold", ...) using
+% quantity_grams/2 with a 100 g threshold. Below-threshold quantities produce
+% no classification (ALLOW). This file adds proliferation markers only.
 
-% Any substance on Schedule 2 is classified
-classified(S, "cwc", "schedule_2", "Listed CWC Schedule 2 chemical") :-
-    substance(S),
-    schedule(S, "cwc", "2").
+% Threshold-exceeding Schedule 2 substances require enhanced review
+requires_human_review(S, "Schedule 2 above 100g threshold requires OPCW declaration") :-
+    classified(S, "CWC_Schedule_2_threshold", _).
 
-% Threshold-exceeding Schedule 2 substances trigger an additional classification
-classified(S, "cwc", "schedule_2_threshold", "Exceeds Schedule 2 quantity threshold") :-
-    substance(S),
-    schedule(S, "cwc", "2"),
-    quantity(S, Amount, "kg"),
-    quantity_threshold(S, Threshold, "kg"),
-    Amount > Threshold.
-
-% Default threshold of 1 kg if not otherwise specified
-quantity_threshold(S, 1, "kg") :-
-    substance(S),
-    schedule(S, "cwc", "2"),
-    not _has_explicit_threshold(S).
-
-_has_explicit_threshold(S) :- quantity_threshold(S, _, "kg").
+proliferation_concern(S, "dual_use_precursor") :-
+    classified(S, "CWC_Schedule_2_threshold", _).

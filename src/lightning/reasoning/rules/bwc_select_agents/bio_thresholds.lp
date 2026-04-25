@@ -8,30 +8,34 @@
 classified(S, "bwc_select_agents", "tier_1_threshold_exceeded", "Tier 1 quantity threshold exceeded") :-
     substance(S),
     tier_1(S, "yes"),
-    quantity(S, Amount, "mg"),
-    Amount > 100.  % 100mg threshold for Tier 1
+    quantity_mg(S, Amount),
+    Amount > 100.
 
 % BSL-4 pathogen thresholds
 classified(S, "bwc_select_agents", "bsl_4_threshold_exceeded", "BSL-4 quantity threshold exceeded") :-
     substance(S),
     biosafety_level(S, "4"),
-    quantity(S, Amount, "mg"),
-    Amount > 1000.  % 1g threshold for BSL-4
+    quantity_mg(S, Amount),
+    Amount > 1000.
 
 % Biological toxin thresholds (lower than live agents)
 classified(S, "bwc_select_agents", "toxin_threshold_exceeded", "Biological toxin quantity threshold exceeded") :-
     substance(S),
     pathogen_type(S, "toxin"),
-    quantity(S, Amount, "mg"),
-    Amount > 10.  % 10mg threshold for toxins
+    quantity_mg(S, Amount),
+    Amount > 10.
 
 % General select agent thresholds
 classified(S, "bwc_select_agents", "select_agent_threshold_exceeded", "Select agent quantity threshold exceeded") :-
-    substance(S), schedule(S, "hhs_select", "agent"),
-    quantity(S, Amount, "g"), Amount > 10.  % 10g general threshold
+    substance(S),
+    schedule(S, "hhs_select", "agent"),
+    quantity_grams(S, Amount),
+    Amount > 10.
 classified(S, "bwc_select_agents", "select_agent_threshold_exceeded", "Select agent quantity threshold exceeded") :-
-    substance(S), schedule(S, "usda_select", "agent"),
-    quantity(S, Amount, "g"), Amount > 10.  % 10g general threshold
+    substance(S),
+    schedule(S, "usda_select", "agent"),
+    quantity_grams(S, Amount),
+    Amount > 10.
 
 % Enhanced review for threshold exceedances
 requires_human_review(S, "Tier 1 quantity threshold exceeded - enhanced security protocols required") :-

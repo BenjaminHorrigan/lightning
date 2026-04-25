@@ -2,21 +2,11 @@
 % CWC Schedule 3 classification rules
 % Source: CWC Annex on Chemicals — Schedule 3 (bulk industrial chemicals)
 % =============================================================================
+% schedule_1.lp emits classified(Sub, "CWC_Schedule_3", ...) for named
+% Schedule 3 chemicals. This file adds proliferation markers only.
 
-% Any substance on Schedule 3 is classified (informational)
-classified(S, "cwc", "schedule_3", "Listed CWC Schedule 3 chemical") :-
-    substance(S),
-    schedule(S, "cwc", "3").
+proliferation_concern(S, "industrial_chemical_cw_potential") :-
+    classified(S, "CWC_Schedule_3", _).
 
-% Schedule 3 production thresholds (typically 30 tonnes/year)
-classified(S, "cwc", "schedule_3_threshold", "Exceeds Schedule 3 production threshold (30t)") :-
-    substance(S),
-    schedule(S, "cwc", "3"),
-    quantity(S, Amount, "kg"),
-    Amount > 30000.
-
-% Schedule 3 at small scale → dual-use, generally allowable
-dual_use_item(S) :-
-    classified(S, "cwc", "schedule_3", _),
-    quantity(S, Amount, "kg"),
-    Amount <= 30000.
+requires_human_review(S, "Schedule 3 chemical requires end-use verification") :-
+    classified(S, "CWC_Schedule_3", _).

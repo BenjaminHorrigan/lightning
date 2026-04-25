@@ -19,7 +19,7 @@
 % designed for the articles in paragraphs (a) through (g) of this category."
 
 % High-performance rocket propellants
-classified(S, "usml", "IV_h", "Cat IV(h) controlled propellant") :-
+classified(S, "usml", "IV_h_propellant", "Cat IV(h) controlled propellant") :-
     substance(S),
     usml_controlled_propellant(S).
 
@@ -33,7 +33,7 @@ usml_controlled_propellant("mixed_oxides_of_nitrogen").         % MON
 usml_controlled_propellant("hydrogen_peroxide_concentrated").   % >85% concentration
 
 % Concentration-dependent propellants
-classified(S, "usml", "IV_h", "High concentration propellant") :-
+classified(S, "usml", "IV_h_propellant", "High concentration propellant") :-
     substance(S),
     concentration_controlled_propellant(S, MinConcentration),
     quantity(S, Concentration, "percent"),
@@ -43,7 +43,7 @@ concentration_controlled_propellant("hydrogen_peroxide", 85).
 concentration_controlled_propellant("nitric_acid", 80).
 
 % Solid propellant ingredients
-classified(S, "usml", "IV_h", "Solid propellant ingredient") :-
+classified(S, "usml", "IV_h_propellant", "Solid propellant ingredient") :-
     substance(S),
     solid_propellant_ingredient(S).
 
@@ -60,7 +60,7 @@ solid_propellant_ingredient("hmx").                             % Cyclotetrameth
 solid_propellant_ingredient("rdx").                             % Cyclotrimethylenetrinitramine
 
 % Particle size restrictions for metal powders
-classified(S, "usml", "IV_h", "Controlled metal powder") :-
+classified(S, "usml", "IV_h_propellant", "Controlled metal powder") :-
     substance(S),
     metal_powder_controlled(S, MaxParticleSize),
     specification(S, "particle_size_micron", ParticleSize, "micron"),

@@ -19,6 +19,11 @@ from typing import Any
 
 def get_client() -> Any:
     """Return a Messages-compatible client."""
+    try:
+        from dotenv import load_dotenv
+        load_dotenv()
+    except ImportError:
+        pass
     if _use_bedrock():
         from anthropic import AnthropicBedrock
         return AnthropicBedrock(
