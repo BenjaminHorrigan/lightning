@@ -1,6 +1,6 @@
 % USML Category XIV - Toxic Chemical and Biological Agents
 % Generated from data/sources/usml_cat_xiv_toxics.csv
-% Total substances: 20
+% Total substances: 33
 
 #include "_common/atom_vocabulary.lp".
 
@@ -43,3 +43,29 @@ schedule("bz_agent", "usml_cat_xiv", "controlled").
 schedule("ricin", "usml_cat_xiv", "controlled").
 
 schedule("abrin", "usml_cat_xiv", "controlled").
+
+schedule("phosgene_oxime", "usml_cat_xiv", "controlled").
+
+schedule("vr_nerve_agent", "usml_cat_xiv", "controlled").
+
+schedule("novichok_a_234", "usml_cat_xiv", "controlled").
+
+schedule("novichok_a_262", "usml_cat_xiv", "controlled").
+
+schedule("hydrogen_sulfide", "usml_cat_xiv", "controlled").
+
+schedule("diphosgene", "usml_cat_xiv", "controlled").
+
+schedule("chloropicrin", "usml_cat_xiv", "controlled").
+
+schedule("brombenzylcyanide", "usml_cat_xiv", "controlled").
+
+schedule("perfluoroisobutylene", "usml_cat_xiv", "controlled").
+
+schedule("botulinum_toxin_type_a", "usml_cat_xiv", "controlled").
+
+schedule("staphylococcal_enterotoxin", "usml_cat_xiv", "controlled").
+
+schedule("modeccin_toxin", "usml_cat_xiv", "controlled").
+
+schedule("aflatoxin_b1", "usml_cat_xiv", "controlled").

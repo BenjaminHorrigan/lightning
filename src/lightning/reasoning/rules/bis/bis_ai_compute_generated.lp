@@ -1,6 +1,6 @@
 % BIS AI/Compute Export Controls - ECCN 3A001/4A001/5D002
 % Generated from data/sources/bis_ai_compute.csv
-% Total substances: 20
+% Total substances: 39
 
 #include "_common/atom_vocabulary.lp".
 
@@ -43,3 +43,41 @@ schedule("ai_software_framework", "bis_ai_compute", "controlled").
 schedule("deep_learning_software", "bis_ai_compute", "controlled").
 
 schedule("computer_vision_software", "bis_ai_compute", "controlled").
+
+schedule("networking_switch_for_ai", "bis_ai_compute", "controlled").
+
+schedule("advanced_optical_transceiver", "bis_ai_compute", "controlled").
+
+schedule("extreme_ultraviolet_lithography_system", "bis_ai_compute", "controlled").
+
+schedule("deep_ultraviolet_lithography_system", "bis_ai_compute", "controlled").
+
+schedule("atomic_layer_deposition_system", "bis_ai_compute", "controlled").
+
+schedule("chemical_mechanical_planarization", "bis_ai_compute", "controlled").
+
+schedule("ion_implanter", "bis_ai_compute", "controlled").
+
+schedule("semiconductor_etch_system", "bis_ai_compute", "controlled").
+
+schedule("semiconductor_metrology_tool", "bis_ai_compute", "controlled").
+
+schedule("electronic_design_automation_software", "bis_ai_compute", "controlled").
+
+schedule("semiconductor_process_simulation_software", "bis_ai_compute", "controlled").
+
+schedule("advanced_packaging_equipment", "bis_ai_compute", "controlled").
+
+schedule("wafer_bonding_system", "bis_ai_compute", "controlled").
+
+schedule("large_language_model_weights", "bis_ai_compute", "controlled").
+
+schedule("reinforcement_learning_from_human_feedback", "bis_ai_compute", "controlled").
+
+schedule("autonomous_weapons_control_software", "bis_ai_compute", "controlled").
+
+schedule("satellite_image_analysis_software", "bis_ai_compute", "controlled").
+
+schedule("facial_recognition_system", "bis_ai_compute", "controlled").
+
+schedule("biometric_surveillance_system", "bis_ai_compute", "controlled").

@@ -19,3 +19,22 @@ Advanced CPU for AI,Advanced CPU for AI,semiconductor,3A001,controlled,20_TOPS
 AI Software Framework,AI Software Framework,software,5D002,controlled,distributed_training
 Deep Learning Software,Deep Learning Software,software,5D002,controlled,neural_network_training
 Computer Vision Software,Computer Vision Software,software,5D002,controlled,object_recognition
+Networking Switch for AI,High-speed AI interconnect,networking,4A003,license_required,400Gbps_per_port
+Advanced Optical Transceiver,800G coherent optics,networking,4A003,controlled,800_Gbps
+Extreme Ultraviolet Lithography System,EUV lithography,semiconductor_equipment,3B001,license_required,sub_3nm_node
+Deep Ultraviolet Lithography System,DUV immersion lithography,semiconductor_equipment,3B001,controlled,sub_10nm_node
+Atomic Layer Deposition System,ALD system,semiconductor_equipment,3B001,controlled,atomic_precision
+Chemical Mechanical Planarization,CMP tool,semiconductor_equipment,3B001,controlled,sub_1nm_planarity
+Ion Implanter,Ion implantation system,semiconductor_equipment,3B001,controlled,high_dose
+Semiconductor Etch System,Plasma etch,semiconductor_equipment,3B001,controlled,sub_5nm_features
+Semiconductor Metrology Tool,CD-SEM metrology,semiconductor_equipment,3B001,controlled,sub_1nm_resolution
+Electronic Design Automation Software,EDA software,software,5D002,license_required,advanced_node_design
+Semiconductor Process Simulation Software,TCAD software,software,5D002,controlled,process_modeling
+Advanced Packaging Equipment,Chip stacking equipment,semiconductor_equipment,3B001,controlled,2_5D_3D_packaging
+Wafer Bonding System,Direct bonding system,semiconductor_equipment,3B001,controlled,sub_micron_alignment
+Large Language Model Weights,Foundation model weights,software,5D002,controlled,over_1B_parameters
+Reinforcement Learning from Human Feedback,RLHF training system,software,5D002,controlled,alignment_training
+Autonomous Weapons Control Software,AI weapons targeting,software,5D002,license_required,autonomous_lethal_decision
+Satellite Image Analysis Software,AI geospatial intelligence,software,5D002,license_required,military_imagery
+Facial Recognition System,Large scale facial recognition,system,3A001,license_required,mass_surveillance_capable
+Biometric Surveillance System,AI biometric monitoring,system,3A001,license_required,population_monitoring

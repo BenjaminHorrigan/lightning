@@ -1,6 +1,6 @@
 % DEA Schedules III, IV, V - lower-risk controlled substances
 % Generated from data/sources/dea_schedule_iii_v.csv
-% Total substances: 20
+% Total substances: 48
 
 #include "_common/atom_vocabulary.lp".
 
@@ -123,3 +123,171 @@ cas_number("ezogabine", "150812-12-7").
 molecular_formula("ezogabine", "C16H18FN3O2").
 alternative_name("ezogabine", "potiga").
 dea_number("ezogabine", "2779").
+
+schedule("nalbuphine", "dea", "III").
+cas_number("nalbuphine", "20594-83-6").
+molecular_formula("nalbuphine", "C21H27NO4").
+alternative_name("nalbuphine", "nubain").
+dea_number("nalbuphine", "9332").
+
+schedule("butorphanol", "dea", "III").
+cas_number("butorphanol", "42408-82-2").
+molecular_formula("butorphanol", "C21H29NO2").
+alternative_name("butorphanol", "stadol").
+dea_number("butorphanol", "9720").
+
+schedule("benzphetamine", "dea", "III").
+cas_number("benzphetamine", "156-08-1").
+molecular_formula("benzphetamine", "C17H21N").
+alternative_name("benzphetamine", "didrex").
+dea_number("benzphetamine", "1228").
+
+schedule("chlorphentermine", "dea", "III").
+cas_number("chlorphentermine", "461-78-9").
+molecular_formula("chlorphentermine", "C10H14ClN").
+alternative_name("chlorphentermine", "pre_sate").
+dea_number("chlorphentermine", "1645").
+
+schedule("clortermine", "dea", "III").
+cas_number("clortermine", "10389-73-8").
+molecular_formula("clortermine", "C10H14ClN").
+dea_number("clortermine", "1647").
+
+schedule("phendimetrazine", "dea", "III").
+cas_number("phendimetrazine", "634-03-7").
+molecular_formula("phendimetrazine", "C12H17NO").
+alternative_name("phendimetrazine", "bontril").
+dea_number("phendimetrazine", "1615").
+
+schedule("lysergic_acid", "dea", "III").
+cas_number("lysergic_acid", "82-58-6").
+molecular_formula("lysergic_acid", "C16H16N2O2").
+alternative_name("lysergic_acid", "lsd_precursor").
+dea_number("lysergic_acid", "7300").
+
+schedule("boldenone", "dea", "III").
+cas_number("boldenone", "846-48-0").
+molecular_formula("boldenone", "C19H26O2").
+alternative_name("boldenone", "equipoise").
+dea_number("boldenone", "4000").
+
+schedule("stanozolol", "dea", "III").
+cas_number("stanozolol", "10418-03-8").
+molecular_formula("stanozolol", "C21H32N2O").
+alternative_name("stanozolol", "winstrol").
+dea_number("stanozolol", "4000").
+
+schedule("oxandrolone", "dea", "III").
+cas_number("oxandrolone", "53-39-4").
+molecular_formula("oxandrolone", "C19H30O3").
+alternative_name("oxandrolone", "anavar").
+dea_number("oxandrolone", "4000").
+
+schedule("oxymetholone", "dea", "III").
+cas_number("oxymetholone", "434-07-1").
+molecular_formula("oxymetholone", "C21H32O3").
+alternative_name("oxymetholone", "anadrol").
+dea_number("oxymetholone", "4000").
+
+schedule("dronabinol_in_sesame_oil", "dea", "III").
+cas_number("dronabinol_in_sesame_oil", "1972-08-3").
+molecular_formula("dronabinol_in_sesame_oil", "C21H30O2").
+alternative_name("dronabinol_in_sesame_oil", "marinol").
+dea_number("dronabinol_in_sesame_oil", "7369").
+
+schedule("triazolam", "dea", "IV").
+cas_number("triazolam", "28911-01-5").
+molecular_formula("triazolam", "C17H12Cl2N4").
+alternative_name("triazolam", "halcion").
+dea_number("triazolam", "2887").
+
+schedule("flurazepam", "dea", "IV").
+cas_number("flurazepam", "17617-23-1").
+molecular_formula("flurazepam", "C21H23ClFN3O").
+alternative_name("flurazepam", "dalmane").
+dea_number("flurazepam", "2767").
+
+schedule("quazepam", "dea", "IV").
+cas_number("quazepam", "36735-22-5").
+molecular_formula("quazepam", "C17H11ClF3N3S").
+alternative_name("quazepam", "doral").
+dea_number("quazepam", "2881").
+
+schedule("clorazepate", "dea", "IV").
+cas_number("clorazepate", "23887-31-2").
+molecular_formula("clorazepate", "C16H11ClN2O3").
+alternative_name("clorazepate", "tranxene").
+dea_number("clorazepate", "2768").
+
+schedule("oxazepam", "dea", "IV").
+cas_number("oxazepam", "604-75-1").
+molecular_formula("oxazepam", "C15H11ClN2O2").
+alternative_name("oxazepam", "serax").
+dea_number("oxazepam", "2835").
+
+schedule("chlordiazepoxide", "dea", "IV").
+cas_number("chlordiazepoxide", "58-25-3").
+molecular_formula("chlordiazepoxide", "C16H14ClN3O").
+alternative_name("chlordiazepoxide", "librium").
+dea_number("chlordiazepoxide", "2744").
+
+schedule("midazolam", "dea", "IV").
+cas_number("midazolam", "59467-70-8").
+molecular_formula("midazolam", "C18H13ClFN3").
+alternative_name("midazolam", "versed").
+dea_number("midazolam", "2884").
+
+schedule("zaleplon", "dea", "IV").
+cas_number("zaleplon", "151319-34-5").
+molecular_formula("zaleplon", "C17H15N5O").
+alternative_name("zaleplon", "sonata").
+dea_number("zaleplon", "2781").
+
+schedule("eszopiclone", "dea", "IV").
+cas_number("eszopiclone", "138729-47-2").
+molecular_formula("eszopiclone", "C17H17ClN6O3").
+alternative_name("eszopiclone", "lunesta").
+dea_number("eszopiclone", "2780").
+
+schedule("lisdexamfetamine", "dea", "II").
+cas_number("lisdexamfetamine", "608137-32-2").
+molecular_formula("lisdexamfetamine", "C15H25N3O2").
+alternative_name("lisdexamfetamine", "vyvanse").
+dea_number("lisdexamfetamine", "1205").
+
+schedule("methylone", "dea", "I").
+cas_number("methylone", "186028-79-5").
+molecular_formula("methylone", "C11H13NO3").
+alternative_name("methylone", "mdmc").
+alternative_name("methylone", "bath_salts").
+dea_number("methylone", "7540").
+
+schedule("butalbital", "dea", "III").
+cas_number("butalbital", "77-26-9").
+molecular_formula("butalbital", "C11H16N2O3").
+alternative_name("butalbital", "fiorinal").
+dea_number("butalbital", "2100").
+
+schedule("pentazocine", "dea", "IV").
+cas_number("pentazocine", "359-83-1").
+molecular_formula("pentazocine", "C19H27NO").
+alternative_name("pentazocine", "talwin").
+dea_number("pentazocine", "9709").
+
+schedule("propofol", "dea", "IV").
+cas_number("propofol", "2078-54-8").
+molecular_formula("propofol", "C12H18O").
+alternative_name("propofol", "diprivan").
+dea_number("propofol", "2138").
+
+schedule("carisoprodol_metabolite", "dea", "IV").
+cas_number("carisoprodol_metabolite", "33671-46-4").
+molecular_formula("carisoprodol_metabolite", "C12H22N2O3").
+alternative_name("carisoprodol_metabolite", "meprobamate").
+dea_number("carisoprodol_metabolite", "8193").
+
+schedule("loperamide", "dea", "V").
+cas_number("loperamide", "53179-11-6").
+molecular_formula("loperamide", "C29H33ClN2O2").
+alternative_name("loperamide", "imodium").
+dea_number("loperamide", "9607").

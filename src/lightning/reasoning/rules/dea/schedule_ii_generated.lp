@@ -1,6 +1,6 @@
 % DEA Schedule II - high potential for abuse, accepted medical use
 % Generated from data/sources/dea_schedule_ii.csv
-% Total substances: 20
+% Total substances: 39
 
 #include "_common/atom_vocabulary.lp".
 
@@ -127,3 +127,110 @@ molecular_formula("pethidine", "C15H21NO2").
 alternative_name("pethidine", "demerol").
 alternative_name("pethidine", "meperidine").
 dea_number("pethidine", "9230").
+
+schedule("pcp", "dea", "II").
+cas_number("pcp", "77-10-1").
+molecular_formula("pcp", "C17H25N").
+alternative_name("pcp", "phencyclidine").
+alternative_name("pcp", "angel_dust").
+dea_number("pcp", "7471").
+
+schedule("nabilone", "dea", "II").
+cas_number("nabilone", "51022-71-0").
+molecular_formula("nabilone", "C24H36O3").
+alternative_name("nabilone", "cesamet").
+dea_number("nabilone", "7379").
+
+schedule("sufentanil", "dea", "II").
+cas_number("sufentanil", "56030-54-7").
+molecular_formula("sufentanil", "C22H30N2O2S").
+alternative_name("sufentanil", "sufenta").
+dea_number("sufentanil", "9740").
+
+schedule("alfentanil", "dea", "II").
+cas_number("alfentanil", "71195-58-9").
+molecular_formula("alfentanil", "C21H32N6O3S").
+alternative_name("alfentanil", "alfenta").
+dea_number("alfentanil", "9737").
+
+schedule("tapentadol", "dea", "II").
+cas_number("tapentadol", "175591-23-8").
+molecular_formula("tapentadol", "C14H23NO").
+alternative_name("tapentadol", "nucynta").
+dea_number("tapentadol", "9780").
+
+schedule("levorphanol", "dea", "II").
+cas_number("levorphanol", "77-07-6").
+molecular_formula("levorphanol", "C17H23NO").
+alternative_name("levorphanol", "levo_dromoran").
+dea_number("levorphanol", "9220").
+
+schedule("dextropropoxyphene", "dea", "II").
+cas_number("dextropropoxyphene", "469-62-5").
+molecular_formula("dextropropoxyphene", "C22H29NO2").
+alternative_name("dextropropoxyphene", "propoxyphene").
+alternative_name("dextropropoxyphene", "darvon").
+dea_number("dextropropoxyphene", "9278").
+
+schedule("metopon", "dea", "II").
+cas_number("metopon", "143-52-2").
+molecular_formula("metopon", "C18H21NO3").
+dea_number("metopon", "9260").
+
+schedule("opium_raw", "dea", "II").
+cas_number("opium_raw", "8008-60-4").
+alternative_name("opium_raw", "crude_opium").
+dea_number("opium_raw", "9639").
+
+schedule("opium_tincture", "dea", "II").
+cas_number("opium_tincture", "8002-76-4").
+alternative_name("opium_tincture", "laudanum").
+dea_number("opium_tincture", "9630").
+
+schedule("ecgonine", "dea", "II").
+cas_number("ecgonine", "481-37-8").
+molecular_formula("ecgonine", "C9H15NO3").
+alternative_name("ecgonine", "cocaine_precursor").
+dea_number("ecgonine", "9180").
+
+schedule("cocaine_base", "dea", "II").
+cas_number("cocaine_base", "50-36-2").
+molecular_formula("cocaine_base", "C17H21NO4").
+alternative_name("cocaine_base", "crack_cocaine").
+dea_number("cocaine_base", "9041").
+
+schedule("nndb", "dea", "II").
+cas_number("nndb", "73997-32-7").
+molecular_formula("nndb", "C24H38N2O4").
+alternative_name("nndb", "norfentanyl").
+dea_number("nndb", "9802").
+
+schedule("isomethadone", "dea", "II").
+cas_number("isomethadone", "466-40-0").
+molecular_formula("isomethadone", "C21H27NO").
+dea_number("isomethadone", "9226").
+
+schedule("thebaine", "dea", "II").
+cas_number("thebaine", "115-37-7").
+molecular_formula("thebaine", "C19H21NO3").
+dea_number("thebaine", "9333").
+
+schedule("dihydrocodeine", "dea", "II").
+cas_number("dihydrocodeine", "125-28-0").
+molecular_formula("dihydrocodeine", "C18H23NO3").
+dea_number("dihydrocodeine", "9120").
+
+schedule("dihydromorphine", "dea", "II").
+cas_number("dihydromorphine", "509-60-4").
+molecular_formula("dihydromorphine", "C17H21NO3").
+dea_number("dihydromorphine", "9145").
+
+schedule("normorphine", "dea", "II").
+cas_number("normorphine", "466-97-7").
+molecular_formula("normorphine", "C16H17NO3").
+dea_number("normorphine", "9313").
+
+schedule("noroxymorphone", "dea", "II").
+cas_number("noroxymorphone", "16676-29-2").
+molecular_formula("noroxymorphone", "C16H17NO4").
+dea_number("noroxymorphone", "9668").

@@ -19,3 +19,32 @@ Puccinia graminis,Puccinia graminis,fungus,1,no
 Pyricularia oryzae,Pyricularia oryzae,fungus,1,no
 Xanthomonas oryzae,Xanthomonas oryzae,bacterium,1,no
 Erwinia amylovora,Erwinia amylovora,bacterium,1,no
+Bacillus anthracis,Bacillus anthracis,bacterium,3,no
+Yersinia pestis,Yersinia pestis,bacterium,3,no
+Francisella tularensis,Francisella tularensis,bacterium,3,no
+Brucella abortus,Brucella abortus,bacterium,3,no
+Brucella melitensis,Brucella melitensis,bacterium,3,no
+Brucella suis,Brucella suis,bacterium,3,no
+Coxiella burnetii,Coxiella burnetii,bacterium,3,no
+Clostridium botulinum,Clostridium botulinum,bacterium,2,no
+Clostridium perfringens,Clostridium perfringens,bacterium,2,no
+Rickettsia prowazekii,Rickettsia prowazekii,bacterium,3,no
+Rickettsia rickettsii,Rickettsia rickettsii,bacterium,3,no
+Burkholderia mallei,Burkholderia mallei,bacterium,3,no
+Burkholderia pseudomallei,Burkholderia pseudomallei,bacterium,3,no
+Nipah virus,Henipavirus,virus,4,no
+Hendra virus,Henipavirus,virus,4,no
+Ebola virus,Filovirus,virus,4,no
+Marburg virus,Filovirus,virus,4,no
+Lassa virus,Arenavirus,virus,4,no
+Machupo virus,Arenavirus,virus,4,no
+Junin virus,Arenavirus,virus,4,no
+Rift Valley fever virus,Phlebovirus,virus,3,no
+Venezuelan equine encephalitis virus,Alphavirus,virus,3,no
+Eastern equine encephalitis virus,Alphavirus,virus,3,no
+Western equine encephalitis virus,Alphavirus,virus,3,no
+Hantavirus,Hantavirus,virus,3,no
+Kyasanur Forest disease virus,Flavivirus,virus,3,no
+Omsk hemorrhagic fever virus,Flavivirus,virus,3,no
+Crimean-Congo hemorrhagic fever virus,Orthonairovirus,virus,4,no
+Variola major virus,Orthopoxvirus,virus,4,no

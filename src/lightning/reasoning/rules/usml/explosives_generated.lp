@@ -1,6 +1,6 @@
 % USML Categories IV-V - Explosives and Warheads
 % Generated from data/sources/usml_explosives.csv
-% Total substances: 20
+% Total substances: 39
 
 #include "_common/atom_vocabulary.lp".
 
@@ -43,3 +43,41 @@ schedule("blast_fragmentation_warhead", "usml_explosives", "controlled").
 schedule("penetrator_warhead", "usml_explosives", "controlled").
 
 schedule("submunition_warhead", "usml_explosives", "controlled").
+
+schedule("nitroglycerine", "usml_explosives", "controlled").
+
+schedule("egdn", "usml_explosives", "controlled").
+
+schedule("dmnb", "usml_explosives", "controlled").
+
+schedule("nitroguanidine", "usml_explosives", "controlled").
+
+schedule("picric_acid", "usml_explosives", "controlled").
+
+schedule("tetryl", "usml_explosives", "controlled").
+
+schedule("ddnp", "usml_explosives", "controlled").
+
+schedule("lead_azide", "usml_explosives", "controlled").
+
+schedule("lead_styphnate", "usml_explosives", "controlled").
+
+schedule("mercury_fulminate", "usml_explosives", "controlled").
+
+schedule("pbxw_11", "usml_explosives", "controlled").
+
+schedule("ammonium_perchlorate", "usml_explosives", "controlled").
+
+schedule("dnan", "usml_explosives", "controlled").
+
+schedule("imx_101", "usml_explosives", "controlled").
+
+schedule("imx_104", "usml_explosives", "controlled").
+
+schedule("nto", "usml_explosives", "controlled").
+
+schedule("rowanex_900", "usml_explosives", "controlled").
+
+schedule("fuel_air_explosive", "usml_explosives", "controlled").
+
+schedule("thermobaric_warhead", "usml_explosives", "controlled").

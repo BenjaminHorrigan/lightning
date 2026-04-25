@@ -19,3 +19,16 @@ CN Gas,Chloroacetophenone,chemical_agent,XIV,controlled,riot_control_agent
 BZ Agent,3-Quinuclidinyl benzilate,chemical_agent,XIV,controlled,incapacitating_agent
 Ricin,Ricin toxin,biological_toxin,XIV,controlled,LD50_1mg_per_kg
 Abrin,Abrin toxin,biological_toxin,XIV,controlled,LD50_0.7mg_per_kg
+Phosgene oxime,Dichloroformoxime,chemical_agent,XIV,prohibited,LCt50_35mg_min_per_m3
+VR nerve agent,Russian VX,chemical_agent,XIV,prohibited,LD50_0.01mg_per_kg
+Novichok A-234,Ethyl-N-(1-(diethylamino)ethylidene)phosphoramidofluoridate,chemical_agent,XIV,prohibited,LD50_0.001mg_per_kg
+Novichok A-262,Novichok agent variant,chemical_agent,XIV,prohibited,LD50_0.001mg_per_kg
+Hydrogen sulfide,Dihydrogen monosulfide,chemical_agent,XIV,controlled,LCt50_5000mg_min_per_m3
+Diphosgene,Trichloromethyl chloroformate,chemical_agent,XIV,controlled,LCt50_3200mg_min_per_m3
+Chloropicrin,Trichloronitromethane,chemical_agent,XIV,controlled,LCt50_20000mg_min_per_m3
+Brombenzylcyanide,alpha-Bromobenzyl cyanide,chemical_agent,XIV,controlled,riot_control_agent
+Perfluoroisobutylene,PFIB,chemical_agent,XIV,controlled,LCt50_20mg_min_per_m3
+Botulinum toxin type A,Clostridium botulinum,biological_toxin,XIV,controlled,LD50_0.001mg_per_kg
+Staphylococcal enterotoxin,Staphylococcus aureus,biological_toxin,XIV,controlled,incapacitating_agent
+Modeccin toxin,Modecca digitata,biological_toxin,XIV,controlled,LD50_0.01mg_per_kg
+Aflatoxin B1,Aspergillus flavus,biological_toxin,XIV,controlled,LD50_1mg_per_kg

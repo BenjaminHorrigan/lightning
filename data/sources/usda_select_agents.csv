@@ -19,3 +19,27 @@ Goat pox virus,Capripoxvirus,virus,3,no
 African horse sickness virus,Orbivirus,virus,2,no
 African swine fever virus,Asfivirus,virus,3,yes
 Avian influenza virus,Influenza A virus,virus,3,no
+Exotic Newcastle disease virus,Avulavirus,virus,3,yes
+Highly pathogenic avian influenza H5N1,Influenza A virus,virus,3,yes
+Nipah virus,Henipavirus,virus,4,yes
+Hendra virus,Henipavirus,virus,4,yes
+Menangle virus,Rubulavirus,virus,3,no
+Bovine spongiform encephalopathy,Abnormal prion protein,prion,3,no
+Chronic wasting disease,Abnormal prion protein,prion,3,no
+Scrapie,Abnormal prion protein,prion,2,no
+Teschen disease virus,Enterovirus J,virus,2,no
+Rabbit hemorrhagic disease virus,Lagovirus,virus,2,no
+Nairobi sheep disease virus,Orthonairovirus,virus,3,no
+Wesselsbron disease virus,Flavivirus,virus,3,no
+Rift Valley fever virus,Phlebovirus,virus,3,yes
+Bovine leukemia virus,Deltaretrovirus,virus,2,no
+Equine herpesvirus type 1,Varicellovirus,virus,2,no
+Equine viral arteritis virus,Equartevirus,virus,2,no
+Aleutian mink disease parvovirus,Dependoparvovirus,virus,2,no
+Porcine reproductive respiratory syndrome virus,Arterivirus,virus,2,no
+Bovine viral diarrhea virus,Pestivirus,virus,2,no
+Marek's disease virus,Mardivirus,virus,2,no
+Avian metapneumovirus,Metapneumovirus,virus,2,no
+Fowl cholera,Pasteurella multocida,bacterium,2,no
+Glanders,Burkholderia mallei,bacterium,3,yes
+Melioidosis,Burkholderia pseudomallei,bacterium,3,yes

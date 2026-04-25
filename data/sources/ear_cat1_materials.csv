@@ -19,3 +19,22 @@ Tantalum Metal,Tantalum,refractory_metal,1C011,tantalum,melting_point_3017C
 Molybdenum Metal,Molybdenum,refractory_metal,1C011,molybdenum,melting_point_2623C
 Ultra-High Temperature Ceramic,Hafnium carbide,ceramic,1C007,carbide,melting_point_3900C
 Advanced Glass Fiber,E-glass continuous fiber,glass_fiber,1C010,glass,tensile_strength_3400_MPa
+Polyacrylonitrile precursor fiber,PAN precursor,precursor_fiber,1C010,polyacrylonitrile,carbon_fiber_precursor
+Pitch-based carbon fiber,Mesophase pitch fiber,carbon_fiber,1C010,pitch_carbon,tensile_strength_3000_MPa
+Silicon nitride,Silicon nitride,ceramic,1C007,nitride,operating_temp_1400C
+Boron nitride,Hexagonal boron nitride,ceramic,1C004,nitride,thermal_conductivity_30_W_per_mK
+Zirconium carbide,Zirconium carbide,ceramic,1C007,carbide,melting_point_3532C
+Hafnium nitride,Hafnium nitride,ceramic,1C007,nitride,melting_point_3387C
+Rhenium alloy,Rhenium-tungsten alloy,metal_alloy,1C011,rhenium_tungsten,melting_point_3200C
+Iridium metal,Iridium,refractory_metal,1C011,platinum_group,melting_point_2446C
+Osmium metal,Osmium,refractory_metal,1C011,platinum_group,melting_point_3033C
+Ruthenium metal,Ruthenium,refractory_metal,1C011,platinum_group,melting_point_2334C
+Nickel powder,Nickel powder,metal_powder,1C241,nickel,particle_size_under_60_micron
+Aluminum powder,Aluminum powder,metal_powder,1C241,aluminum,particle_size_under_60_micron
+Boron powder,Boron powder,metal_powder,1C241,boron,purity_over_85_percent
+Magnesium powder,Magnesium powder,metal_powder,1C241,magnesium,particle_size_under_60_micron
+Zirconium powder,Zirconium powder,metal_powder,1C241,zirconium,particle_size_under_60_micron
+Titanium powder,Titanium powder,metal_powder,1C241,titanium,particle_size_under_60_micron
+Maraging steel 250,Ultra-high-strength steel,steel_alloy,1C116,maraging,yield_strength_1700_MPa
+Invar alloy,Iron-nickel low expansion alloy,metal_alloy,1C002,iron_nickel,thermal_expansion_1_5_ppm
+Kovar alloy,Iron-nickel-cobalt alloy,metal_alloy,1C002,iron_nickel_cobalt,CTE_matching_glass

@@ -19,3 +19,22 @@ Shaped Charge Warhead,Anti-armor warhead,warhead,V,shaped_charge,moderate
 Blast-Fragmentation Warhead,Area effect warhead,warhead,V,blast_frag,moderate
 Penetrator Warhead,Bunker-buster warhead,warhead,V,penetrator,low
 Submunition Warhead,Cluster munition,warhead,V,submunition,moderate
+Nitroglycerine,Glyceryl trinitrate,explosive,IV,primary,very_high
+EGDN,Ethylene glycol dinitrate,explosive,IV,secondary,very_high
+DMNB,2 3-Dimethyl-2 3-dinitrobutane,explosive,IV,taggant,low
+Nitroguanidine,Picrite,explosive,IV,secondary,low
+Picric acid,2 4 6-Trinitrophenol,explosive,IV,secondary,high
+Tetryl,2 4 6-Trinitrophenylmethylnitramine,explosive,IV,secondary,high
+DDNP,Diazodinitrophenol,explosive,IV,primary,very_high
+Lead azide,Lead diazide,explosive,IV,primary,very_high
+Lead styphnate,Lead 2 4 6-trinitroresorcinol,explosive,IV,primary,very_high
+Mercury fulminate,Mercury(II) fulminate,explosive,IV,primary,very_high
+PBXW-11,Plastic bonded explosive,explosive,IV,secondary,very_low
+Ammonium perchlorate,Ammonium perchlorate,explosive,IV,oxidizer,low
+DNAN,Dinitroanisole,explosive,IV,secondary,very_low
+IMX-101,Insensitive munitions explosive,explosive,IV,secondary,very_low
+IMX-104,Insensitive munitions explosive,explosive,IV,secondary,very_low
+NTO,3-Nitro-1 2 4-triazol-5-one,explosive,IV,secondary,very_low
+ROWANEX 900,Polymer bonded explosive,explosive,IV,secondary,low
+Fuel Air Explosive,Binary fuel-air mixture,explosive,IV,thermobaric,low
+Thermobaric Warhead,Fuel-air warhead,warhead,V,thermobaric,low
