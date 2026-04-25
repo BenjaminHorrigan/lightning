@@ -9,18 +9,22 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from pydantic import BaseModel
 import uvicorn
 import json
+from pathlib import Path
 from typing import Optional, Dict, Any
 
 # Import LIGHTNING components
 from lightning import check
 from lightning.models import Decision
 
+# Resolve paths relative to this file so the app can be launched from any cwd
+BASE_DIR = Path(__file__).resolve().parent
+
 # Create FastAPI app
 app = FastAPI(title="LIGHTNING Demo", description="Neurosymbolic Safety Layer for Autonomous Research")
 
 # Setup templates and static files
-templates = Jinja2Templates(directory="templates")
-app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
+app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 
 # Request models
 class AnalysisRequest(BaseModel):
