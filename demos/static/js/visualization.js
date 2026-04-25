@@ -102,7 +102,7 @@ for the Vulcan-III space launch vehicle.`;
       const analyzeRes = await fetch('/api/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ input: text })
+        body: JSON.stringify({ protocol_text: text })
       });
       if (!analyzeRes.ok) throw new Error(`Analyze HTTP ${analyzeRes.status}`);
       const analyzeData = await analyzeRes.json();
