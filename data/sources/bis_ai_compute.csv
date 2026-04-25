@@ -1,0 +1,21 @@
+canonical_name,scientific_name,item_type,eccn_code,control_level,performance_threshold
+Graphics Processing Unit,GPU,semiconductor,3A001,license_required,100_TOPS
+Tensor Processing Unit,TPU,semiconductor,3A001,license_required,100_TOPS
+AI Training Chip,AI Training Chip,semiconductor,3A001,license_required,100_TOPS
+Neural Processing Unit,NPU,semiconductor,3A001,license_required,50_TOPS
+High Bandwidth Memory,HBM,semiconductor,3A001,license_required,600_GB_per_second
+AI Accelerator Card,AI Accelerator Card,hardware,3A001,license_required,100_TOPS
+Quantum Computer,Quantum Computer,system,3A001,license_required,50_qubits
+Quantum Processor,Quantum Processor,semiconductor,3A001,license_required,20_qubits
+Supercomputer System,Supercomputer System,system,4A001,license_required,1_exaflop
+High Performance Computing Cluster,HPC Cluster,system,4A001,license_required,100_petaflops
+AI Training System,AI Training System,system,4A001,controlled,10_petaflops
+Machine Learning Accelerator,ML Accelerator,hardware,3A001,controlled,50_TOPS
+FPGA with AI Functions,FPGA with AI Functions,semiconductor,3A001,controlled,25_TOPS
+Neuromorphic Chip,Neuromorphic Chip,semiconductor,3A001,controlled,10_TOPS
+Edge AI Processor,Edge AI Processor,semiconductor,3A001,controlled,5_TOPS
+AI Inference Chip,AI Inference Chip,semiconductor,3A001,controlled,10_TOPS
+Advanced CPU for AI,Advanced CPU for AI,semiconductor,3A001,controlled,20_TOPS
+AI Software Framework,AI Software Framework,software,5D002,controlled,distributed_training
+Deep Learning Software,Deep Learning Software,software,5D002,controlled,neural_network_training
+Computer Vision Software,Computer Vision Software,software,5D002,controlled,object_recognition

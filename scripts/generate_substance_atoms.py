@@ -142,12 +142,23 @@ REGIME_CONFIGS = {
     # Entity Lists (different structure - organizations not substances)
     "bis_entity_list": RegimeConfig(
         csv_file="data/sources/bis_entity_list.csv",
-        output_file="src/lightning/reasoning/rules/ear/bis_entity_list_generated.lp",
-        regime_name="bis_entity_list", 
+        output_file="src/lightning/reasoning/rules/bis/bis_entity_list_generated.lp",
+        regime_name="bis_entity_list",
         schedule_value="restricted",
         description="BIS Entity List - entities subject to license requirements",
         required_columns=["entity_name", "country"],
         optional_columns=["addresses", "federal_register_date", "reasons"]
+    ),
+
+    # BIS AI/Compute Controls
+    "bis_ai_compute": RegimeConfig(
+        csv_file="data/sources/bis_ai_compute.csv",
+        output_file="src/lightning/reasoning/rules/bis/bis_ai_compute_generated.lp",
+        regime_name="bis_ai_compute",
+        schedule_value="controlled",
+        description="BIS AI/Compute Export Controls - ECCN 3A001/4A001/5D002",
+        required_columns=["canonical_name", "eccn_code"],
+        optional_columns=["item_type", "control_level", "performance_threshold"]
     )
 }
 

@@ -37,6 +37,7 @@ from lightning.models import (
 # number of .lp files; the engine loads them all when the regime is requested.
 REGIME_DIRS = {
     Regime.USML: "usml",
+    Regime.CCL: "bis",
     Regime.CWC: "cwc",
     Regime.MTCR: "mtcr",
     Regime.SELECT_AGENT: "bwc_select_agents",

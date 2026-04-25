@@ -1,0 +1,21 @@
+entity_name,scientific_name,entity_type,country,restriction_level,ai_compute_relevant
+Huawei Technologies Co. Ltd.,Huawei Technologies Co. Ltd.,corporation,China,entity_list,yes
+SenseTime Group Limited,SenseTime Group Limited,corporation,China,entity_list,yes
+Megvii Technology Limited,Megvii Technology Limited,corporation,China,entity_list,yes
+CloudWalk Technology,CloudWalk Technology,corporation,China,entity_list,yes
+Yitu Technologies,Yitu Technologies,corporation,China,entity_list,yes
+iFlytek Co. Ltd.,iFlytek Co. Ltd.,corporation,China,entity_list,yes
+Hikvision,Hikvision,corporation,China,entity_list,yes
+DJI Technology Co. Ltd.,DJI Technology Co. Ltd.,corporation,China,entity_list,no
+SMIC,SMIC,corporation,China,entity_list,yes
+Huawei HiSilicon,Huawei HiSilicon,corporation,China,entity_list,yes
+ByteDance Ltd.,ByteDance Ltd.,corporation,China,entity_list,yes
+Tencent Holdings,Tencent Holdings,corporation,China,entity_list,yes
+Baidu Inc.,Baidu Inc.,corporation,China,entity_list,yes
+Alibaba Group,Alibaba Group,corporation,China,entity_list,yes
+Xiaomi Corporation,Xiaomi Corporation,corporation,China,entity_list,yes
+NREC,NREC,corporation,Russia,entity_list,no
+Rostec,Rostec,corporation,Russia,entity_list,no
+Kaspersky Lab,Kaspersky Lab,corporation,Russia,entity_list,yes
+Positive Technologies,Positive Technologies,corporation,Russia,entity_list,yes
+Comstor LLC,Comstor LLC,corporation,Russia,entity_list,yes
