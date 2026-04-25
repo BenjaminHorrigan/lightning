@@ -1,6 +1,6 @@
 % CWC Schedule 1 chemicals - no significant peaceful use
 % Generated from data/sources/cwc_schedule_1.csv
-% Total substances: 17
+% Total substances: 21
 
 #include "_common/atom_vocabulary.lp".
 
@@ -87,3 +87,23 @@ schedule("amiton", "cwc", "1").
 cas_number("amiton", "78-53-5").
 molecular_formula("amiton", "C10H24NO3PS").
 iupac_name("amiton", "O O-diethyl S-2-(diethylamino)ethyl phosphorothioate").
+
+schedule("novichok_a_230", "cwc", "1").
+cas_number("novichok_a_230", "2387495-99-8").
+molecular_formula("novichok_a_230", "C7H16FN2OP").
+iupac_name("novichok_a_230", "Ethyl (1-(diethylamino)ethylidene)phosphoramidofluoridate").
+
+schedule("novichok_a_232", "cwc", "1").
+cas_number("novichok_a_232", "2387496-00-4").
+molecular_formula("novichok_a_232", "C7H16FN2OP").
+iupac_name("novichok_a_232", "Ethyl N-(1-(diethylamino)ethylidene)phosphoramidofluoridate").
+
+schedule("novichok_a_234", "cwc", "1").
+cas_number("novichok_a_234", "2387496-12-8").
+molecular_formula("novichok_a_234", "C9H20FN2OP").
+iupac_name("novichok_a_234", "Ethyl N-(1-(dipropylamino)ethylidene)phosphoramidofluoridate").
+
+schedule("russian_vx", "cwc", "1").
+cas_number("russian_vx", "159939-87-4").
+molecular_formula("russian_vx", "C11H26NO2PS").
+iupac_name("russian_vx", "O-Isobutyl S-(2-diethylaminoethyl) methylphosphonothioate").

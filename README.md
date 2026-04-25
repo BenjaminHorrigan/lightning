@@ -23,8 +23,8 @@ LIGHTNING is the missing layer. It is not a better research agent; it is what ma
            │
            ▼
   ┌─────────────────┐
-  │  Reasoning      │  Symbolic: Datalog/ASP over regulatory KB
-  │  (symbolic)     │  produces ProofTree
+  │  Reasoning      │  Symbolic: ASP (clingo) over regulatory KB
+  │  (symbolic)     │  produces ProofTree across all active regimes
   └────────┬────────┘
            │
            ▼
@@ -37,17 +37,50 @@ LIGHTNING is the missing layer. It is not a better research agent; it is what ma
   ClassificationResult { decision, citations, proof, rationale }
 ```
 
-## Primary scope (v1)
+**Core trust property:** The symbolic layer never calls the LLM. The LLM never overrides the symbolic decision. Extraction and rationale generation are the only LLM roles.
 
-- **Input modality:** protocols/code (Opentrons Python, Autoprotocol JSON)
-- **Regulatory regime:** ITAR USML Category IV (launch vehicles, missiles, rockets)
-- **Symbolic substrate:** Answer Set Programming via `clingo`
+## Regulatory Coverage
 
-## Stub scope (architectural, not demo-critical)
+All regimes run by default on every artifact. A single protocol or design is simultaneously evaluated across all applicable law.
 
-- Input: CAD/specs (extractor exists, parsing is shallow)
-- Input: natural-language proposals (extractor exists, intent inference is shallow)
-- Regimes: CWC (SMARTS substructure matching, Schedule 1 only), MTCR (range×payload thresholds), Select Agents (organism list lookup)
+### Active Regimes
+
+| Regime | Authority | Substances/Entities | Coverage |
+|--------|-----------|-------------------|----------|
+| **USML Cat IV** | State Dept / ITAR | Rockets, missiles, propellants | Deep (22 CFR 121.1) |
+| **USML Cat XIV** | State Dept / ITAR | Chemical/biological warfare agents | 33 agents |
+| **USML Cat IV-V Explosives** | State Dept / ITAR | Military explosives, warheads | 39 items |
+| **CWC Schedule 1** | Commerce/State | Weapons-grade chemical agents | 21 substances (~100%) |
+| **CWC Schedule 2** | Commerce/State | Precursor chemicals | 27 substances (~55%) |
+| **CWC Schedule 3** | Commerce/State | Industrial dual-use chemicals | 32 substances (~90%) |
+| **DEA Schedule I** | DOJ/DEA | High-abuse, no medical use | 36 substances |
+| **DEA Schedule II** | DOJ/DEA | High-abuse, accepted medical use | 39 substances |
+| **DEA Schedule III-V** | DOJ/DEA | Lower-risk controlled substances | 47 substances |
+| **HHS Select Agents** | HHS/CDC (42 CFR 73) | Human pathogens and toxins | 53 agents (~80%) |
+| **USDA Select Agents** | USDA (7 CFR 331) | Animal/plant pathogens | 43 agents (~95%) |
+| **Australia Group Bio** | Multilateral | BWC-relevant pathogens | 48 agents (~45%) |
+| **BIS Entity List** | Commerce/BIS | Export-restricted organizations | 40 entities |
+| **BIS AI/Compute** | Commerce/BIS (EAR) | Advanced chips, quantum, HPC | 38 items |
+| **EAR Category 1** | Commerce/BIS (EAR) | Dual-use advanced materials | 38 materials |
+| **MTCR** | Multilateral | Missile/rocket range×payload | Parametric rules |
+
+**Total: ~477 named substances/entities across 16 regimes.**
+
+### Knowledge Base Structure
+
+```
+src/lightning/reasoning/rules/
+├── _common/          # Cross-regime vocabulary (atom_vocabulary.lp, specially_designed.lp)
+├── usml/             # ITAR USML rules (Cat IV deep, Cat XIV, Explosives)
+├── cwc/              # CWC Schedules 1-3
+├── dea/              # DEA Schedules I-V
+├── bwc_select_agents/# HHS, USDA, Australia Group biological agents
+├── bis/              # EAR Entity List, AI/Compute, Category 1 materials
+└── mtcr/             # MTCR parametric thresholds
+
+data/sources/         # Authoritative CSV files (human-editable regulatory data)
+data/atoms/           # Generated ASP atoms (do not edit by hand)
+```
 
 ## Quickstart
 
@@ -56,48 +89,51 @@ LIGHTNING is the missing layer. It is not a better research agent; it is what ma
 curl -LsSf https://astral.sh/uv/install.sh | sh
 uv sync
 
-# Run the demo
-uv run python run_demo.py
-# Or directly:
-# uv run python demos/fastapi_app.py
+# Run the demo server
+uv run python demos/fastapi_app.py
 
 # Run the CLI
 uv run lightning check examples/rocket_protocol.py
+
+# Run the test suite
+uv run pytest tests/test_golden.py
 ```
+
+Set `ANTHROPIC_API_KEY` (or AWS Bedrock credentials) in `.env` before running.
 
 ## Repository layout
 
 ```
 lightning/
 ├── src/lightning/
-│   ├── extraction/       # Neural layer: LLM → TechnicalArtifact
-│   │   ├── protocol.py   # Opentrons/Autoprotocol parser
-│   │   ├── design.py     # CAD/spec parser (stub)
-│   │   └── prose.py      # NL proposal parser (stub)
-│   ├── reasoning/        # Symbolic layer: artifact → ProofTree
-│   │   ├── engine.py     # Clingo wrapper
-│   │   ├── itar.py       # USML Category IV rules (deep)
-│   │   ├── cwc.py        # CWC Schedule 1 (stub)
-│   │   ├── mtcr.py       # MTCR thresholds (stub)
-│   │   └── select.py     # Select Agents (stub)
-│   ├── decision/         # Hybrid layer: proof → final decision
-│   │   ├── synthesizer.py
-│   │   └── counterfactual.py
-│   ├── knowledge_base/   # Regulatory ground truth
-│   │   ├── usml_cat_iv.lp    # ASP rules, encoded
-│   │   ├── cwc_sched1.lp     # stub
-│   │   └── citations.json    # regulation text + URLs
-│   ├── integrations/     # Deployment shims
-│   │   ├── chemcrow.py   # @lightning.guard decorator
-│   │   ├── opentrons.py  # Pre-execution hook
-│   │   └── api.py        # FastAPI server for agent-rate queries
-│   └── models.py         # Pydantic data models
+│   ├── extraction/         # Neural layer: LLM → TechnicalArtifact
+│   │   ├── protocol.py     # Opentrons/Autoprotocol parser
+│   │   ├── design.py       # CAD/spec parser
+│   │   └── prose.py        # NL proposal parser
+│   ├── reasoning/          # Symbolic layer: artifact → ProofTree
+│   │   ├── engine.py       # Clingo wrapper, all-regime evaluation
+│   │   └── rules/          # ASP knowledge base (see above)
+│   ├── decision/           # Hybrid layer: proof → final decision
+│   │   └── synthesizer.py  # Pure-symbolic _decide(); LLM for rationale only
+│   ├── integrations/
+│   │   └── chemcrow.py     # lightning_guard() one-liner for agent wrapping
+│   └── models.py           # Pydantic contracts between all layers
+├── data/
+│   ├── sources/            # Regulatory CSVs (one per regime, human-maintained)
+│   └── atoms/              # Generated ASP facts
+├── scripts/
+│   └── generate_substance_atoms.py  # CSV → ASP bulk loader
 ├── demos/
-│   └── app.py            # Streamlit demo
-├── examples/
-│   ├── benign_suzuki.py
-│   ├── itar_turbopump_spec.md
-│   └── edge_case_dual_use.py
+│   └── fastapi_app.py      # FastAPI server with web UI
+├── examples/               # Sample inputs for each regime
 └── tests/
-    └── test_golden.py    # Hand-curated eval set
+    └── test_golden.py      # Deterministic artifact-level regression tests
 ```
+
+## Adding a new regime
+
+1. Add a CSV to `data/sources/` and a config entry to `scripts/generate_substance_atoms.py`
+2. Run `python scripts/generate_substance_atoms.py --regime <name>` to generate ASP atoms
+3. Add classification rules to `src/lightning/reasoning/rules/<regime>/`
+4. Add the regime to `REGIME_DIRS` in `reasoning/engine.py`
+5. Add golden tests to `tests/test_golden.py`

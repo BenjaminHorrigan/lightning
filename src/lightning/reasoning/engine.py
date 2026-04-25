@@ -258,7 +258,14 @@ def run_reasoner(
         )
 
     if regimes is None:
-        regimes = [Regime.USML, Regime.CWC, Regime.MTCR, Regime.SELECT_AGENT]
+        regimes = [
+            Regime.USML,
+            Regime.CCL,
+            Regime.CWC,
+            Regime.MTCR,
+            Regime.SELECT_AGENT,
+            Regime.DEA,
+        ]
 
     facts = artifact_to_facts(artifact)
 
@@ -398,15 +405,35 @@ def _index_atoms(atoms: list[str]) -> dict[str, list[str]]:
 
 def _regime_for_classification(classification: str) -> Regime:
     """Map a classification code back to its originating regime."""
-    if classification.startswith("USML_"):
+    cl = classification.upper()
+    if cl.startswith("USML_"):
         return Regime.USML
-    if classification.startswith("CWC_"):
+    if cl.startswith("CWC_"):
         return Regime.CWC
-    if classification.startswith("MTCR_"):
+    if cl.startswith("MTCR_"):
         return Regime.MTCR
-    if classification.startswith("SELECT_"):
+    if cl.startswith("SELECT_") or cl.startswith("BWC_") or cl.startswith("HHS_") or cl.startswith("USDA_"):
         return Regime.SELECT_AGENT
-    return Regime.USML
+    if cl.startswith("DEA_") or cl.startswith("SCHEDULE_"):
+        return Regime.DEA
+    if cl.startswith("EAR_") or cl.startswith("CCL_") or cl.startswith("BIS_") or cl.startswith("ECCN_"):
+        return Regime.CCL
+    if cl.startswith("AG_") or cl.startswith("AUSTRALIA_"):
+        return Regime.AG
+    if cl.startswith("10CFR") or cl.startswith("NRC_"):
+        return Regime.NRC_110
+    # Fallback: inspect the second argument of classified/4 directly
+    # (called with the raw category string from a classified/4 atom where
+    # arg[1] is already the regime string from the ASP rule)
+    regime_map = {
+        "usml": Regime.USML, "cwc": Regime.CWC, "mtcr": Regime.MTCR,
+        "dea": Regime.DEA, "ear": Regime.CCL, "bwc_select_agents": Regime.SELECT_AGENT,
+        "bis": Regime.CCL,
+    }
+    for prefix, regime in regime_map.items():
+        if cl.lower().startswith(prefix):
+            return regime
+    return Regime.CCL  # safer default than USML for novel/unknown regimes
 
 
 def _build_rule_chain(

@@ -5,12 +5,29 @@
 % Classifies items under EAR export controls, Entity List restrictions, and
 % AI/compute controls under ECCN 3A001, 4A001, and 5D002
 
-% Entity List classifications
+% Entity List classifications — predicates match bis_entity_list_generated.lp
 classified(S, "ear", "entity_list_restriction", "BIS Entity List - license required") :-
-    entity(S),
-    schedule(S, "bis_entity_list", "restricted").
+    restricted_entity(S),
+    entity_regime(S, "bis_entity_list").
 
-% AI/Compute export control classifications
+% Entity List country-based classifications
+classified(S, "ear", "china_entity", "Chinese Entity List Organization") :-
+    restricted_entity(S),
+    entity_regime(S, "bis_entity_list"),
+    entity_country(S, "CHINA").
+
+classified(S, "ear", "russia_entity", "Russian Entity List Organization") :-
+    restricted_entity(S),
+    entity_regime(S, "bis_entity_list"),
+    entity_country(S, "RUSSIA").
+
+% AI-relevant entity restrictions
+classified(S, "ear", "ai_entity_restriction", "AI-Relevant Entity List Restriction") :-
+    restricted_entity(S),
+    entity_regime(S, "bis_entity_list"),
+    entity_ai_relevant(S, "yes").
+
+% AI/Compute export control classifications — predicates match bis_ai_compute_generated.lp
 classified(S, "ear", "ai_compute_controlled", "AI/Compute Export Control Item") :-
     substance(S),
     schedule(S, "bis_ai_compute", "controlled").
@@ -25,11 +42,19 @@ classified(S, "ear", "eccn_3a001", "ECCN 3A001 - Electronic Equipment/Components
     substance(S),
     eccn_code(S, "3A001").
 
+classified(S, "ear", "eccn_3b001", "ECCN 3B001 - Semiconductor Manufacturing Equipment") :-
+    substance(S),
+    eccn_code(S, "3B001").
+
 classified(S, "ear", "eccn_4a001", "ECCN 4A001 - Computer Systems") :-
     substance(S),
     eccn_code(S, "4A001").
 
-classified(S, "ear", "eccn_5d002", "ECCN 5D002 - Software") :-
+classified(S, "ear", "eccn_4a003", "ECCN 4A003 - Networking Equipment") :-
+    substance(S),
+    eccn_code(S, "4A003").
+
+classified(S, "ear", "eccn_5d002", "ECCN 5D002 - Information Security Software") :-
     substance(S),
     eccn_code(S, "5D002").
 
@@ -44,22 +69,9 @@ classified(S, "ear", "quantum_technology", "Quantum Computing Technology") :-
     substance(S),
     (performance_threshold(S, "50_qubits"); performance_threshold(S, "20_qubits")).
 
-% Entity List country-based classifications
-classified(S, "ear", "china_entity", "Chinese Entity List Organization") :-
-    entity(S),
-    schedule(S, "bis_entity_list", "restricted"),
-    country(S, "China").
-
-classified(S, "ear", "russia_entity", "Russian Entity List Organization") :-
-    entity(S),
-    schedule(S, "bis_entity_list", "restricted"),
-    country(S, "Russia").
-
-% AI-relevant entity restrictions
-classified(S, "ear", "ai_entity_restriction", "AI-Relevant Entity List Restriction") :-
-    entity(S),
-    schedule(S, "bis_entity_list", "restricted"),
-    ai_compute_relevant(S, "yes").
+classified(S, "ear", "semiconductor_equipment", "Controlled Semiconductor Equipment") :-
+    substance(S),
+    eccn_code(S, "3B001").
 
 % Proliferation concerns
 proliferation_concern(S, "dual_use_ai_technology") :-
@@ -70,6 +82,9 @@ proliferation_concern(S, "quantum_advantage_risk") :-
 
 proliferation_concern(S, "entity_list_diversion") :-
     classified(S, "ear", "ai_entity_restriction", _).
+
+proliferation_concern(S, "advanced_chip_manufacturing_transfer") :-
+    classified(S, "ear", "semiconductor_equipment", _).
 
 % Human review requirements
 requires_human_review(S, "Entity List transaction requires BIS license") :-
@@ -83,3 +98,6 @@ requires_human_review(S, "Quantum technology requires national security review")
 
 requires_human_review(S, "AI Entity List organization requires enhanced due diligence") :-
     classified(S, "ear", "ai_entity_restriction", _).
+
+requires_human_review(S, "Semiconductor equipment requires export license under EAR 3B001") :-
+    classified(S, "ear", "semiconductor_equipment", _).

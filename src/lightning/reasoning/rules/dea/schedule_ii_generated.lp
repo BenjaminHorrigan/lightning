@@ -193,12 +193,6 @@ molecular_formula("ecgonine", "C9H15NO3").
 alternative_name("ecgonine", "cocaine_precursor").
 dea_number("ecgonine", "9180").
 
-schedule("cocaine_base", "dea", "II").
-cas_number("cocaine_base", "50-36-2").
-molecular_formula("cocaine_base", "C17H21NO4").
-alternative_name("cocaine_base", "crack_cocaine").
-dea_number("cocaine_base", "9041").
-
 schedule("nndb", "dea", "II").
 cas_number("nndb", "73997-32-7").
 molecular_formula("nndb", "C24H38N2O4").
@@ -234,3 +228,9 @@ schedule("noroxymorphone", "dea", "II").
 cas_number("noroxymorphone", "16676-29-2").
 molecular_formula("noroxymorphone", "C16H17NO4").
 dea_number("noroxymorphone", "9668").
+
+schedule("lisdexamfetamine", "dea", "II").
+cas_number("lisdexamfetamine", "608137-32-2").
+molecular_formula("lisdexamfetamine", "C15H25N3O2").
+alternative_name("lisdexamfetamine", "vyvanse").
+dea_number("lisdexamfetamine", "1205").

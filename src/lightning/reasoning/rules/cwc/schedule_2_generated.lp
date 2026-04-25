@@ -1,6 +1,6 @@
 % CWC Schedule 2 chemicals - dual-use precursors
 % Generated from data/sources/cwc_schedule_2.csv
-% Total substances: 28
+% Total substances: 27
 
 #include "_common/atom_vocabulary.lp".
 
@@ -105,12 +105,6 @@ cas_number("thiodiglycol", "111-48-8").
 molecular_formula("thiodiglycol", "C4H10O2S").
 iupac_name("thiodiglycol", "2 2'-Thiodiethanol").
 quantity_threshold("thiodiglycol", 1, "kg").
-
-schedule("3_3_dimethyl_2_butanol", "cwc", "2").
-cas_number("3_3_dimethyl_2_butanol", "464-07-3").
-molecular_formula("3_3_dimethyl_2_butanol", "C6H14O").
-iupac_name("3_3_dimethyl_2_butanol", "3 3-Dimethylbutan-2-ol").
-quantity_threshold("3_3_dimethyl_2_butanol", 1, "kg").
 
 schedule("ethyl_phosphinyl_dichloride", "cwc", "2").
 cas_number("ethyl_phosphinyl_dichloride", "1498-40-4").

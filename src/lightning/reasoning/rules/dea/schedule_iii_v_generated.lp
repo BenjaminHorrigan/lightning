@@ -1,6 +1,6 @@
 % DEA Schedules III, IV, V - lower-risk controlled substances
 % Generated from data/sources/dea_schedule_iii_v.csv
-% Total substances: 48
+% Total substances: 47
 
 #include "_common/atom_vocabulary.lp".
 
@@ -248,12 +248,6 @@ cas_number("eszopiclone", "138729-47-2").
 molecular_formula("eszopiclone", "C17H17ClN6O3").
 alternative_name("eszopiclone", "lunesta").
 dea_number("eszopiclone", "2780").
-
-schedule("lisdexamfetamine", "dea", "II").
-cas_number("lisdexamfetamine", "608137-32-2").
-molecular_formula("lisdexamfetamine", "C15H25N3O2").
-alternative_name("lisdexamfetamine", "vyvanse").
-dea_number("lisdexamfetamine", "1205").
 
 schedule("methylone", "dea", "I").
 cas_number("methylone", "186028-79-5").
