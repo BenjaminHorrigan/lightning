@@ -19,6 +19,7 @@ Design decisions:
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Optional
 
@@ -32,15 +33,23 @@ from lightning.models import (
 )
 
 
-# Map knowledge-base file → regime, for the proof-to-citation resolution
-KB_MODULES = {
-    Regime.USML: "usml_cat_iv.lp",
-    Regime.CWC: "cwc_sched1.lp",       # stub
-    Regime.MTCR: "mtcr.lp",            # stub
-    Regime.SELECT_AGENT: "select.lp",  # stub
+# Map regime → subdirectory under rules/. Each subdirectory may hold any
+# number of .lp files; the engine loads them all when the regime is requested.
+REGIME_DIRS = {
+    Regime.USML: "usml",
+    Regime.CWC: "cwc",
+    Regime.MTCR: "mtcr",
+    Regime.SELECT_AGENT: "bwc_select_agents",
 }
 
-KB_DIR = Path(__file__).parent.parent / "knowledge_base"
+RULES_DIR = Path(__file__).parent / "rules"
+KB_DIR = Path(__file__).parent.parent / "knowledge_base"  # citations.json lives here
+
+# Strip #include directives from concatenated rule text. The engine handles
+# load order (always _common first), so the directives are redundant and
+# clingo can't resolve their relative paths anyway when programs are added
+# as text rather than loaded from disk.
+_INCLUDE_RE = re.compile(r'^\s*#include\s+"[^"]*"\s*\.\s*$', re.MULTILINE)
 
 
 def artifact_to_facts(artifact: TechnicalArtifact) -> list[str]:
@@ -251,16 +260,30 @@ def run_reasoner(
 
     facts = artifact_to_facts(artifact)
 
-    # Build the clingo program: facts + all relevant KB modules
+    # Build the clingo program: facts + _common rules + all selected regimes
     program_parts = ["% ---- Facts from TechnicalArtifact ----"]
     program_parts.extend(facts)
-    program_parts.append("\n% ---- Knowledge Base Modules ----")
 
+    def _append_rule_file(path: Path, label: str) -> None:
+        text = _INCLUDE_RE.sub("", path.read_text())
+        program_parts.append(f"\n% === {label} ({path.name}) ===")
+        program_parts.append(text)
+
+    # Cross-regime doctrines (atom_vocabulary, specially_designed) load first
+    common_dir = RULES_DIR / "_common"
+    if common_dir.exists():
+        program_parts.append("\n% ---- Common (cross-regime) ----")
+        for lp in sorted(common_dir.glob("*.lp")):
+            _append_rule_file(lp, "common")
+
+    # Regime-specific rule files
+    program_parts.append("\n% ---- Regime modules ----")
     for regime in regimes:
-        kb_file = KB_DIR / KB_MODULES.get(regime, "")
-        if kb_file.exists():
-            program_parts.append(f"\n% === {regime.value} ===")
-            program_parts.append(kb_file.read_text())
+        regime_dir = RULES_DIR / REGIME_DIRS.get(regime, "")
+        if not regime_dir.exists():
+            continue
+        for lp in sorted(regime_dir.glob("*.lp")):
+            _append_rule_file(lp, regime.value)
 
     full_program = "\n".join(program_parts)
 
