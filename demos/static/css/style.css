@@ -51,4 +51,522 @@
 
 .nav-link:hover {
     color: white !important;
+}/* ============================================================================
+   LIGHTNING — Sci-fi/tactical display additions
+   ============================================================================
+   Append to the existing style.css. These styles establish the operational-
+   console aesthetic (dark theme, phosphor accents, mono data, glowing borders)
+   used across the adversarial, audit, and visualization pages.
+   ============================================================================ */
+
+:root {
+  --bg-deep: #050810;
+  --bg-surface: #0a0f1a;
+  --bg-elevated: #111827;
+  --border-subtle: #1a2438;
+  --border-active: #2a3a5a;
+  --accent-primary: #00d4ff;
+  --accent-primary-glow: rgba(0, 212, 255, 0.4);
+  --accent-success: #00ff88;
+  --accent-success-glow: rgba(0, 255, 136, 0.35);
+  --accent-warning: #ffb800;
+  --accent-warning-glow: rgba(255, 184, 0, 0.35);
+  --accent-danger: #ff3355;
+  --accent-danger-glow: rgba(255, 51, 85, 0.35);
+  --text-primary: #e8eef5;
+  --text-secondary: #8b96ad;
+  --text-muted: #4a5468;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Monaco', 'Menlo', monospace;
+}
+
+/* Body — deep space background with subtle scanline grid */
+body {
+  background-color: var(--bg-deep);
+  color: var(--text-primary);
+  background-image:
+    linear-gradient(rgba(0, 212, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.02) 1px, transparent 1px),
+    radial-gradient(ellipse at top, rgba(0, 212, 255, 0.05) 0%, transparent 50%);
+  background-size: 50px 50px, 50px 50px, 100% 100%;
+  background-attachment: fixed;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+/* Navbar — phosphor underline */
+.navbar {
+  background-color: rgba(5, 8, 16, 0.95) !important;
+  border-bottom: 1px solid var(--border-active);
+  box-shadow: 0 1px 0 var(--accent-primary-glow), 0 4px 24px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+}
+
+.navbar-brand {
+  font-family: var(--font-mono);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 0.95rem !important;
+  color: var(--accent-primary) !important;
+  text-shadow: 0 0 8px var(--accent-primary-glow);
+}
+
+.navbar .nav-link {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-secondary) !important;
+  transition: color 0.15s, text-shadow 0.15s;
+}
+
+.navbar .nav-link:hover {
+  color: var(--accent-primary) !important;
+  text-shadow: 0 0 6px var(--accent-primary-glow);
+}
+
+/* HUD panels — the workhorse container for sci-fi sections */
+.hud-panel {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hud-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent, var(--accent-primary), transparent);
+  opacity: 0.6;
+}
+
+.hud-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.hud-title {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  font-size: 0.85rem;
+  color: var(--accent-primary);
+  margin: 0;
+}
+
+.hud-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 0.5rem 0 0;
+}
+
+/* Status pills — operational state indicators */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.85rem;
+  border-radius: 100px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border: 1px solid var(--border-active);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+}
+
+.status-pill::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+.status-pill.standby::before { background: var(--text-muted); }
+.status-pill.running { color: var(--accent-warning); border-color: var(--accent-warning); }
+.status-pill.running::before {
+  background: var(--accent-warning);
+  box-shadow: 0 0 6px var(--accent-warning-glow);
+}
+.status-pill.complete { color: var(--accent-success); border-color: var(--accent-success); }
+.status-pill.complete::before {
+  background: var(--accent-success);
+  box-shadow: 0 0 6px var(--accent-success-glow);
+}
+.status-pill.verified { color: var(--accent-success); border-color: var(--accent-success); }
+.status-pill.verified::before {
+  background: var(--accent-success);
+  box-shadow: 0 0 8px var(--accent-success-glow);
+}
+.status-pill.error { color: var(--accent-danger); border-color: var(--accent-danger); }
+.status-pill.error::before { background: var(--accent-danger); box-shadow: 0 0 6px var(--accent-danger-glow); }
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+/* Action button — primary CTA with glow on hover */
+.btn-tactical {
+  background: transparent;
+  border: 1px solid var(--accent-primary);
+  color: var(--accent-primary);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  font-size: 0.85rem;
+  padding: 0.85rem 2.5rem;
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.btn-tactical:hover:not(:disabled) {
+  background: var(--accent-primary);
+  color: var(--bg-deep);
+  box-shadow: 0 0 24px var(--accent-primary-glow);
+}
+
+.btn-tactical:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-tactical-sm {
+  padding: 0.4rem 1rem;
+  font-size: 0.7rem;
+  letter-spacing: 1.5px;
+}
+
+.btn-tactical.danger {
+  border-color: var(--accent-danger);
+  color: var(--accent-danger);
+}
+.btn-tactical.danger:hover:not(:disabled) {
+  background: var(--accent-danger);
+  color: var(--bg-deep);
+  box-shadow: 0 0 24px var(--accent-danger-glow);
+}
+
+/* Metric cards — big numbers with glowing readouts */
+.metric-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+
+.metric-card.is-winner {
+  border-color: var(--accent-success);
+  box-shadow: 0 0 32px rgba(0, 255, 136, 0.15), inset 0 0 32px rgba(0, 255, 136, 0.04);
+}
+
+.metric-card.is-loser {
+  border-color: var(--accent-danger);
+  opacity: 0.85;
+}
+
+.metric-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.metric-sublabel {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+}
+
+.metric-value {
+  font-family: var(--font-mono);
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1;
+  margin: 0.5rem 0;
+}
+
+.metric-value.is-winner {
+  color: var(--accent-success);
+  text-shadow: 0 0 20px var(--accent-success-glow);
+}
+.metric-value.is-loser {
+  color: var(--accent-danger);
+  text-shadow: 0 0 12px var(--accent-danger-glow);
+}
+
+.metric-detail {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* Progress bars */
+.tactical-progress {
+  height: 4px;
+  background: var(--bg-elevated);
+  border-radius: 0;
+  overflow: hidden;
+  margin-top: 0.75rem;
+}
+
+.tactical-progress-bar {
+  height: 100%;
+  transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+  background: var(--accent-primary);
+}
+.tactical-progress-bar.success { background: var(--accent-success); box-shadow: 0 0 8px var(--accent-success-glow); }
+.tactical-progress-bar.danger { background: var(--accent-danger); box-shadow: 0 0 8px var(--accent-danger-glow); }
+
+/* Tables — tactical data grid */
+.tactical-table {
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  border-collapse: collapse;
+}
+
+.tactical-table thead th {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1.8px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-active);
+  text-align: left;
+  background: rgba(0, 212, 255, 0.03);
+}
+
+.tactical-table tbody tr {
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background 0.15s;
+}
+
+.tactical-table tbody tr:hover {
+  background: rgba(0, 212, 255, 0.04);
+}
+
+.tactical-table tbody td {
+  padding: 0.85rem 1rem;
+  vertical-align: middle;
+}
+
+.tactical-table .td-id {
+  color: var(--accent-primary);
+  font-size: 0.8rem;
+}
+
+.tactical-table .td-time {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+/* Decision badges — replace bootstrap badges with glowing variants */
+.decision-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-radius: 2px;
+  border: 1px solid;
+}
+
+.decision-badge.allow {
+  color: var(--accent-success);
+  border-color: var(--accent-success);
+  background: rgba(0, 255, 136, 0.08);
+  text-shadow: 0 0 4px var(--accent-success-glow);
+}
+.decision-badge.refuse {
+  color: var(--accent-danger);
+  border-color: var(--accent-danger);
+  background: rgba(255, 51, 85, 0.08);
+  text-shadow: 0 0 4px var(--accent-danger-glow);
+}
+.decision-badge.escalate {
+  color: var(--accent-warning);
+  border-color: var(--accent-warning);
+  background: rgba(255, 184, 0, 0.08);
+  text-shadow: 0 0 4px var(--accent-warning-glow);
+}
+
+/* Result icons */
+.result-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-radius: 50%;
+  border: 1.5px solid;
+}
+.result-icon.caught {
+  color: var(--accent-success);
+  border-color: var(--accent-success);
+  background: rgba(0, 255, 136, 0.1);
+  box-shadow: 0 0 8px var(--accent-success-glow);
+}
+.result-icon.missed {
+  color: var(--accent-danger);
+  border-color: var(--accent-danger);
+  background: rgba(255, 51, 85, 0.1);
+}
+
+/* Loading spinner override */
+.spinner-tactical {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--border-active);
+  border-top-color: var(--accent-primary);
+  border-radius: 50%;
+  animation: spinner-tactical 0.8s linear infinite;
+}
+
+@keyframes spinner-tactical {
+  to { transform: rotate(360deg); }
+}
+
+/* Alert override for errors */
+.alert-tactical {
+  background: rgba(255, 51, 85, 0.05);
+  border: 1px solid var(--accent-danger);
+  color: var(--accent-danger);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  padding: 0.75rem 1rem;
+  border-radius: 2px;
+}
+
+/* Form inputs */
+.tactical-textarea {
+  background: var(--bg-deep);
+  border: 1px solid var(--border-active);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  padding: 1rem;
+  border-radius: 2px;
+  width: 100%;
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.tactical-textarea:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 1px var(--accent-primary-glow), inset 0 0 12px rgba(0, 212, 255, 0.05);
+}
+
+/* Hash chain display — for audit verify */
+.hash-chain {
+  background: var(--bg-deep);
+  border: 1px solid var(--border-active);
+  border-left: 2px solid var(--accent-success);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  padding: 1rem 1.25rem;
+  margin-top: 0.5rem;
+  border-radius: 2px;
+}
+
+.hash-chain.is-tampered {
+  border-left-color: var(--accent-danger);
+}
+
+.hash-row {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 1rem;
+  padding: 0.25rem 0;
+  align-items: baseline;
+}
+
+.hash-label {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.hash-value {
+  color: var(--text-primary);
+  word-break: break-all;
+}
+.hash-value.is-success { color: var(--accent-success); }
+.hash-value.is-danger { color: var(--accent-danger); }
+
+/* Stagger reveal for tables */
+.row-reveal {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: row-reveal 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes row-reveal {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Section header — used between major sections */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 0 1rem;
+}
+
+.section-header-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border-active), transparent);
+}
+
+.section-header-text {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--text-secondary);
+}
+
+/* Utility: monospace data tag */
+.mono-tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+}
+
+/* Utility: subtle value-counter for animated numbers */
+.counter {
+  font-variant-numeric: tabular-nums;
 }

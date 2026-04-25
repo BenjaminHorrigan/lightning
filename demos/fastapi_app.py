@@ -46,22 +46,22 @@ class GapAnswerRequest(BaseModel):
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     """Main demo page."""
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(request, "index.html")
 
 @app.get("/adversarial", response_class=HTMLResponse)
 async def adversarial_demo(request: Request):
     """Adversarial robustness testing page."""
-    return templates.TemplateResponse("adversarial.html", {"request": request})
+    return templates.TemplateResponse(request, "adversarial.html")
 
 @app.get("/audit", response_class=HTMLResponse)
 async def audit_dashboard(request: Request):
     """Audit dashboard page."""
-    return templates.TemplateResponse("audit.html", {"request": request})
+    return templates.TemplateResponse(request, "audit.html")
 
 @app.get("/visualization", response_class=HTMLResponse)
 async def visualization_page(request: Request):
     """Graph visualization page."""
-    return templates.TemplateResponse("visualization.html", {"request": request})
+    return templates.TemplateResponse(request, "visualization.html")
 
 # API Endpoints
 @app.post("/api/analyze")
