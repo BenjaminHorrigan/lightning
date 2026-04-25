@@ -1,0 +1,170 @@
+{
+  "22 CFR 121.1 Category IV(a)": {
+    "regime": "USML",
+    "category": "IV(a)",
+    "text": "Rockets (including ballistic missiles, space launch vehicles and sounding rockets), bombs, and mines, as follows: (1) Rockets, bombs, and mines; (2) Launch vehicles and missiles capable of delivering at least a 500 kg payload to a range of at least 300 km; (3) Apparatus, devices, and materials for the above.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121#p-121.1(Category%20IV)",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category IV(d)": {
+    "regime": "USML",
+    "category": "IV(d)",
+    "text": "Launch vehicles and missiles and anti-missile missiles incorporating any of the following: (1) Warheads, warhead sections, or reentry vehicles; (2) Guidance sets; (3) Thrust vector control systems; (4) Safing, arming, and fuzing systems.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121#p-121.1(Category%20IV)(d)",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category IV(h); 22 CFR 120.41": {
+    "regime": "USML",
+    "category": "IV(h)",
+    "text": "Parts, components, accessories, attachments, and associated equipment specially designed (see 22 CFR 120.41) for articles in paragraphs (a) through (g) of this category, including but not limited to: rocket motor cases, nozzles, stages; combustion chambers, turbopumps, injectors; thrust vector control mechanisms; inertial measurement units specially designed for Category IV articles.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121#p-121.1(Category%20IV)(h)",
+    "cfr_reference": "22 CFR 121.1; 22 CFR 120.41"
+  },
+  "22 CFR 121.1 Category IV(h)(1)": {
+    "regime": "USML",
+    "category": "IV(h)(1)",
+    "text": "Propellants and their precursors, including liquid, solid, and hybrid propellants specially formulated for USML Category IV articles. Includes hydrazine (CAS 302-01-2), monomethylhydrazine (MMH, CAS 60-34-4), unsymmetrical dimethylhydrazine (UDMH, CAS 57-14-7), dinitrogen tetroxide (NTO, CAS 10544-72-6), inhibited red fuming nitric acid (IRFNA), ammonium perchlorate (AP), HMX, RDX, CL-20 (HNIW), GAP, nitromethane, and HTPB-bound composite propellants.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category IV(a)(2)": {
+    "regime": "USML",
+    "category": "IV(a)(2)",
+    "text": "Launch vehicles and missiles capable of delivering at least a 500 kg payload to a range of at least 300 km. Aligned with MTCR Category I; threshold evaluation is numerical and applies to the complete system, not isolated components.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121#p-121.1(Category%20IV)(a)",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category IV(b)": {
+    "regime": "USML",
+    "category": "IV(b)",
+    "text": "Launch vehicle and missile sub-articles: solid, liquid, and hybrid rocket motors and engines; ramjets; scramjets; stages; interstages; and payload fairings, all specially designed for Category IV articles.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121#p-121.1(Category%20IV)(b)",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category IV(c)": {
+    "regime": "USML",
+    "category": "IV(c)",
+    "text": "Ground-support equipment for launch vehicles and missiles: transporter-erector-launchers, launch stands, umbilical towers, launch control systems, and propellant loading equipment. Note: items meeting NFPA 1122 (Code for Model Rocketry) are not USML-controlled.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121#p-121.1(Category%20IV)(c)",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category IV(f)": {
+    "regime": "USML",
+    "category": "IV(f)",
+    "text": "Production and test equipment specially designed for Category IV articles: filament winding machines, isostatic presses, rocket motor and engine test stands, industrial propellant mixers, nozzle forming equipment, and vacuum chambers for spacecraft testing.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121#p-121.1(Category%20IV)(f)",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category IV(g)": {
+    "regime": "USML",
+    "category": "IV(g)",
+    "text": "Developmental articles funded by the Department of Defense. Inclusion is triggered by DoD contract or program funding; release requires Commodity Jurisdiction determination.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121#p-121.1(Category%20IV)(g)",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "CWC Schedule 1 (stub)": {
+    "regime": "CWC",
+    "category": "Schedule 1",
+    "text": "Schedule 1 chemicals under the Chemical Weapons Convention. Includes nerve agents (Tabun, Sarin, Soman, VX, Novichoks), mustard agents, lewisite, saxitoxin, ricin. Structural matching against Schedule 1 substructures is a v2 feature.",
+    "url": "https://www.opcw.org/chemical-weapons-convention/annexes/annex-chemicals",
+    "cfr_reference": "22 U.S.C. 6701 et seq."
+  },
+  "CWC Schedule 1": {
+    "regime": "CWC",
+    "category": "Schedule 1",
+    "text": "Toxic chemicals on the CWC Annex on Chemicals, Schedule 1 (nerve agents, mustard agents, Novichok analogues, lewisite, saxitoxin, ricin). Possession and transfer are prohibited except for narrow research purposes under OPCW declaration.",
+    "url": "https://www.opcw.org/chemical-weapons-convention/annexes/annex-chemicals",
+    "cfr_reference": "22 U.S.C. 6701 et seq."
+  },
+  "CWC Schedule 1, Part B (precursors)": {
+    "regime": "CWC",
+    "category": "Schedule 1 precursor",
+    "text": "Chemicals on CWC Schedule 1, Part B — direct precursors to Schedule 1 toxic chemicals (e.g., methylphosphonic difluoride for sarin). Subject to the same transfer prohibitions as the target agents.",
+    "url": "https://www.opcw.org/chemical-weapons-convention/annexes/annex-chemicals",
+    "cfr_reference": "22 U.S.C. 6701 et seq."
+  },
+  "CWC Schedule 2, Article VI": {
+    "regime": "CWC",
+    "category": "Schedule 2",
+    "text": "Schedule 2 chemicals are dual-use commodities that trigger declaration requirements under CWC Article VI above threshold quantities. Aggregate declaration threshold is 100 g for Schedule 2A (chemicals like amiton, BZ, PFIB).",
+    "url": "https://www.opcw.org/chemical-weapons-convention/annexes/annex-chemicals",
+    "cfr_reference": "22 U.S.C. 6701 et seq."
+  },
+  "CWC Schedule 3": {
+    "regime": "CWC",
+    "category": "Schedule 3",
+    "text": "Schedule 3 large-volume industrial chemicals with chemical-warfare potential (phosgene, cyanogen chloride, hydrogen cyanide, chloropicrin, triethanolamine). Export declarations required.",
+    "url": "https://www.opcw.org/chemical-weapons-convention/annexes/annex-chemicals",
+    "cfr_reference": "22 U.S.C. 6701 et seq."
+  },
+  "MTCR Annex (stub)": {
+    "regime": "MTCR",
+    "category": "Category I",
+    "text": "Missile Technology Control Regime Category I items: complete rocket systems and unmanned aerial vehicle systems capable of delivering at least a 500 kg payload to a range of at least 300 km. Full range×payload threshold evaluation is a v2 feature.",
+    "url": "https://mtcr.info/guidelines-for-sensitive-missile-relevant-transfers/",
+    "cfr_reference": "MTCR Equipment, Software and Technology Annex"
+  },
+  "MTCR Annex Category I": {
+    "regime": "MTCR",
+    "category": "Category I",
+    "text": "MTCR Category I — complete rocket systems, unmanned aerial vehicle systems, and subsystems capable of delivering a payload of at least 500 kg to a range of at least 300 km. Category I items are subject to the strongest transfer presumption of denial.",
+    "url": "https://mtcr.info/guidelines-for-sensitive-missile-relevant-transfers/",
+    "cfr_reference": "MTCR Equipment, Software and Technology Annex"
+  },
+  "MTCR Annex Category I (UAVs)": {
+    "regime": "MTCR",
+    "category": "Category I (UAVs)",
+    "text": "MTCR Category I applied to UAV systems (cruise missiles, target drones, reconnaissance drones) meeting the 500 kg / 300 km performance threshold.",
+    "url": "https://mtcr.info/guidelines-for-sensitive-missile-relevant-transfers/",
+    "cfr_reference": "MTCR Equipment, Software and Technology Annex"
+  },
+  "MTCR Annex Category II": {
+    "regime": "MTCR",
+    "category": "Category II",
+    "text": "MTCR Category II — components, subsystems, production equipment, materials, and technology specially designed for Category I systems. Transfer is subject to case-by-case consideration.",
+    "url": "https://mtcr.info/guidelines-for-sensitive-missile-relevant-transfers/",
+    "cfr_reference": "MTCR Equipment, Software and Technology Annex"
+  },
+  "MTCR Annex Category II (sub-threshold)": {
+    "regime": "MTCR",
+    "category": "Category II (sub-threshold)",
+    "text": "Sub-threshold systems (300–499 kg payload, >=300 km range) presumed controlled as Category II systems capable of WMD delivery.",
+    "url": "https://mtcr.info/guidelines-for-sensitive-missile-relevant-transfers/",
+    "cfr_reference": "MTCR Equipment, Software and Technology Annex"
+  },
+  "Select Agents (stub)": {
+    "regime": "SELECT_AGENT",
+    "category": "HHS/USDA List",
+    "text": "HHS and USDA Select Agents and Toxins list (42 CFR 73, 7 CFR 331, 9 CFR 121). Organism/toxin-level matching is a v2 feature; v1 flags for human review.",
+    "url": "https://www.selectagents.gov/sat/list.htm",
+    "cfr_reference": "42 CFR 73; 7 CFR 331; 9 CFR 121"
+  },
+  "42 CFR 73.3": {
+    "regime": "SELECT_AGENT",
+    "category": "HHS Select Agent",
+    "text": "HHS Select Agents and Toxins — organisms whose possession, use, or transfer is restricted under 42 CFR 73.3 (includes Bacillus anthracis, Yersinia pestis, filoviruses, Variola spp., and enumerated select toxins).",
+    "url": "https://www.selectagents.gov/sat/list.htm",
+    "cfr_reference": "42 CFR 73.3"
+  },
+  "42 CFR 73.3(d)": {
+    "regime": "SELECT_AGENT",
+    "category": "Select Toxin Threshold",
+    "text": "HHS Select Toxins — aggregate possession at or below the enumerated thresholds (e.g., 0.5 mg botulinum toxin, 1000 mg ricin) is exempt from registration.",
+    "url": "https://www.selectagents.gov/sat/list.htm",
+    "cfr_reference": "42 CFR 73.3(d)"
+  },
+  "9 CFR 121.3": {
+    "regime": "SELECT_AGENT",
+    "category": "USDA Select Agent",
+    "text": "USDA Select Agents — organisms primarily affecting livestock (FMDV, rinderpest, classical/African swine fever) restricted under 9 CFR 121.3 (animal) and 7 CFR 331 (plant pathogens).",
+    "url": "https://www.selectagents.gov/sat/list.htm",
+    "cfr_reference": "9 CFR 121.3; 7 CFR 331"
+  },
+  "42 CFR 73.4 / 9 CFR 121.4": {
+    "regime": "SELECT_AGENT",
+    "category": "Overlap Select Agent",
+    "text": "Overlap Select Agents — organisms under joint HHS and USDA jurisdiction (Bacillus anthracis, Brucella abortus, Burkholderia mallei, Burkholderia pseudomallei).",
+    "url": "https://www.selectagents.gov/sat/list.htm",
+    "cfr_reference": "42 CFR 73.4; 9 CFR 121.4"
+  }
+}
