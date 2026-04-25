@@ -225,7 +225,11 @@ def generate_substance_atoms(config: RegimeConfig, csv_data: List[Dict[str, Any]
         # injects substance/1 facts; if we asserted them in the KB, every
         # rule that joins on substance(S) would fire for every loaded
         # substance regardless of input.
-        atoms.append(f'schedule("{canonical_name}", "{config.regime_name}", "{config.schedule_value}").')
+        # Per-row schedule (e.g. DEA III/IV/V file mixes schedules) overrides
+        # the file-level default.
+        per_row_schedule = (row.get("dea_schedule") or "").strip()
+        sch_value = per_row_schedule if per_row_schedule else config.schedule_value
+        atoms.append(f'schedule("{canonical_name}", "{config.regime_name}", "{sch_value}").')
         
         # Optional CAS number
         if "cas_number" in row and row["cas_number"]:

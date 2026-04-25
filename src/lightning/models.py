@@ -114,6 +114,7 @@ class Regime(str, Enum):
     MTCR = "MTCR"             # Missile Technology Control Regime
     NRC_110 = "10CFR110"      # Nuclear (NRC import/export)
     SELECT_AGENT = "SELECT_AGENT"  # HHS/USDA Select Agents
+    DEA = "DEA"               # Drug Enforcement Administration (Controlled Substances Act)
 
 
 class RegulationCitation(BaseModel):

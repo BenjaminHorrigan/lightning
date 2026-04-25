@@ -40,6 +40,7 @@ REGIME_DIRS = {
     Regime.CWC: "cwc",
     Regime.MTCR: "mtcr",
     Regime.SELECT_AGENT: "bwc_select_agents",
+    Regime.DEA: "dea",
 }
 
 RULES_DIR = Path(__file__).parent / "rules"
