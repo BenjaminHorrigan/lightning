@@ -1,0 +1,21 @@
+canonical_name,scientific_name,item_type,eccn_code,material_type,performance_threshold
+Carbon Fiber Composite,Carbon fiber reinforced plastic,composite_material,1C010,fiber_composite,tensile_strength_4800_MPa
+Kevlar Aramid Fiber,Poly-paraphenylene terephthalamide,fiber,1C010,aramid,tensile_strength_3600_MPa
+Ultra-High Molecular Weight PE,UHMWPE,polymer,1C010,polyethylene,molecular_weight_3M_daltons
+Titanium Alloy Ti-6Al-4V,Titanium aluminum vanadium alloy,metal_alloy,1C002,titanium,yield_strength_880_MPa
+Inconel 718,Nickel-chromium-iron superalloy,superalloy,1C002,nickel_base,operating_temp_700C
+Rhenium Metal,Rhenium,refractory_metal,1C011,rhenium,melting_point_3186C
+Tungsten Metal,Tungsten,refractory_metal,1C011,tungsten,melting_point_3422C
+Beryllium Metal,Beryllium,light_metal,1C011,beryllium,density_1.85_g_per_cm3
+Maraging Steel 350,Ultra-high-strength steel,steel_alloy,1C116,maraging,yield_strength_2400_MPa
+Ceramic Matrix Composite,Silicon carbide fiber reinforced ceramic,ceramic_composite,1C007,ceramic,operating_temp_1200C
+Pyrolytic Graphite,Highly oriented graphite,carbon_material,1C107,graphite,thermal_conductivity_1700_W_per_mK
+Boron Carbide,Boron carbide,ceramic,1C004,boride,hardness_9.5_mohs
+Silicon Carbide Fiber,Silicon carbide continuous fiber,fiber,1C010,silicon_carbide,tensile_strength_3500_MPa
+Aluminum Lithium Alloy,Al-Li aerospace alloy,aluminum_alloy,1C002,aluminum,density_2.5_g_per_cm3
+Hafnium Metal,Hafnium,refractory_metal,1C011,hafnium,melting_point_2233C
+Niobium Metal,Niobium,refractory_metal,1C011,niobium,melting_point_2477C
+Tantalum Metal,Tantalum,refractory_metal,1C011,tantalum,melting_point_3017C
+Molybdenum Metal,Molybdenum,refractory_metal,1C011,molybdenum,melting_point_2623C
+Ultra-High Temperature Ceramic,Hafnium carbide,ceramic,1C007,carbide,melting_point_3900C
+Advanced Glass Fiber,E-glass continuous fiber,glass_fiber,1C010,glass,tensile_strength_3400_MPa

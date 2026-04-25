@@ -159,6 +159,39 @@ REGIME_CONFIGS = {
         description="BIS AI/Compute Export Controls - ECCN 3A001/4A001/5D002",
         required_columns=["canonical_name", "eccn_code"],
         optional_columns=["item_type", "control_level", "performance_threshold"]
+    ),
+
+    # USML Category XIV Toxics
+    "usml_cat_xiv_toxics": RegimeConfig(
+        csv_file="data/sources/usml_cat_xiv_toxics.csv",
+        output_file="src/lightning/reasoning/rules/usml/cat_xiv_toxics_generated.lp",
+        regime_name="usml_cat_xiv",
+        schedule_value="controlled",
+        description="USML Category XIV - Toxic Chemical and Biological Agents",
+        required_columns=["canonical_name", "usml_category"],
+        optional_columns=["item_type", "control_level", "lethal_dose"]
+    ),
+
+    # USML Explosives (Categories IV-V)
+    "usml_explosives": RegimeConfig(
+        csv_file="data/sources/usml_explosives.csv",
+        output_file="src/lightning/reasoning/rules/usml/explosives_generated.lp",
+        regime_name="usml_explosives",
+        schedule_value="controlled",
+        description="USML Categories IV-V - Explosives and Warheads",
+        required_columns=["canonical_name", "usml_category"],
+        optional_columns=["item_type", "explosive_type", "sensitivity"]
+    ),
+
+    # EAR Category 1 Materials
+    "ear_cat1_materials": RegimeConfig(
+        csv_file="data/sources/ear_cat1_materials.csv",
+        output_file="src/lightning/reasoning/rules/bis/ear_cat1_materials_generated.lp",
+        regime_name="ear_cat1",
+        schedule_value="controlled",
+        description="EAR Category 1 - Advanced Materials and Composites",
+        required_columns=["canonical_name", "eccn_code"],
+        optional_columns=["item_type", "material_type", "performance_threshold"]
     )
 }
 

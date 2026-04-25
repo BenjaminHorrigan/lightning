@@ -1,0 +1,21 @@
+canonical_name,scientific_name,item_type,usml_category,control_level,lethal_dose
+Sarin,O-Isopropyl methylphosphonofluoridate,chemical_agent,XIV,prohibited,LD50_0.1mg_per_kg
+Soman,O-Pinacolyl methylphosphonofluoridate,chemical_agent,XIV,prohibited,LD50_0.05mg_per_kg
+Tabun,O-Ethyl N,N-dimethylphosphoramidocyanidate,chemical_agent,XIV,prohibited,LD50_0.5mg_per_kg
+VX,O-Ethyl S-2-diisopropylaminoethyl methylphosphonothiolate,chemical_agent,XIV,prohibited,LD50_0.01mg_per_kg
+Novichok A-230,Novichok agent,chemical_agent,XIV,prohibited,LD50_0.001mg_per_kg
+Novichok A-232,Novichok agent,chemical_agent,XIV,prohibited,LD50_0.001mg_per_kg
+Mustard Gas,Bis(2-chloroethyl) sulfide,chemical_agent,XIV,prohibited,LD50_0.7mg_per_kg
+Nitrogen Mustard,Tris(2-chloroethyl)amine,chemical_agent,XIV,prohibited,LD50_1mg_per_kg
+Lewisite 1,L1 (2-chlorovinylarsonous dichloride),chemical_agent,XIV,prohibited,LD50_0.5mg_per_kg
+Lewisite 2,L2 (bis(2-chlorovinyl)arsonous chloride),chemical_agent,XIV,prohibited,LD50_0.5mg_per_kg
+Lewisite 3,L3 (tris(2-chlorovinyl)arsine),chemical_agent,XIV,prohibited,LD50_0.5mg_per_kg
+Phosgene,Carbonyl dichloride,chemical_agent,XIV,controlled,LCt50_3200mg_min_per_m3
+Hydrogen Cyanide,Hydrogen cyanide,chemical_agent,XIV,controlled,LCt50_2000mg_min_per_m3
+Chlorine,Chlorine gas,chemical_agent,XIV,controlled,LCt50_19000mg_min_per_m3
+Adamsite,10-Chloro-5,10-dihydrophenarsazine,chemical_agent,XIV,controlled,incapacitating_agent
+CS Gas,2-chlorobenzalmalononitrile,chemical_agent,XIV,controlled,riot_control_agent
+CN Gas,Chloroacetophenone,chemical_agent,XIV,controlled,riot_control_agent
+BZ Agent,3-Quinuclidinyl benzilate,chemical_agent,XIV,controlled,incapacitating_agent
+Ricin,Ricin toxin,biological_toxin,XIV,controlled,LD50_1mg_per_kg
+Abrin,Abrin toxin,biological_toxin,XIV,controlled,LD50_0.7mg_per_kg

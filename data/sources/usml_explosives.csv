@@ -1,0 +1,21 @@
+canonical_name,scientific_name,item_type,usml_category,explosive_type,sensitivity
+TNT,2,4,6-Trinitrotoluene,explosive,IV,secondary,moderate
+RDX,1,3,5-Trinitro-1,3,5-triazinane,explosive,IV,secondary,high
+PETN,Pentaerythritol tetranitrate,explosive,IV,secondary,high
+C4 Explosive,Plastic explosive,explosive,IV,secondary,low
+Semtex,Plastic explosive,explosive,IV,secondary,low
+TATB,1,3,5-Triamino-2,4,6-trinitrobenzene,explosive,IV,secondary,very_low
+HMX,1,3,5,7-Tetranitro-1,3,5,7-tetrazocane,explosive,IV,secondary,high
+CL-20,2,4,6,8,10,12-Hexanitro-2,4,6,8,10,12-hexaazaisowurtzitane,explosive,IV,secondary,very_high
+PBXN-109,Plastic bonded explosive,explosive,IV,secondary,low
+Composition B,RDX/TNT mixture,explosive,IV,secondary,moderate
+Pentolite,PETN/TNT mixture,explosive,IV,secondary,moderate
+Amatol,Ammonium nitrate/TNT mixture,explosive,IV,secondary,low
+PBXN-5,Plastic bonded explosive,explosive,IV,secondary,low
+Octol,HMX/TNT mixture,explosive,IV,secondary,high
+Torpex,RDX/TNT/Aluminum mixture,explosive,IV,secondary,moderate
+Warhead Assembly,Complete warhead,warhead,V,system,low
+Shaped Charge Warhead,Anti-armor warhead,warhead,V,shaped_charge,moderate
+Blast-Fragmentation Warhead,Area effect warhead,warhead,V,blast_frag,moderate
+Penetrator Warhead,Bunker-buster warhead,warhead,V,penetrator,low
+Submunition Warhead,Cluster munition,warhead,V,submunition,moderate
