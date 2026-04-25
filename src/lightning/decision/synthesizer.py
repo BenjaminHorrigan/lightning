@@ -15,8 +15,7 @@ from __future__ import annotations
 
 from typing import Optional
 
-import anthropic
-
+from lightning._client import get_client
 from lightning.const import DEFAULT_MODEL
 from lightning.models import (
     ClassificationResult,
@@ -32,12 +31,12 @@ def synthesize(
     artifact: TechnicalArtifact,
     proof: ProofTree,
     regimes_checked: list[Regime],
-    client: Optional[anthropic.Anthropic] = None,
     model: str = DEFAULT_MODEL,
 ) -> ClassificationResult:
     """
     Produce the final ClassificationResult from the artifact + proof tree.
     """
+    client = get_client()
     decision = _decide(proof, artifact)
     confidence = _confidence(proof, artifact)
     primary_citations = _primary_citations(proof)
