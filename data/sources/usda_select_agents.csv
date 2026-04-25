@@ -1,0 +1,21 @@
+canonical_name,scientific_name,pathogen_type,biosafety_level,tier_1
+Foot-and-mouth disease virus,Aphthovirus,virus,3,yes
+Lumpy skin disease virus,Capripoxvirus,virus,3,no
+Peste des petits ruminants virus,Morbillivirus,virus,3,no
+Rinderpest virus,Morbillivirus,virus,4,yes
+Swine vesicular disease virus,Enterovirus B,virus,3,no
+Vesicular stomatitis virus,Vesiculovirus,virus,2,no
+Akabane virus,Orthobunyavirus,virus,2,no
+Bluetongue virus,Orbivirus,virus,2,no
+Camel pox virus,Orthopoxvirus,virus,3,no
+Classical swine fever virus,Pestivirus,virus,3,no
+Contagious bovine pleuropneumonia,Mycoplasma mycoides,bacterium,3,no
+Contagious caprine pleuropneumonia,Mycoplasma capricolum,bacterium,3,no
+Heartwater,Ehrlichia ruminantium,bacterium,3,no
+Malignant catarrhal fever virus,Macavirus,virus,2,no
+Newcastle disease virus,Avulavirus,virus,2,no
+Sheep pox virus,Capripoxvirus,virus,3,no
+Goat pox virus,Capripoxvirus,virus,3,no
+African horse sickness virus,Orbivirus,virus,2,no
+African swine fever virus,Asfivirus,virus,3,yes
+Avian influenza virus,Influenza A virus,virus,3,no

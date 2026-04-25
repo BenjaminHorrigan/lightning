@@ -1,0 +1,26 @@
+canonical_name,scientific_name,pathogen_type,biosafety_level,tier_1
+Bacillus anthracis,Bacillus anthracis,bacterium,3,yes
+Yersinia pestis,Yersinia pestis,bacterium,3,yes
+Francisella tularensis,Francisella tularensis,bacterium,3,yes
+Burkholderia mallei,Burkholderia mallei,bacterium,3,yes
+Burkholderia pseudomallei,Burkholderia pseudomallei,bacterium,3,yes
+Coxiella burnetii,Coxiella burnetii,bacterium,3,no
+Rickettsia prowazekii,Rickettsia prowazekii,bacterium,3,no
+Brucella abortus,Brucella abortus,bacterium,3,no
+Variola major virus,Variola major virus,virus,4,yes
+Ebola virus,Ebola virus,virus,4,yes
+Marburg virus,Marburg virus,virus,4,yes
+Lassa fever virus,Lassa mammarenavirus,virus,4,no
+Crimean-Congo hemorrhagic fever virus,Orthonairovirus haemorrhagiae,virus,4,no
+Botulinum neurotoxin,Clostridium botulinum,toxin,2,yes
+Ricin toxin,Ricinus communis,toxin,2,yes
+Saxitoxin,Alexandrium minutum,toxin,2,yes
+T-2 toxin,Fusarium sporotrichioides,toxin,2,no
+Staphylococcal enterotoxin B,Staphylococcus aureus,toxin,2,no
+Shiga toxin,Shigella dysenteriae,toxin,2,no
+Abrin toxin,Abrus precatorius,toxin,2,no
+Aeromonas salmonicida,Aeromonas salmonicida,bacterium,2,no
+Mycoplasma capricolum,Mycoplasma capricolum,bacterium,2,no
+Mycoplasma mycoides,Mycoplasma mycoides,bacterium,2,no
+Xylella fastidiosa,Xylella fastidiosa,bacterium,2,no
+Ralstonia solanacearum,Ralstonia solanacearum,bacterium,2,no

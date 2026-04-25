@@ -1,0 +1,21 @@
+canonical_name,scientific_name,pathogen_type,biosafety_level,tier_1
+Vibrio cholerae,Vibrio cholerae,bacterium,2,no
+Salmonella typhi,Salmonella enterica,bacterium,2,no
+Shigella dysenteriae,Shigella dysenteriae,bacterium,2,no
+Pseudomonas aeruginosa,Pseudomonas aeruginosa,bacterium,2,no
+Legionella pneumophila,Legionella pneumophila,bacterium,2,no
+Chlamydia psittaci,Chlamydia psittaci,bacterium,3,no
+Coccidioides immitis,Coccidioides immitis,fungus,3,no
+Coccidioides posadasii,Coccidioides posadasii,fungus,3,no
+Histoplasma capsulatum,Histoplasma capsulatum,fungus,3,no
+Blastomyces dermatitidis,Blastomyces dermatitidis,fungus,3,no
+Paracoccidioides brasiliensis,Paracoccidioides brasiliensis,fungus,3,no
+Penicillium marneffei,Talaromyces marneffei,fungus,3,no
+Aspergillus fumigatus,Aspergillus fumigatus,fungus,2,no
+Fusarium oxysporum,Fusarium oxysporum,fungus,1,no
+Ustilago maydis,Ustilago maydis,fungus,1,no
+Tilletia indica,Tilletia indica,fungus,1,no
+Puccinia graminis,Puccinia graminis,fungus,1,no
+Pyricularia oryzae,Pyricularia oryzae,fungus,1,no
+Xanthomonas oryzae,Xanthomonas oryzae,bacterium,1,no
+Erwinia amylovora,Erwinia amylovora,bacterium,1,no
