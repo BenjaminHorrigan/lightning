@@ -83,7 +83,8 @@ def extract_from_spec_text(
 ) -> TechnicalArtifact:
     """Extract TechnicalArtifact from a text spec sheet."""
     if client is None:
-        client = anthropic.Anthropic()
+        from lightning._client import get_client
+        client = get_client()
 
     schema = TechnicalArtifact.model_json_schema()
 

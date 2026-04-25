@@ -51,7 +51,8 @@ def extract_from_proposal_text(
 ) -> TechnicalArtifact:
     """Extract TechnicalArtifact from a natural-language proposal."""
     if client is None:
-        client = anthropic.Anthropic()
+        from lightning._client import get_client
+        client = get_client()
 
     schema = TechnicalArtifact.model_json_schema()
 

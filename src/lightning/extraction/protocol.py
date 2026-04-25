@@ -128,7 +128,8 @@ def extract_from_protocol_text(
     Uses Claude with structured output enforcement via Pydantic.
     """
     if client is None:
-        client = anthropic.Anthropic()
+        from lightning._client import get_client
+        client = get_client()
 
     schema = TechnicalArtifact.model_json_schema()
 
