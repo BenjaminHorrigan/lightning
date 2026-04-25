@@ -1,6 +1,6 @@
 % HHS Select Agents - 42 CFR 73
 % Generated from data/sources/hhs_select_agents.csv
-% Total substances: 25
+% Total substances: 54
 
 #include "_common/atom_vocabulary.lp".
 
@@ -78,3 +78,90 @@ pathogen_type("xylella_fastidiosa", "bacterium").
 
 schedule("ralstonia_solanacearum", "hhs_select", "agent").
 pathogen_type("ralstonia_solanacearum", "bacterium").
+
+schedule("brucella_melitensis", "hhs_select", "agent").
+pathogen_type("brucella_melitensis", "bacterium").
+
+schedule("brucella_suis", "hhs_select", "agent").
+pathogen_type("brucella_suis", "bacterium").
+
+schedule("clostridium_perfringens_epsilon_toxin", "hhs_select", "agent").
+pathogen_type("clostridium_perfringens_epsilon_toxin", "toxin").
+
+schedule("salmonella_typhimurium_dt104", "hhs_select", "agent").
+pathogen_type("salmonella_typhimurium_dt104", "bacterium").
+
+schedule("shigella_flexneri", "hhs_select", "agent").
+pathogen_type("shigella_flexneri", "bacterium").
+
+schedule("vibrio_cholerae_o1", "hhs_select", "agent").
+pathogen_type("vibrio_cholerae_o1", "bacterium").
+
+schedule("hantavirus", "hhs_select", "agent").
+pathogen_type("hantavirus", "virus").
+
+schedule("rift_valley_fever_virus", "hhs_select", "agent").
+pathogen_type("rift_valley_fever_virus", "virus").
+
+schedule("venezuelan_equine_encephalitis_virus", "hhs_select", "agent").
+pathogen_type("venezuelan_equine_encephalitis_virus", "virus").
+
+schedule("eastern_equine_encephalitis_virus", "hhs_select", "agent").
+pathogen_type("eastern_equine_encephalitis_virus", "virus").
+
+schedule("yellow_fever_virus", "hhs_select", "agent").
+pathogen_type("yellow_fever_virus", "virus").
+
+schedule("kyasanur_forest_disease_virus", "hhs_select", "agent").
+pathogen_type("kyasanur_forest_disease_virus", "virus").
+
+schedule("omsk_hemorrhagic_fever_virus", "hhs_select", "agent").
+pathogen_type("omsk_hemorrhagic_fever_virus", "virus").
+
+schedule("powassan_virus", "hhs_select", "agent").
+pathogen_type("powassan_virus", "virus").
+
+schedule("chapare_virus", "hhs_select", "agent").
+pathogen_type("chapare_virus", "virus").
+
+schedule("guanarito_virus", "hhs_select", "agent").
+pathogen_type("guanarito_virus", "virus").
+
+schedule("junin_virus", "hhs_select", "agent").
+pathogen_type("junin_virus", "virus").
+
+schedule("lujo_virus", "hhs_select", "agent").
+pathogen_type("lujo_virus", "virus").
+
+schedule("machupo_virus", "hhs_select", "agent").
+pathogen_type("machupo_virus", "virus").
+
+schedule("sabia_virus", "hhs_select", "agent").
+pathogen_type("sabia_virus", "virus").
+
+schedule("monkeypox_virus", "hhs_select", "agent").
+pathogen_type("monkeypox_virus", "virus").
+
+schedule("cowpox_virus", "hhs_select", "agent").
+pathogen_type("cowpox_virus", "virus").
+
+schedule("camelpox_virus", "hhs_select", "agent").
+pathogen_type("camelpox_virus", "virus").
+
+schedule("conotoxins", "hhs_select", "agent").
+pathogen_type("conotoxins", "toxin").
+
+schedule("diacetoxyscirpenol", "hhs_select", "agent").
+pathogen_type("diacetoxyscirpenol", "toxin").
+
+schedule("aflatoxins", "hhs_select", "agent").
+pathogen_type("aflatoxins", "toxin").
+
+schedule("modeccin", "hhs_select", "agent").
+pathogen_type("modeccin", "toxin").
+
+schedule("volkensin", "hhs_select", "agent").
+pathogen_type("volkensin", "toxin").
+
+schedule("viscumin", "hhs_select", "agent").
+pathogen_type("viscumin", "toxin").

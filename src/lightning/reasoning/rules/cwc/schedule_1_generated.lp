@@ -1,6 +1,6 @@
 % CWC Schedule 1 chemicals - no significant peaceful use
 % Generated from data/sources/cwc_schedule_1.csv
-% Total substances: 14
+% Total substances: 17
 
 #include "_common/atom_vocabulary.lp".
 
@@ -72,3 +72,18 @@ schedule("bz", "cwc", "1").
 cas_number("bz", "6581-06-2").
 molecular_formula("bz", "C21H23NO3").
 iupac_name("bz", "3-Quinuclidinyl benzilate").
+
+schedule("ethyl_s_diethylaminoethyl_methylphosphonothiolate", "cwc", "1").
+cas_number("ethyl_s_diethylaminoethyl_methylphosphonothiolate", "57856-11-8").
+molecular_formula("ethyl_s_diethylaminoethyl_methylphosphonothiolate", "C9H22NO2PS").
+iupac_name("ethyl_s_diethylaminoethyl_methylphosphonothiolate", "VE nerve agent").
+
+schedule("ethyl_s_dimethylaminoethyl_methylphosphonothiolate", "cwc", "1").
+cas_number("ethyl_s_dimethylaminoethyl_methylphosphonothiolate", "57649-13-1").
+molecular_formula("ethyl_s_dimethylaminoethyl_methylphosphonothiolate", "C7H18NO2PS").
+iupac_name("ethyl_s_dimethylaminoethyl_methylphosphonothiolate", "VM nerve agent").
+
+schedule("amiton", "cwc", "1").
+cas_number("amiton", "78-53-5").
+molecular_formula("amiton", "C10H24NO3PS").
+iupac_name("amiton", "O O-diethyl S-2-(diethylamino)ethyl phosphorothioate").

@@ -1,6 +1,6 @@
 % BIS Entity List - entities subject to license requirements
 % Generated from data/sources/bis_entity_list.csv
-% Total entities: 20
+% Total entities: 40
 
 #include "_common/atom_vocabulary.lp".
 
@@ -103,3 +103,103 @@ restricted_entity("comstor_llc").
 entity_regime("comstor_llc", "bis_entity_list").
 entity_country("comstor_llc", "RUSSIA").
 entity_display_name("comstor_llc", "Comstor LLC").
+
+restricted_entity("ymtc").
+entity_regime("ymtc", "bis_entity_list").
+entity_country("ymtc", "CHINA").
+entity_display_name("ymtc", "YMTC").
+
+restricted_entity("cxmt").
+entity_regime("cxmt", "bis_entity_list").
+entity_country("cxmt", "CHINA").
+entity_display_name("cxmt", "CXMT").
+
+restricted_entity("phytium_technology").
+entity_regime("phytium_technology", "bis_entity_list").
+entity_country("phytium_technology", "CHINA").
+entity_display_name("phytium_technology", "Phytium Technology").
+
+restricted_entity("loongson_technology").
+entity_regime("loongson_technology", "bis_entity_list").
+entity_country("loongson_technology", "CHINA").
+entity_display_name("loongson_technology", "Loongson Technology").
+
+restricted_entity("cambricon_technologies").
+entity_regime("cambricon_technologies", "bis_entity_list").
+entity_country("cambricon_technologies", "CHINA").
+entity_display_name("cambricon_technologies", "Cambricon Technologies").
+
+restricted_entity("horizon_robotics").
+entity_regime("horizon_robotics", "bis_entity_list").
+entity_country("horizon_robotics", "CHINA").
+entity_display_name("horizon_robotics", "Horizon Robotics").
+
+restricted_entity("cetc").
+entity_regime("cetc", "bis_entity_list").
+entity_country("cetc", "CHINA").
+entity_display_name("cetc", "CETC").
+
+restricted_entity("inspur_group").
+entity_regime("inspur_group", "bis_entity_list").
+entity_country("inspur_group", "CHINA").
+entity_display_name("inspur_group", "Inspur Group").
+
+restricted_entity("sugon").
+entity_regime("sugon", "bis_entity_list").
+entity_country("sugon", "CHINA").
+entity_display_name("sugon", "Sugon").
+
+restricted_entity("tiandy_technologies").
+entity_regime("tiandy_technologies", "bis_entity_list").
+entity_country("tiandy_technologies", "CHINA").
+entity_display_name("tiandy_technologies", "Tiandy Technologies").
+
+restricted_entity("nari_technology").
+entity_regime("nari_technology", "bis_entity_list").
+entity_country("nari_technology", "CHINA").
+entity_display_name("nari_technology", "NARI Technology").
+
+restricted_entity("baikal_electronics").
+entity_regime("baikal_electronics", "bis_entity_list").
+entity_country("baikal_electronics", "RUSSIA").
+entity_display_name("baikal_electronics", "Baikal Electronics").
+
+restricted_entity("mcst").
+entity_regime("mcst", "bis_entity_list").
+entity_country("mcst", "RUSSIA").
+entity_display_name("mcst", "MCST").
+
+restricted_entity("angstrem").
+entity_regime("angstrem", "bis_entity_list").
+entity_country("angstrem", "RUSSIA").
+entity_display_name("angstrem", "Angstrem").
+
+restricted_entity("mikron").
+entity_regime("mikron", "bis_entity_list").
+entity_country("mikron", "RUSSIA").
+entity_display_name("mikron", "Mikron").
+
+restricted_entity("t_platforms").
+entity_regime("t_platforms", "bis_entity_list").
+entity_country("t_platforms", "RUSSIA").
+entity_display_name("t_platforms", "T-Platforms").
+
+restricted_entity("yadro").
+entity_regime("yadro", "bis_entity_list").
+entity_country("yadro", "RUSSIA").
+entity_display_name("yadro", "Yadro").
+
+restricted_entity("module").
+entity_regime("module", "bis_entity_list").
+entity_country("module", "RUSSIA").
+entity_display_name("module", "Module").
+
+restricted_entity("zillionics").
+entity_regime("zillionics", "bis_entity_list").
+entity_country("zillionics", "RUSSIA").
+entity_display_name("zillionics", "Zillionics").
+
+restricted_entity("mchs").
+entity_regime("mchs", "bis_entity_list").
+entity_country("mchs", "RUSSIA").
+entity_display_name("mchs", "MCHS").

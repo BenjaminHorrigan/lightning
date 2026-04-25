@@ -1,6 +1,6 @@
 % DEA Schedule I - no accepted medical use
 % Generated from data/sources/dea_schedule_i.csv
-% Total substances: 20
+% Total substances: 36
 
 #include "_common/atom_vocabulary.lp".
 
@@ -123,3 +123,99 @@ cas_number("ghb", "591-81-1").
 molecular_formula("ghb", "C4H8O3").
 alternative_name("ghb", "gamma_hydroxybutyrate").
 dea_number("ghb", "2010").
+
+schedule("acetylfentanyl", "dea", "I").
+cas_number("acetylfentanyl", "1445583-51-6").
+molecular_formula("acetylfentanyl", "C21H26N2O2").
+dea_number("acetylfentanyl", "9821").
+
+schedule("butyrfentanyl", "dea", "I").
+cas_number("butyrfentanyl", "1117-31-5").
+molecular_formula("butyrfentanyl", "C23H30N2O2").
+alternative_name("butyrfentanyl", "butyrylfentanyl").
+dea_number("butyrfentanyl", "9822").
+
+schedule("carfentanil", "dea", "I").
+cas_number("carfentanil", "59708-52-0").
+molecular_formula("carfentanil", "C24H30N2O3").
+alternative_name("carfentanil", "carfentanyl").
+dea_number("carfentanil", "9743").
+
+schedule("furanyl_fentanyl", "dea", "I").
+cas_number("furanyl_fentanyl", "101345-66-8").
+molecular_formula("furanyl_fentanyl", "C24H26N2O2").
+alternative_name("furanyl_fentanyl", "fu_f").
+dea_number("furanyl_fentanyl", "9834").
+
+schedule("4_fluoroisobutyrfentanyl", "dea", "I").
+cas_number("4_fluoroisobutyrfentanyl", "244195-31-1").
+molecular_formula("4_fluoroisobutyrfentanyl", "C23H29FN2O2").
+alternative_name("4_fluoroisobutyrfentanyl", "4f_ibf").
+dea_number("4_fluoroisobutyrfentanyl", "9824").
+
+schedule("cyclopropylfentanyl", "dea", "I").
+cas_number("cyclopropylfentanyl", "2306-27-6").
+molecular_formula("cyclopropylfentanyl", "C23H28N2O2").
+alternative_name("cyclopropylfentanyl", "cpf").
+dea_number("cyclopropylfentanyl", "9844").
+
+schedule("methoxyacetylfentanyl", "dea", "I").
+cas_number("methoxyacetylfentanyl", "856553-89-6").
+molecular_formula("methoxyacetylfentanyl", "C22H28N2O3").
+alternative_name("methoxyacetylfentanyl", "maf").
+dea_number("methoxyacetylfentanyl", "9825").
+
+schedule("para_fluorofentanyl", "dea", "I").
+cas_number("para_fluorofentanyl", "90736-23-5").
+molecular_formula("para_fluorofentanyl", "C22H27FN2O").
+alternative_name("para_fluorofentanyl", "pff").
+dea_number("para_fluorofentanyl", "9812").
+
+schedule("beta_hydroxyfentanyl", "dea", "I").
+cas_number("beta_hydroxyfentanyl", "78715-26-9").
+molecular_formula("beta_hydroxyfentanyl", "C22H28N2O2").
+alternative_name("beta_hydroxyfentanyl", "oh_f").
+dea_number("beta_hydroxyfentanyl", "9830").
+
+schedule("crotonyl_fentanyl", "dea", "I").
+cas_number("crotonyl_fentanyl", "760934-46-5").
+molecular_formula("crotonyl_fentanyl", "C23H28N2O2").
+alternative_name("crotonyl_fentanyl", "crotonylfentanyl").
+dea_number("crotonyl_fentanyl", "9835").
+
+schedule("isobutyrfentanyl", "dea", "I").
+cas_number("isobutyrfentanyl", "244195-32-2").
+molecular_formula("isobutyrfentanyl", "C23H30N2O2").
+alternative_name("isobutyrfentanyl", "ibf").
+dea_number("isobutyrfentanyl", "9827").
+
+schedule("tetrahydrofuranyl_fentanyl", "dea", "I").
+cas_number("tetrahydrofuranyl_fentanyl", "1239908-20-3").
+molecular_formula("tetrahydrofuranyl_fentanyl", "C25H32N2O2").
+alternative_name("tetrahydrofuranyl_fentanyl", "thf_f").
+dea_number("tetrahydrofuranyl_fentanyl", "9843").
+
+schedule("valerylfentanyl", "dea", "I").
+cas_number("valerylfentanyl", "173146-23-9").
+molecular_formula("valerylfentanyl", "C24H32N2O2").
+alternative_name("valerylfentanyl", "vf").
+dea_number("valerylfentanyl", "9840").
+
+schedule("u_47700", "dea", "I").
+cas_number("u_47700", "1883463-56-6").
+molecular_formula("u_47700", "C16H22Cl2N2O").
+alternative_name("u_47700", "pink").
+alternative_name("u_47700", "u4").
+dea_number("u_47700", "9547").
+
+schedule("benzoylfentanyl", "dea", "I").
+cas_number("benzoylfentanyl", "12192-20-6").
+molecular_formula("benzoylfentanyl", "C28H30N2O2").
+alternative_name("benzoylfentanyl", "bzf").
+dea_number("benzoylfentanyl", "9833").
+
+schedule("furanylfentanyl_isomer", "dea", "I").
+cas_number("furanylfentanyl_isomer", "117333-81-8").
+molecular_formula("furanylfentanyl_isomer", "C24H26N2O2").
+alternative_name("furanylfentanyl_isomer", "fu_f_isomer").
+dea_number("furanylfentanyl_isomer", "9832").

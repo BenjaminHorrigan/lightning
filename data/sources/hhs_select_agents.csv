@@ -24,3 +24,32 @@ Mycoplasma capricolum,Mycoplasma capricolum,bacterium,2,no
 Mycoplasma mycoides,Mycoplasma mycoides,bacterium,2,no
 Xylella fastidiosa,Xylella fastidiosa,bacterium,2,no
 Ralstonia solanacearum,Ralstonia solanacearum,bacterium,2,no
+Brucella melitensis,Brucella melitensis,bacterium,3,no
+Brucella suis,Brucella suis,bacterium,3,no
+Clostridium perfringens epsilon toxin,Clostridium perfringens,toxin,2,no
+Salmonella typhimurium DT104,Salmonella enterica,bacterium,2,no
+Shigella flexneri,Shigella flexneri,bacterium,2,no
+Vibrio cholerae O1,Vibrio cholerae,bacterium,2,no
+Hantavirus,Sin Nombre virus,virus,3,no
+Rift Valley fever virus,Phlebovirus,virus,3,no
+Venezuelan equine encephalitis virus,Alphavirus,virus,3,no
+Eastern equine encephalitis virus,Alphavirus,virus,3,no
+Yellow fever virus,Flavivirus,virus,2,no
+Kyasanur Forest disease virus,Flavivirus,virus,3,no
+Omsk hemorrhagic fever virus,Flavivirus,virus,3,no
+Powassan virus,Flavivirus,virus,3,no
+Chapare virus,Arenavirus,virus,4,no
+Guanarito virus,Arenavirus,virus,4,no
+Junin virus,Arenavirus,virus,4,no
+Lujo virus,Arenavirus,virus,4,no
+Machupo virus,Arenavirus,virus,4,no
+Sabia virus,Arenavirus,virus,4,no
+Monkeypox virus,Orthopoxvirus,virus,3,no
+Cowpox virus,Orthopoxvirus,virus,2,no
+Camelpox virus,Orthopoxvirus,virus,2,no
+Conotoxins,Conus species,toxin,2,no
+Diacetoxyscirpenol,Fusarium species,toxin,2,no
+Aflatoxins,Aspergillus flavus,toxin,2,no
+Modeccin,Modecca digitata,toxin,2,no
+Volkensin,Adenia volkensii,toxin,2,no
+Viscumin,Viscum album,toxin,2,no
