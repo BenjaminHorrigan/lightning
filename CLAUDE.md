@@ -12,7 +12,7 @@ The project uses `uv` (not pip/poetry). **`pyproject.toml` does not exist yet** 
 
 ```bash
 uv sync                                          # install (after pyproject.toml exists)
-uv run streamlit run demos/app.py                # three-pane demo UI
+uv run python demos/fastapi_app.py              # FastAPI demo server with web UI
 uv run lightning check examples/rocket_protocol.py   # CLI (cli.py + entry point not yet built)
 uv run pytest tests/test_golden.py               # golden eval harness (not yet built)
 uv run pytest tests/test_golden.py::test_name -x # single test

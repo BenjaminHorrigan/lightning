@@ -1,5 +1,5 @@
 """
-FastAPI web application for AEGIS demo.
+FastAPI web application for LIGHTNING demo.
 Replacement for Streamlit with better performance and reliability.
 """
 from fastapi import FastAPI, Request, HTTPException
@@ -11,12 +11,12 @@ import uvicorn
 import json
 from typing import Optional, Dict, Any
 
-# Import AEGIS components
+# Import LIGHTNING components
 from lightning import check
 from lightning.models import Decision
 
 # Create FastAPI app
-app = FastAPI(title="AEGIS Demo", description="Neurosymbolic Safety Layer for Autonomous Research")
+app = FastAPI(title="LIGHTNING Demo", description="Neurosymbolic Safety Layer for Autonomous Research")
 
 # Setup templates and static files
 templates = Jinja2Templates(directory="templates")
@@ -62,7 +62,7 @@ async def visualization_page(request: Request):
 # API Endpoints
 @app.post("/api/analyze")
 async def analyze_protocol(request: AnalysisRequest):
-    """Main AEGIS analysis endpoint."""
+    """Main LIGHTNING analysis endpoint."""
     try:
         result = check(
             request.protocol_text,
@@ -269,7 +269,7 @@ async def chemcrow_analyze(protocol_text: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
-    print("🛡️ Starting AEGIS FastAPI Demo Server...")
+    print("🛡️ Starting LIGHTNING FastAPI Demo Server...")
     print("📱 Main Demo: http://localhost:8000")
     print("🧪 Adversarial Test: http://localhost:8000/adversarial")
     print("🔍 Audit Dashboard: http://localhost:8000/audit")

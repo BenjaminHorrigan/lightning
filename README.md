@@ -57,7 +57,9 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 uv sync
 
 # Run the demo
-uv run streamlit run demos/app.py
+uv run python run_demo.py
+# Or directly:
+# uv run python demos/fastapi_app.py
 
 # Run the CLI
 uv run lightning check examples/rocket_protocol.py

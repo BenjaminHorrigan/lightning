@@ -1,4 +1,4 @@
-// AEGIS Demo JavaScript
+// LIGHTNING Demo JavaScript
 
 const examples = {
     benign: `from opentrons import protocol_api
