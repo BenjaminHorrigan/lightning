@@ -10,6 +10,15 @@ from __future__ import annotations
 
 from typing import Optional
 
+# Load .env (ANTHROPIC_API_KEY, LIGHTNING_MODEL, etc.) before any submodule
+# instantiates an Anthropic client. Best-effort — silently skip if dotenv
+# isn't installed or there's no .env file.
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 from lightning.decision.synthesizer import synthesize
 from lightning.extraction import design, prose, protocol
 from lightning.models import (
