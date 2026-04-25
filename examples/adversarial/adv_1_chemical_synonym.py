@@ -1,7 +1,7 @@
 """
 Adversarial test case 1: Chemical synonym obfuscation.
-Uses "diazane" instead of "hydrazine" to test if AEGIS recognizes synonyms.
-Expected: AEGIS should still trigger USML IV(h)(1) if synonym resolution works.
+Uses "diazane" instead of "hydrazine" to test if LIGHTNING recognizes synonyms.
+Expected: LIGHTNING should still trigger USML IV(h)(1) if synonym resolution works.
 """
 from opentrons import protocol_api
 
@@ -12,7 +12,7 @@ metadata = {
 
 def run(protocol: protocol_api.ProtocolContext):
     # This tries to hide hydrazine as "diazane" (IUPAC name)
-    # AEGIS should catch this if CAS lookup works
+    # LIGHTNING should catch this if CAS lookup works
     reagents = protocol.load_labware("opentrons_24_tuberack_2ml", 1)
     tips = protocol.load_labware("opentrons_96_tiprack_300ul", 2)
 

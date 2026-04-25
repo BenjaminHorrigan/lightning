@@ -1,20 +1,20 @@
 """
 Adversarial robustness evaluation.
-Tests AEGIS vs baselines on obfuscation attempts.
+Tests LIGHTNING vs baselines on obfuscation attempts.
 """
 import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from aegis import check
+from lightning import check
 from lightning.models import Decision
 
 
 class AdversarialEvaluator:
     """
-    Evaluates AEGIS against adversarial obfuscation attempts.
+    Evaluates LIGHTNING against adversarial obfuscation attempts.
 
-    Compares AEGIS performance against LLM baselines on carefully crafted
+    Compares LIGHTNING performance against LLM baselines on carefully crafted
     test cases designed to evade detection through various obfuscation techniques.
     """
 
@@ -41,7 +41,7 @@ class AdversarialEvaluator:
             cases.append({
                 "name": case_name,
                 "content": content,
-                "expected_aegis": expected,
+                "expected_lightning": expected,
                 "description": self._extract_description(content)
             })
 
@@ -69,21 +69,21 @@ class AdversarialEvaluator:
         return '\n'.join(description_lines)
 
     def run_baseline_comparison(self) -> List[Dict[str, Any]]:
-        """Run AEGIS vs GPT baseline on all adversarial cases."""
+        """Run LIGHTNING vs GPT baseline on all adversarial cases."""
         results = []
 
         for case in self.test_cases:
             print(f"Testing case: {case['name']}")
 
-            # Test AEGIS
+            # Test LIGHTNING
             try:
-                aegis_result = check(case["content"])
-                aegis_decision = aegis_result.decision.value
-                aegis_caught = aegis_decision == "REFUSE"
+                lightning_result = check(case["content"])
+                lightning_decision = lightning_result.decision.value
+                lightning_caught = lightning_decision == "REFUSE"
             except Exception as e:
-                print(f"AEGIS failed on {case['name']}: {e}")
-                aegis_decision = "ERROR"
-                aegis_caught = False
+                print(f"LIGHTNING failed on {case['name']}: {e}")
+                lightning_decision = "ERROR"
+                lightning_caught = False
 
             # Test baseline (mock implementation for demo)
             gpt_response = self._query_baseline(case["content"])
@@ -92,11 +92,11 @@ class AdversarialEvaluator:
             results.append({
                 "case": case["name"],
                 "description": case["description"][:100] + "..." if len(case["description"]) > 100 else case["description"],
-                "aegis_decision": aegis_decision,
-                "aegis_caught": aegis_caught,
+                "lightning_decision": lightning_decision,
+                "lightning_caught": lightning_caught,
                 "gpt_response": gpt_response,
                 "gpt_caught": gpt_caught,
-                "expected": case["expected_aegis"]
+                "expected": case["expected_lightning"]
             })
 
         return results
@@ -144,17 +144,17 @@ def run_adversarial_demo() -> List[Dict[str, Any]]:
     print("\nADVERSARIAL ROBUSTNESS COMPARISON")
     print("=" * 60)
 
-    aegis_caught = sum(1 for r in results if r["aegis_caught"])
+    lightning_caught = sum(1 for r in results if r["lightning_caught"])
     baseline_caught = sum(1 for r in results if r["gpt_caught"])
 
-    print(f"AEGIS:     {aegis_caught}/{len(results)} adversarial cases caught")
+    print(f"LIGHTNING:     {lightning_caught}/{len(results)} adversarial cases caught")
     print(f"Baseline:  {baseline_caught}/{len(results)} adversarial cases caught")
     print()
 
     for result in results:
-        aegis_status = "✅" if result["aegis_caught"] else "❌"
+        lightning_status = "✅" if result["lightning_caught"] else "❌"
         baseline_status = "✅" if result["gpt_caught"] else "❌"
-        print(f"{result['case']:30} | AEGIS: {aegis_status} | Baseline: {baseline_status}")
+        print(f"{result['case']:30} | LIGHTNING: {lightning_status} | Baseline: {baseline_status}")
 
     return results
 
@@ -162,11 +162,11 @@ def run_adversarial_demo() -> List[Dict[str, Any]]:
 def create_adversarial_report(results: List[Dict[str, Any]]) -> str:
     """Generate detailed report for regulatory submission."""
     report_lines = [
-        "# AEGIS Adversarial Robustness Evaluation Report",
+        "# LIGHTNING Adversarial Robustness Evaluation Report",
         "",
         "## Executive Summary",
         f"- Total test cases: {len(results)}",
-        f"- AEGIS detection rate: {sum(1 for r in results if r['aegis_caught'])}/{len(results)} ({sum(1 for r in results if r['aegis_caught'])/len(results)*100:.1f}%)",
+        f"- LIGHTNING detection rate: {sum(1 for r in results if r['lightning_caught'])}/{len(results)} ({sum(1 for r in results if r['lightning_caught'])/len(results)*100:.1f}%)",
         f"- Baseline detection rate: {sum(1 for r in results if r['gpt_caught'])}/{len(results)} ({sum(1 for r in results if r['gpt_caught'])/len(results)*100:.1f}%)",
         "",
         "## Test Cases",
@@ -174,13 +174,13 @@ def create_adversarial_report(results: List[Dict[str, Any]]) -> str:
     ]
 
     for i, result in enumerate(results, 1):
-        aegis_result = "DETECTED" if result["aegis_caught"] else "MISSED"
+        lightning_result = "DETECTED" if result["lightning_caught"] else "MISSED"
         baseline_result = "DETECTED" if result["gpt_caught"] else "MISSED"
 
         report_lines.extend([
             f"### Case {i}: {result['case']}",
             f"**Description:** {result['description']}",
-            f"**AEGIS:** {aegis_result} (Decision: {result['aegis_decision']})",
+            f"**LIGHTNING:** {lightning_result} (Decision: {result['lightning_decision']})",
             f"**Baseline:** {baseline_result}",
             f"**Baseline Response:** {result['gpt_response'][:200]}...",
             ""

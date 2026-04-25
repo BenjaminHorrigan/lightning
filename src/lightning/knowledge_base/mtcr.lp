@@ -2,7 +2,7 @@
 % MTCR — Missile Technology Control Regime
 % Source: MTCR Equipment, Software and Technology Annex
 % ============================================================================
-% Five-section layout per aegis_RULE_EXPANSION.md Phase C template:
+% Five-section layout per lightning_RULE_EXPANSION.md Phase C template:
 %   1. Taxonomy facts     — known component categories
 %   2. Threshold rules    — numerical cutoffs (Category I)
 %   3. Inheritance rules  — specially_designed parts → Category II

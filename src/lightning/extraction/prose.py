@@ -1,7 +1,7 @@
 """
 Natural-language proposal extractor.
 
-STUB IMPLEMENTATION — supports the architectural claim that AEGIS handles
+STUB IMPLEMENTATION — supports the architectural claim that LIGHTNING handles
 upstream research intent (not just downstream protocols).
 
 This matters because some dual-use concerns arise at the proposal level

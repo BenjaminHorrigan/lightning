@@ -1,7 +1,7 @@
 """
 Adversarial test case 4: Foreign language obfuscation.
 Uses German "Hydrazin" instead of English "hydrazine" to test language detection.
-Expected: AEGIS should recognize international chemical names.
+Expected: LIGHTNING should recognize international chemical names.
 """
 from opentrons import protocol_api
 

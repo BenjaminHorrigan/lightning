@@ -1,7 +1,7 @@
 """
 Symbolic reasoning engine.
 
-This is the beating heart of AEGIS. It takes a TechnicalArtifact, asserts it
+This is the beating heart of LIGHTNING. It takes a TechnicalArtifact, asserts it
 as a set of facts, runs the clingo solver against the knowledge base, and
 returns a ProofTree.
 
@@ -98,7 +98,7 @@ def artifact_to_facts(artifact: TechnicalArtifact) -> list[str]:
             # Propagate performance specs to the parent system too. Component-
             # level parameters (shaft_speed_rpm) are no-ops at system level;
             # system-level parameters (range_km, payload_kg) now fire threshold
-            # rules. Per aegis_RULE_EXPANSION.md B.2.
+            # rules. Per lightning_RULE_EXPANSION.md B.2.
             for spec in comp.specifications:
                 facts.append(
                     f'performance("{parent}", "{_canonicalize(spec.parameter)}", '

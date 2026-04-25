@@ -1,5 +1,5 @@
 """
-Cryptographically-signed audit logging for AEGIS decisions.
+Cryptographically-signed audit logging for LIGHTNING decisions.
 Every classification decision is logged with integrity guarantees.
 """
 import hashlib
@@ -16,12 +16,12 @@ from lightning.models import ClassificationResult, TechnicalArtifact
 
 class AuditLogger:
     """
-    Maintains immutable audit log of all AEGIS classification decisions.
+    Maintains immutable audit log of all LIGHTNING classification decisions.
 
     Each log entry is cryptographically signed for integrity verification.
     """
 
-    def __init__(self, log_path: str = "aegis_audit.jsonl", secret_key: Optional[str] = None):
+    def __init__(self, log_path: str = "lightning_audit.jsonl", secret_key: Optional[str] = None):
         self.log_path = Path(log_path)
         self.secret_key = secret_key or self._generate_secret()
 
@@ -165,7 +165,7 @@ class AuditLogger:
             "audit_record": record,
             "integrity_verification": verification,
             "export_timestamp": datetime.utcnow().isoformat() + "Z",
-            "aegis_version": "0.1.0",  # TODO: get from package version
+            "lightning_version": "0.1.0",  # TODO: get from package version
             "regulatory_note": "This audit package provides cryptographic proof of the classification decision and reasoning chain.",
             "verification_instructions": {
                 "1": "Verify the integrity_verification.verified field is true",
@@ -176,7 +176,7 @@ class AuditLogger:
             }
         }
 
-        package_file = output_path / f"aegis_audit_{audit_id[:8]}.json"
+        package_file = output_path / f"lightning_audit_{audit_id[:8]}.json"
         with open(package_file, "w") as f:
             json.dump(package, f, indent=2)
 

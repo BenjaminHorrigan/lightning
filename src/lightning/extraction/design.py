@@ -1,7 +1,7 @@
 """
 Design artifact extractor.
 
-STUB IMPLEMENTATION — supports the architectural claim that AEGIS handles
+STUB IMPLEMENTATION — supports the architectural claim that LIGHTNING handles
 engineering designs, but deep parsing of CAD formats is out of scope for v1.
 
 Current support:

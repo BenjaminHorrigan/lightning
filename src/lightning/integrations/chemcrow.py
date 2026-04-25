@@ -10,10 +10,10 @@ This is the "deployment story" code. The entire pitch lands on this:
     safe_agent = lightning_guard(agent)  # <-- one line
 
     safe_agent.run("Synthesize hydrazine N2H4")
-    # AEGIS intercepts, classifies under USML IV(h)(1), refuses with citation.
+    # LIGHTNING intercepts, classifies under USML IV(h)(1), refuses with citation.
 
 The decorator wraps any callable that generates protocols or chemistry actions.
-It intercepts the output BEFORE it reaches the lab, runs AEGIS, and either
+It intercepts the output BEFORE it reaches the lab, runs LIGHTNING, and either
 passes through (ALLOW), raises (REFUSE), or returns an escalation handle
 (ESCALATE).
 
@@ -25,13 +25,13 @@ from __future__ import annotations
 from functools import wraps
 from typing import Any, Callable, Optional
 
-from aegis import check
+from lightning import check
 from lightning.models import Decision
 
 
 class LightningRefusal(Exception):
     """
-    Raised when AEGIS refuses to pass an artifact through to execution.
+    Raised when LIGHTNING refuses to pass an artifact through to execution.
 
     Contains the full ClassificationResult so the caller can log, display,
     or route to human review.
@@ -42,19 +42,19 @@ class LightningRefusal(Exception):
             f"{c.regime.value} {c.category}" for c in result.primary_citations
         )
         super().__init__(
-            f"AEGIS refused: {result.rationale} "
+            f"LIGHTNING refused: {result.rationale} "
             f"[Citations: {citations}]"
         )
 
 
 class LightningEscalation(Exception):
     """
-    Raised when AEGIS cannot make a decisive call and requires human review.
+    Raised when LIGHTNING cannot make a decisive call and requires human review.
     """
     def __init__(self, result):
         self.result = result
         super().__init__(
-            f"AEGIS escalation: {result.escalation_reason}"
+            f"LIGHTNING escalation: {result.escalation_reason}"
         )
 
 
@@ -66,7 +66,7 @@ def lightning_guard(
     on_escalate: Optional[Callable] = None,
 ) -> Any:
     """
-    Wrap an agent or function so that its outputs are screened by AEGIS
+    Wrap an agent or function so that its outputs are screened by LIGHTNING
     before being returned.
 
     Args:
@@ -115,7 +115,7 @@ def _screen_output(
     on_refuse: Optional[Callable],
     on_escalate: Optional[Callable],
 ) -> Any:
-    """Run AEGIS on an agent output and handle the decision."""
+    """Run LIGHTNING on an agent output and handle the decision."""
     # Normalize output to something check() accepts
     if not isinstance(output, (str, dict)):
         output_str = str(output)
@@ -135,7 +135,7 @@ def _screen_output(
         if refuse_mode == "return":
             return result
         if refuse_mode == "log_only":
-            print(f"[AEGIS] REFUSE logged (log_only mode): {result.rationale}")
+            print(f"[LIGHTNING] REFUSE logged (log_only mode): {result.rationale}")
             return output
 
     if result.decision == Decision.ESCALATE:
@@ -146,7 +146,7 @@ def _screen_output(
         if escalate_mode == "return":
             return result
         if escalate_mode == "log_only":
-            print(f"[AEGIS] ESCALATE logged (log_only mode): {result.escalation_reason}")
+            print(f"[LIGHTNING] ESCALATE logged (log_only mode): {result.escalation_reason}")
             return output
 
     return output

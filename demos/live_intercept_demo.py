@@ -1,5 +1,5 @@
 """
-Streamlit interface for live ChemCrow + AEGIS intercept demo.
+Streamlit interface for live ChemCrow + LIGHTNING intercept demo.
 """
 import streamlit as st
 import sys
@@ -12,9 +12,9 @@ sys.path.append(str(project_root))
 
 from chemcrow_lightning_demo import DemoChemCrow
 
-st.set_page_config(page_title="AEGIS Live Intercept", layout="wide")
+st.set_page_config(page_title="LIGHTNING Live Intercept", layout="wide")
 
-st.title("🤖 ChemCrow + 🛡️ AEGIS Live Demo")
+st.title("🤖 ChemCrow + 🛡️ LIGHTNING Live Demo")
 st.caption("Autonomous chemistry agent with real-time safety intercept")
 
 # Demo explanation
@@ -22,7 +22,7 @@ with st.expander("🎯 Demo Overview"):
     st.markdown("""
     **What you're about to see:**
     - **ChemCrow** is an autonomous chemistry agent that generates protocols
-    - **AEGIS** intercepts the output and classifies it against export controls
+    - **LIGHTNING** intercepts the output and classifies it against export controls
     - This happens in **real-time** - no simulation, no pre-recorded results
 
     **Three scenarios:**
@@ -33,7 +33,7 @@ with st.expander("🎯 Demo Overview"):
 
 # Initialize demo in session state
 if 'demo' not in st.session_state:
-    with st.spinner("Initializing ChemCrow + AEGIS..."):
+    with st.spinner("Initializing ChemCrow + LIGHTNING..."):
         st.session_state.demo = DemoChemCrow()
     st.success("✅ System ready!")
 
@@ -71,10 +71,10 @@ if 'last_result' in st.session_state:
     result = st.session_state.last_result
 
     st.markdown("---")
-    st.markdown("### 🛡️ AEGIS Decision")
+    st.markdown("### 🛡️ LIGHTNING Decision")
 
     if result["decision"] == "ALLOW":
-        st.success("✅ AEGIS: ALLOWED — Protocol approved for execution")
+        st.success("✅ LIGHTNING: ALLOWED — Protocol approved for execution")
 
         with st.expander("📄 Generated Protocol"):
             if isinstance(result['result'], str):
@@ -83,7 +83,7 @@ if 'last_result' in st.session_state:
                 st.text(str(result['result']))
 
     elif result["decision"] == "REFUSE":
-        st.error("🛑 AEGIS: REFUSED — Protocol blocked by safety layer")
+        st.error("🛑 LIGHTNING: REFUSED — Protocol blocked by safety layer")
 
         lightning_result = result['result']
 
@@ -120,7 +120,7 @@ if 'last_result' in st.session_state:
                     st.markdown("---")
 
     elif result["decision"] == "ESCALATE":
-        st.warning("⚠️ AEGIS: ESCALATED — Human review required")
+        st.warning("⚠️ LIGHTNING: ESCALATED — Human review required")
 
         lightning_result = result['result']
         st.markdown("**❓ Escalation Reason:**")
@@ -133,14 +133,14 @@ if 'last_result' in st.session_state:
 
 # Demo timing info
 st.markdown("---")
-st.caption("💡 **Demo Tip**: This is happening in real-time. ChemCrow generates the protocol, AEGIS analyzes it, and returns the decision with full reasoning chain.")
+st.caption("💡 **Demo Tip**: This is happening in real-time. ChemCrow generates the protocol, LIGHTNING analyzes it, and returns the decision with full reasoning chain.")
 
 # Technical details
 with st.expander("🔧 Technical Details"):
     st.markdown("""
     **Architecture:**
     - **ChemCrow**: Autonomous chemistry agent (LLM-based)
-    - **AEGIS**: Neurosymbolic safety layer with three stages:
+    - **LIGHTNING**: Neurosymbolic safety layer with three stages:
       1. **Extraction**: Parse protocol into structured format
       2. **Reasoning**: Apply export control rules symbolically
       3. **Decision**: ALLOW/REFUSE/ESCALATE with citations
@@ -156,5 +156,5 @@ with st.expander("🔧 Technical Details"):
 if 'demo' in st.session_state:
     st.sidebar.markdown("### 📊 Session Stats")
     st.sidebar.metric("Demo Scenarios Available", "3")
-    st.sidebar.metric("AEGIS Status", "🟢 Active")
+    st.sidebar.metric("LIGHTNING Status", "🟢 Active")
     st.sidebar.metric("ChemCrow Status", "🟢 Ready")

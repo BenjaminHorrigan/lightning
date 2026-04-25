@@ -1,5 +1,5 @@
 """
-AEGIS core data models.
+LIGHTNING core data models.
 
 These define the canonical representations that flow through the extraction →
 reasoning → decision pipeline. Extending to new input types or regimes means
@@ -157,7 +157,7 @@ class ProofTree(BaseModel):
 
     A ProofTree is *auditable*: every step cites the rule that fired and the
     regulatory text backing that rule. This is the core artifact that makes
-    AEGIS defensible in ways pure-LLM classification is not.
+    LIGHTNING defensible in ways pure-LLM classification is not.
     """
     steps: list[ProofStep]
     controlled_elements: list[str] = Field(
@@ -189,7 +189,7 @@ class Decision(str, Enum):
 
 class ClassificationResult(BaseModel):
     """
-    The final output of AEGIS. This is what gets returned to the calling
+    The final output of LIGHTNING. This is what gets returned to the calling
     agent / cloud lab / reviewer.
     """
     decision: Decision

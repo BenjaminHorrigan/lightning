@@ -1,5 +1,5 @@
 """
-AEGIS demo app.
+LIGHTNING demo app.
 
 Three-pane layout:
 1. INPUT pane — paste a protocol, spec sheet, or proposal
@@ -27,7 +27,7 @@ from lightning.models import Decision, Regime
 # ============================================================================
 
 st.set_page_config(
-    page_title="AEGIS — Neurosymbolic Safety for Autonomous Research",
+    page_title="LIGHTNING — Neurosymbolic Safety for Autonomous Research",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -106,7 +106,7 @@ st.markdown(
 # Header
 # ============================================================================
 
-st.title("AEGIS")
+st.title("LIGHTNING")
 st.caption(
     "A neurosymbolic safety layer for autonomous research agents. "
     "Extracts technical artifacts, reasons formally over export-control and dual-use "
@@ -591,11 +591,11 @@ elif run:
 
 with tab2:
     st.header("🛡️ Adversarial Robustness Test")
-    st.caption("AEGIS vs GPT baseline on obfuscation attempts")
+    st.caption("LIGHTNING vs GPT baseline on obfuscation attempts")
 
     st.markdown("""
     **Test Overview:**
-    This demo compares AEGIS against baseline LLMs on carefully crafted adversarial examples
+    This demo compares LIGHTNING against baseline LLMs on carefully crafted adversarial examples
     designed to evade detection through various obfuscation techniques:
 
     1. **Chemical Synonyms**: "diazane" instead of "hydrazine"
@@ -608,7 +608,7 @@ with tab2:
     col1, col2 = st.columns(2)
 
     if st.button("🧪 Run Robustness Evaluation", type="primary"):
-        with st.spinner("Testing both AEGIS and baseline on adversarial cases..."):
+        with st.spinner("Testing both LIGHTNING and baseline on adversarial cases..."):
             try:
                 from lightning.evaluation.adversarial import run_adversarial_demo
                 results = run_adversarial_demo()
@@ -637,7 +637,7 @@ with tab2:
         with col1:
             st.metric("Test Cases", len(results))
         with col2:
-            st.metric("AEGIS Detection Rate", f"{lightning_score}/{len(results)}", f"{lightning_score/len(results)*100:.0f}%")
+            st.metric("LIGHTNING Detection Rate", f"{lightning_score}/{len(results)}", f"{lightning_score/len(results)*100:.0f}%")
         with col3:
             st.metric("Baseline Detection Rate", f"{baseline_score}/{len(results)}", f"{baseline_score/len(results)*100:.0f}%")
 
@@ -648,7 +648,7 @@ with tab2:
                 col1, col2 = st.columns(2)
 
                 with col1:
-                    st.markdown("**🛡️ AEGIS**")
+                    st.markdown("**🛡️ LIGHTNING**")
                     if result['lightning_caught']:
                         st.success(f"✅ DETECTED ({result.get('lightning_decision', 'REFUSE')})")
                     else:
@@ -666,7 +666,7 @@ with tab2:
 
         st.markdown("### 🎯 Key Insights")
         st.info("""
-        **Why AEGIS outperforms LLM baselines:**
+        **Why LIGHTNING outperforms LLM baselines:**
         - **Structured extraction** converts unstructured text to canonical representations
         - **Synonym resolution** catches chemical name variants and foreign languages
         - **Symbolic reasoning** applies formal rules rather than pattern matching
@@ -676,7 +676,7 @@ with tab2:
 
 with tab3:
     st.header("🔍 Audit Dashboard")
-    st.caption("Cryptographic audit trail of all AEGIS decisions")
+    st.caption("Cryptographic audit trail of all LIGHTNING decisions")
 
     try:
         from lightning.audit.logger import get_audit_logger
@@ -730,7 +730,7 @@ with tab4:
 # Footer: the integration story
 # ============================================================================
 
-with st.expander("Integrate AEGIS with your agent"):
+with st.expander("Integrate LIGHTNING with your agent"):
     st.code(
         '''from lightning.integrations.chemcrow import lightning_guard
 from chemcrow import ChemCrow
@@ -738,8 +738,8 @@ from chemcrow import ChemCrow
 agent = ChemCrow()
 safe_agent = lightning_guard(agent)  # one line
 
-# All outputs now screened. Refusals raise AegisRefusal with full
-# proof tree. Escalations raise AegisEscalation for human review.
+# All outputs now screened. Refusals raise LightningRefusal with full
+# proof tree. Escalations raise LightningEscalation for human review.
 result = safe_agent.run("Synthesize a fluorinated organophosphate")
 ''',
         language="python",

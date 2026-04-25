@@ -1,10 +1,10 @@
-# Claude Code Handoff Prompt for AEGIS
+# Claude Code Handoff Prompt for LIGHTNING
 
 Copy everything below the divider into Claude Code as your first message. It provides full context so Claude Code can start productively without you re-explaining.
 
 ---
 
-You are taking over an in-progress hackathon project called **AEGIS** — a neurosymbolic safety layer for autonomous research agents. I'm preparing it for the SCSP AI+Expo Hackathon 2026 (Cloud Laboratories track). The submission window is **Sat April 25, 10am → Sun April 26, 6pm Pacific**. I have this week (today through April 24) to prepare, and the hackathon organizers have explicitly confirmed that **prior work, scaffolding, and research are fair game**.
+You are taking over an in-progress hackathon project called **LIGHTNING** — a neurosymbolic safety layer for autonomous research agents. I'm preparing it for the SCSP AI+Expo Hackathon 2026 (Cloud Laboratories track). The submission window is **Sat April 25, 10am → Sun April 26, 6pm Pacific**. I have this week (today through April 24) to prepare, and the hackathon organizers have explicitly confirmed that **prior work, scaffolding, and research are fair game**.
 
 ## One-line pitch
 
@@ -12,7 +12,7 @@ A neurosymbolic safety layer that sits between autonomous research agents (ChemC
 
 ## Why it wins
 
-The SCSP hackathon is judged on four criteria: Novelty, Technical Difficulty, Potential Impact, Problem-Solution Fit. Most teams will build LLM + RAG + tool use and stop there. AEGIS's differentiation is a **real symbolic reasoning layer** (clingo/ASP) doing formal inference over regulatory ontologies. The LLM handles messy natural-language I/O; the symbolic layer handles decisions that require auditability. The demo includes a side-by-side kill shot where GPT-5 confidently hallucinates a classification and AEGIS refuses with a formal proof tree.
+The SCSP hackathon is judged on four criteria: Novelty, Technical Difficulty, Potential Impact, Problem-Solution Fit. Most teams will build LLM + RAG + tool use and stop there. LIGHTNING's differentiation is a **real symbolic reasoning layer** (clingo/ASP) doing formal inference over regulatory ontologies. The LLM handles messy natural-language I/O; the symbolic layer handles decisions that require auditability. The demo includes a side-by-side kill shot where GPT-5 confidently hallucinates a classification and LIGHTNING refuses with a formal proof tree.
 
 ## Scope (already decided, don't revisit without strong reason)
 
@@ -36,7 +36,7 @@ Read `.handoff/STATUS.md` first — it has a full file-by-file inventory with li
 - USML Category IV knowledge base (`knowledge_base/usml_cat_iv.lp`) — deep, 160 lines of ASP including specially-designed inheritance
 - Stub KBs for CWC/MTCR/Select Agents — done
 - Decision synthesizer with LLM rationale + counterfactual — done
-- ChemCrow integration shim (`aegis_guard` decorator) — done
+- ChemCrow integration shim (`lightning_guard` decorator) — done
 - Streamlit three-pane demo UI — done
 - Two example inputs (benign Suzuki coupling, ITAR turbopump spec) — done
 
@@ -46,7 +46,7 @@ Read `.handoff/STATUS.md` first — it has a full file-by-file inventory with li
 
 1. Create `pyproject.toml` with uv-compatible config. Dependencies: `anthropic`, `clingo`, `pydantic>=2`, `streamlit`, `rdkit`, `python-dotenv`. Python 3.11+.
 2. Create `.env.example` with `ANTHROPIC_API_KEY=` placeholder.
-3. Verify the package structure imports cleanly (`uv sync && uv run python -c "from aegis import check"`).
+3. Verify the package structure imports cleanly (`uv sync && uv run python -c "from lightning import check"`).
 4. Run the benign Suzuki example end-to-end. Fix any integration issues you find — there will be some. The clingo output parsing in `reasoning/engine.py` is the likeliest source of bugs.
 5. Run the ITAR turbopump example end-to-end. It should produce REFUSE with a USML IV(h) citation.
 6. If anything fails, fix it before moving on. Do not add features until the existing examples work.
@@ -65,7 +65,7 @@ Create these three example files. They are the scripted inputs for demo day and 
 
 4. Create `tests/test_golden.py` with pytest. 10 hand-curated (input_path, expected_decision) pairs using the example files and 4-5 additional synthetic cases. This gives us a regression harness before we start tuning extraction prompts.
 
-5. Create `src/aegis/cli.py` with a `click` or `typer`-based CLI. Entry point `aegis check <file>` that runs the pipeline and pretty-prints the result. Wire it into `pyproject.toml` `[project.scripts]`.
+5. Create `src/lightning/cli.py` with a `click` or `typer`-based CLI. Entry point `lightning check <file>` that runs the pipeline and pretty-prints the result. Wire it into `pyproject.toml` `[project.scripts]`.
 
 ### Phase 4 — Polish (only after Phases 1-3 are solid)
 
@@ -83,14 +83,14 @@ Create these three example files. They are the scripted inputs for demo day and 
 
 ## How to work with me
 
-- Start by reading `.handoff/STATUS.md`, `README.md`, and `src/aegis/models.py` in that order. That's ~500 lines and gives you the whole context.
+- Start by reading `.handoff/STATUS.md`, `README.md`, and `src/lightning/models.py` in that order. That's ~500 lines and gives you the whole context.
 - When you identify issues, state them first, then propose fixes before implementing wide-ranging changes.
 - Commit in the logical units suggested in `STATUS.md`.
 - If something looks wrong with the ASP encoding in `usml_cat_iv.lp`, flag it — I need to flag back to my partner who has the domain knowledge rather than fix it blindly.
 
 ## First action
 
-Read `.handoff/STATUS.md`, then `README.md`, then `src/aegis/models.py`. Then report back with:
+Read `.handoff/STATUS.md`, then `README.md`, then `src/lightning/models.py`. Then report back with:
 1. Your understanding of the architecture in ≤150 words
 2. Top 3 issues you expect to hit in Phase 1
 3. Confirmation before starting Phase 1

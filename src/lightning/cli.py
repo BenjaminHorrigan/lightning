@@ -1,7 +1,7 @@
 """
-AEGIS command-line entry point.
+LIGHTNING command-line entry point.
 
-    aegis check <file>
+    lightning check <file>
 
 Runs the full pipeline on a file and pretty-prints the ClassificationResult.
 Intended for quick demos and CI; the Streamlit app in demos/app.py is the
@@ -20,11 +20,11 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
-from aegis import check
+from lightning import check
 from lightning.models import Decision
 
 app = typer.Typer(
-    name="aegis",
+    name="lightning",
     help="Neurosymbolic safety layer for autonomous research agents.",
     no_args_is_help=True,
     add_completion=False,
@@ -54,7 +54,7 @@ def check_cmd(
     try:
         result = check(text, hint=hint)
     except Exception as exc:  # surface cleanly instead of a traceback for the CLI
-        console.print(f"[bold red]AEGIS failed to classify {input_file}:[/bold red] {exc}")
+        console.print(f"[bold red]LIGHTNING failed to classify {input_file}:[/bold red] {exc}")
         raise typer.Exit(code=2)
 
     if json_output:
@@ -73,7 +73,7 @@ def _exit_code(decision: Decision) -> int:
 def _render_result(path: Path, result) -> None:
     color, label = DECISION_STYLES[result.decision]
 
-    console.rule(f"[bold]AEGIS[/bold]  {path.name}")
+    console.rule(f"[bold]LIGHTNING[/bold]  {path.name}")
 
     headline = Text(f"  {label}  ", style=f"bold white on {color}")
     conf = Text(f"  confidence {result.confidence:.2f}", style="dim")
@@ -131,8 +131,8 @@ def _format_proof(proof) -> str:
 
 @app.command("regimes")
 def regimes_cmd() -> None:
-    """List the regulatory regimes AEGIS evaluates by default."""
-    from aegis import DEFAULT_REGIMES
+    """List the regulatory regimes LIGHTNING evaluates by default."""
+    from lightning import DEFAULT_REGIMES
     from lightning.reasoning.engine import KB_MODULES
     table = Table(title="Default regimes")
     table.add_column("Regime")

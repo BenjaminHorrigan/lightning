@@ -1,4 +1,4 @@
-# AEGIS — Build Status
+# LIGHTNING — Build Status
 
 **As of handoff to Claude Code.** 2,287 lines of code and KB across 17 files.
 
@@ -25,19 +25,19 @@ Input (protocol / design / proposal)
 
 | File | LoC | Status |
 |---|---|---|
-| `src/aegis/models.py` | 185 | ✅ Full Pydantic data model, no known gaps |
-| `src/aegis/__init__.py` | 106 | ✅ Top-level `check()` entry point with auto-routing |
-| `src/aegis/extraction/protocol.py` | 226 | ✅ Opentrons + Autoprotocol extraction, LLM + direct-parse |
-| `src/aegis/extraction/design.py` | 124 | ✅ Text spec extractor (primary), CAD stub |
-| `src/aegis/extraction/prose.py` | 91 | ✅ Proposal extractor |
-| `src/aegis/reasoning/engine.py` | 303 | ✅ Clingo wrapper, facts injection, gap detection |
-| `src/aegis/decision/synthesizer.py` | 311 | ✅ Decision logic, LLM rationale, counterfactual |
-| `src/aegis/integrations/chemcrow.py` | 164 | ✅ `aegis_guard()` decorator + Refusal/Escalation exceptions |
-| `src/aegis/knowledge_base/usml_cat_iv.lp` | 160 | ✅ **Deep**: Category IV with specially-designed inheritance, release paragraphs, propellants |
-| `src/aegis/knowledge_base/citations.json` | 51 | ✅ Citation lookup with real CFR references |
-| `src/aegis/knowledge_base/cwc_sched1.lp` | 54 | ✅ **Stub**: named Schedule 1 + OP+F heuristic |
-| `src/aegis/knowledge_base/mtcr.lp` | 19 | ✅ **Stub**: range×payload threshold rule |
-| `src/aegis/knowledge_base/select.lp` | 21 | ✅ **Stub**: named Select Agent matching |
+| `src/lightning/models.py` | 185 | ✅ Full Pydantic data model, no known gaps |
+| `src/lightning/__init__.py` | 106 | ✅ Top-level `check()` entry point with auto-routing |
+| `src/lightning/extraction/protocol.py` | 226 | ✅ Opentrons + Autoprotocol extraction, LLM + direct-parse |
+| `src/lightning/extraction/design.py` | 124 | ✅ Text spec extractor (primary), CAD stub |
+| `src/lightning/extraction/prose.py` | 91 | ✅ Proposal extractor |
+| `src/lightning/reasoning/engine.py` | 303 | ✅ Clingo wrapper, facts injection, gap detection |
+| `src/lightning/decision/synthesizer.py` | 311 | ✅ Decision logic, LLM rationale, counterfactual |
+| `src/lightning/integrations/chemcrow.py` | 164 | ✅ `lightning_guard()` decorator + Refusal/Escalation exceptions |
+| `src/lightning/knowledge_base/usml_cat_iv.lp` | 160 | ✅ **Deep**: Category IV with specially-designed inheritance, release paragraphs, propellants |
+| `src/lightning/knowledge_base/citations.json` | 51 | ✅ Citation lookup with real CFR references |
+| `src/lightning/knowledge_base/cwc_sched1.lp` | 54 | ✅ **Stub**: named Schedule 1 + OP+F heuristic |
+| `src/lightning/knowledge_base/mtcr.lp` | 19 | ✅ **Stub**: range×payload threshold rule |
+| `src/lightning/knowledge_base/select.lp` | 21 | ✅ **Stub**: named Select Agent matching |
 | `demos/app.py` | 267 | ✅ Three-pane Streamlit demo |
 | `examples/benign_suzuki.py` | 55 | ✅ Clean ALLOW case |
 | `examples/itar_turbopump_spec.md` | 49 | ✅ REFUSE via IV(h) inheritance |
@@ -51,7 +51,7 @@ Input (protocol / design / proposal)
 | `examples/edge_case_dual_use.md` | ESCALATE demo case | 15 min |
 | `examples/ambiguous_component_spec.md` | Gap-driven ESCALATE | 10 min |
 | `tests/test_golden.py` | 8–10 input→expected_decision pairs | 30 min |
-| `src/aegis/cli.py` + entry point | `aegis check <file>` CLI | 20 min |
+| `src/lightning/cli.py` + entry point | `lightning check <file>` CLI | 20 min |
 | End-to-end smoke test on local machine | Verify clingo actually solves | 15 min |
 
 ### 🔴 Known technical debt / risks
@@ -78,7 +78,7 @@ The code was built top-down (models → pipeline → layers → KB → demo). Fo
 5. feat(kb): CWC/MTCR/Select Agent stubs
 6. feat(reasoning): clingo engine with fact injection and gap detection
 7. feat(decision): decision synthesis with LLM rationale and counterfactual
-8. feat(integrations): aegis_guard decorator for ChemCrow/Coscientist
+8. feat(integrations): lightning_guard decorator for ChemCrow/Coscientist
 9. feat(demo): Streamlit three-pane UI
 10. feat(examples): benign Suzuki + ITAR turbopump
 ```

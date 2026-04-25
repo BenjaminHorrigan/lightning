@@ -1,7 +1,7 @@
 """
 Adversarial test case 5: SMILES-only obfuscation.
 Uses "NN" SMILES notation instead of chemical names to hide hydrazine.
-Expected: AEGIS should recognize SMILES structures for controlled substances.
+Expected: LIGHTNING should recognize SMILES structures for controlled substances.
 """
 from opentrons import protocol_api
 

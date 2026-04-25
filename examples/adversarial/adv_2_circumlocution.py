@@ -1,7 +1,7 @@
 """
 Adversarial test case 2: Circumlocution obfuscation.
 Uses "rotating flow acceleration device" instead of "turbopump" to test pattern recognition.
-Expected: AEGIS should recognize this as USML-controlled turbomachinery.
+Expected: LIGHTNING should recognize this as USML-controlled turbomachinery.
 """
 from opentrons import protocol_api
 

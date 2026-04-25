@@ -2,7 +2,7 @@
 % CWC — Chemical Weapons Convention — Schedules 1/2/3
 % Source: CWC Annex on Chemicals (OPCW), 22 U.S.C. 6701 et seq. (US CWCIA)
 % ============================================================================
-% Five-section layout per aegis_RULE_EXPANSION.md Phase C template.
+% Five-section layout per lightning_RULE_EXPANSION.md Phase C template.
 %
 % v1 SCOPE: named-substance matching on Schedules 1/2/3, plus a precursor
 % list derived from the Schedule 1 Annex. Quantity threshold for Schedule 2

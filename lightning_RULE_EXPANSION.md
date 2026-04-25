@@ -1,4 +1,4 @@
-# AEGIS Rule Engine Expansion Tasks
+# LIGHTNING Rule Engine Expansion Tasks
 
 **For Claude Code to execute.** Assumes Phases 1-3 of the original handoff are complete and the system runs end-to-end.
 
@@ -25,7 +25,7 @@
 
 ## Phase A — Finish USML Category IV
 
-Edit `src/aegis/knowledge_base/usml_cat_iv.lp` and `src/aegis/knowledge_base/citations.json`.
+Edit `src/lightning/knowledge_base/usml_cat_iv.lp` and `src/lightning/knowledge_base/citations.json`.
 
 ### A.1 Paragraph (b): launch vehicle sub-articles
 
@@ -204,7 +204,7 @@ New rules reference facts the extractor does not currently produce. Must be done
 
 ### B.1 Add `attributes` to Component model
 
-In `src/aegis/models.py`:
+In `src/lightning/models.py`:
 
 ```python
 attributes: list[str] = Field(
@@ -215,7 +215,7 @@ attributes: list[str] = Field(
 
 ### B.2 Emit attribute facts from engine
 
-In `src/aegis/reasoning/engine.py::artifact_to_facts`, after existing Component handling:
+In `src/lightning/reasoning/engine.py::artifact_to_facts`, after existing Component handling:
 
 ```python
 for attr in comp.attributes:
@@ -330,7 +330,7 @@ escalate_cwc_precursor_proximity(Sub, N) :-
 #show escalate_cwc_precursor_proximity/2.
 ```
 
-**Python companion work:** create `src/aegis/reasoning/chemistry.py` with rdkit SMARTS patterns for tabun, sarin, VX, mustard, lewisite families. Called from `engine.py` before clingo invocation to inject `cwc_substructure_match/2` facts. Optional for v1 but essential for making the stub credible.
+**Python companion work:** create `src/lightning/reasoning/chemistry.py` with rdkit SMARTS patterns for tabun, sarin, VX, mustard, lewisite families. Called from `engine.py` before clingo invocation to inject `cwc_substructure_match/2` facts. Optional for v1 but essential for making the stub credible.
 
 ### C.2 MTCR expansion — `mtcr.lp`
 
@@ -449,7 +449,7 @@ Do phases in this exact sequence. Each is a separate commit:
 5. **Phase C.2** — MTCR expansion
 6. **Phase C.3** — Select Agents expansion
 7. **Run full test suite again.** All should still pass; new escalation/classification cases should trigger as expected.
-8. **(Optional, if time)** Create `src/aegis/reasoning/chemistry.py` with rdkit SMARTS patterns for CWC structural matching.
+8. **(Optional, if time)** Create `src/lightning/reasoning/chemistry.py` with rdkit SMARTS patterns for CWC structural matching.
 
 ## Validation checkpoints
 
@@ -468,6 +468,6 @@ After Phase C:
 - **USML Category IV at ~95%** — covers a, b, c, d, f, g, h (with extended component list), h(1), i, and full specially-designed release logic
 - **MTCR as genuinely-working secondary regime** — not just a stub; real threshold reasoning
 - **CWC and Select Agents with production structure** — every rule author after this follows the same pattern
-- **Credible narrative** — "AEGIS covers USML Category IV at 95% coverage and provides threshold-based reasoning for MTCR. Full CWC structural matching and Select Agents taxonomic rollup are planned for v2. Our architecture extends to new regimes with roughly one day of knowledge engineering per category."
+- **Credible narrative** — "LIGHTNING covers USML Category IV at 95% coverage and provides threshold-based reasoning for MTCR. Full CWC structural matching and Select Agents taxonomic rollup are planned for v2. Our architecture extends to new regimes with roughly one day of knowledge engineering per category."
 
 That narrative survives a Q&A with someone who actually does this work for a living. The previous version did not.

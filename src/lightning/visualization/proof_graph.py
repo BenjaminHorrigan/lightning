@@ -131,7 +131,7 @@ def generate_d3_html(graph_data: Dict[str, Any]) -> str:
     <!DOCTYPE html>
     <html>
     <head>
-        <title>AEGIS Proof Tree Visualization</title>
+        <title>LIGHTNING Proof Tree Visualization</title>
         <script src="https://d3js.org/d3.v7.min.js"></script>
         <style>
             body {{ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }}
@@ -150,7 +150,7 @@ def generate_d3_html(graph_data: Dict[str, Any]) -> str:
         </style>
     </head>
     <body>
-        <h2>🛡️ AEGIS Proof Tree Visualization</h2>
+        <h2>🛡️ LIGHTNING Proof Tree Visualization</h2>
         <div id="controls">
             <button onclick="resetZoom()">Reset View</button>
             <button onclick="pauseSimulation()">Pause Physics</button>
@@ -340,7 +340,7 @@ def create_streamlit_graph_component(graph_data: Dict[str, Any]) -> str:
     """Create a Streamlit-compatible graph component."""
     # Simplified version for Streamlit embedding
     streamlit_html = f"""
-    <div id="aegis-graph" style="width: 100%; height: 500px; border: 1px solid #ccc;"></div>
+    <div id="lightning-graph" style="width: 100%; height: 500px; border: 1px solid #ccc;"></div>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script>
         const data = {json.dumps(graph_data)};
@@ -349,7 +349,7 @@ def create_streamlit_graph_component(graph_data: Dict[str, Any]) -> str:
         const width = 600;
         const height = 400;
 
-        const svg = d3.select("#aegis-graph")
+        const svg = d3.select("#lightning-graph")
             .append("svg")
             .attr("width", width)
             .attr("height", height);

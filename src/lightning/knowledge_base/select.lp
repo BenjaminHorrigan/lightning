@@ -2,7 +2,7 @@
 % Select Agents — HHS / USDA
 % Sources: 42 CFR 73 (HHS), 7 CFR 331 (USDA plant), 9 CFR 121 (USDA animal)
 % ============================================================================
-% Five-section layout per aegis_RULE_EXPANSION.md Phase C template.
+% Five-section layout per lightning_RULE_EXPANSION.md Phase C template.
 %
 % Toxin thresholds in the CFR are stated in milligrams (some below 1 mg).
 % Clingo's integer sort rejects floats like 0.5, so we encode thresholds in

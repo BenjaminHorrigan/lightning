@@ -1,5 +1,5 @@
 """
-Golden eval harness for AEGIS.
+Golden eval harness for LIGHTNING.
 
 Two layers of tests:
 

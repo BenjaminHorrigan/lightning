@@ -147,7 +147,7 @@ class InteractiveGapResolver:
     def export_resolution_log(self) -> str:
         """Export the complete gap resolution process as a log."""
         log_lines = [
-            "# AEGIS Interactive Gap Resolution Log",
+            "# LIGHTNING Interactive Gap Resolution Log",
             "",
             f"**Original Artifact:** {self.original_artifact.artifact_type.value}",
             f"**Total Gaps Identified:** {len(self.gaps)}",

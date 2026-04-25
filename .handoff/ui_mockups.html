@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AEGIS — UI Mockups</title>
+<title>LIGHTNING — UI Mockups</title>
 <style>
   :root {
     --bg: #0b0d10;
@@ -411,7 +411,7 @@
   }
 
   .comparison-side.baseline { border-color: rgba(255, 107, 107, 0.3); }
-  .comparison-side.aegis { border-color: rgba(61, 220, 151, 0.3); }
+  .comparison-side.lightning { border-color: rgba(61, 220, 151, 0.3); }
 
   .comparison-side h3 {
     font-size: 14px;
@@ -431,7 +431,7 @@
   }
 
   .baseline .label-tag { color: #ff6b6b; }
-  .aegis .label-tag { color: #3ddc97; }
+  .lightning .label-tag { color: #3ddc97; }
 
   .baseline-answer {
     background: var(--code-bg);
@@ -473,7 +473,7 @@
 <body>
 <div class="container">
 
-  <h1>AEGIS — Demo UI Mockups</h1>
+  <h1>LIGHTNING — Demo UI Mockups</h1>
   <p class="subtitle">
     Three-pane layout: Input → Reasoning → Decision. All state visible at once — no tabs, no scrolling for the canonical demo cases. Dark theme chosen to read well under venue lighting and on projectors.
   </p>
@@ -491,7 +491,7 @@
       <div class="brand">
         <div class="logo">A</div>
         <div>
-          <span class="brand-name">AEGIS</span>
+          <span class="brand-name">LIGHTNING</span>
           <span class="brand-tag">Neurosymbolic safety layer · v0.1</span>
         </div>
       </div>
@@ -621,7 +621,7 @@ metadata = {
     <div class="app-header">
       <div class="brand">
         <div class="logo">A</div>
-        <div><span class="brand-name">AEGIS</span></div>
+        <div><span class="brand-name">LIGHTNING</span></div>
       </div>
       <div class="header-right">
         <span class="status-pill">PROOF GENERATED · 1.8s</span>
@@ -780,7 +780,7 @@ chamber of the Vulcan-III rocket engine.
     <div class="app-header">
       <div class="brand">
         <div class="logo">A</div>
-        <div><span class="brand-name">AEGIS</span></div>
+        <div><span class="brand-name">LIGHTNING</span></div>
       </div>
       <div class="header-right">
         <span class="status-pill" style="color: var(--escalate); border-color: var(--escalate);">HUMAN REVIEW REQUIRED</span>
@@ -908,7 +908,7 @@ Year 2.</div>
   <!-- ================================================================= -->
   <div class="section-header">The kill shot — side-by-side with LLM baseline</div>
   <p class="mockup-caption">
-    <strong>The 20-second moment that wins the room.</strong> Use this as a final pane or a separate slide. Same input, both systems. The baseline confidently hallucinates; AEGIS refuses with a proof tree.
+    <strong>The 20-second moment that wins the room.</strong> Use this as a final pane or a separate slide. Same input, both systems. The baseline confidently hallucinates; LIGHTNING refuses with a proof tree.
   </p>
 
   <div class="comparison">
@@ -922,8 +922,8 @@ Year 2.</div>
       </div>
     </div>
 
-    <div class="comparison-side aegis">
-      <h3>AEGIS <span class="label-tag">NEUROSYMBOLIC</span></h3>
+    <div class="comparison-side lightning">
+      <h3>LIGHTNING <span class="label-tag">NEUROSYMBOLIC</span></h3>
       <div class="mockup-caption" style="font-size: 12px; margin-bottom: 10px;">Same input. Formal reasoning over USML Category IV.</div>
       <div class="baseline-answer" style="border-left-color: var(--allow);">
         <strong style="color: var(--refuse);">REFUSE</strong> — USML Category IV(h)<br/><br/>
@@ -943,15 +943,15 @@ Year 2.</div>
     <strong>The close.</strong> Shown as a final code snippet after the demo. Makes the pitch about deployable infrastructure, not a research toy.
   </p>
 
-<div class="integration-block"><span style="color: #8b949e;"># Any autonomous research agent becomes AEGIS-safe in one line.</span>
-<span style="color: #ff7b72;">from</span> aegis.integrations.chemcrow <span style="color: #ff7b72;">import</span> aegis_guard
+<div class="integration-block"><span style="color: #8b949e;"># Any autonomous research agent becomes LIGHTNING-safe in one line.</span>
+<span style="color: #ff7b72;">from</span> lightning.integrations.chemcrow <span style="color: #ff7b72;">import</span> lightning_guard
 <span style="color: #ff7b72;">from</span> chemcrow <span style="color: #ff7b72;">import</span> ChemCrow
 
 agent = ChemCrow()
-safe_agent = aegis_guard(agent)  <span style="color: #8b949e;"># ← three characters of difference</span>
+safe_agent = lightning_guard(agent)  <span style="color: #8b949e;"># ← three characters of difference</span>
 
 safe_agent.run(<span style="color: #a5d6ff;">"Synthesize a fluorinated organophosphorus compound"</span>)
-<span style="color: #8b949e;"># AegisRefusal: CWC Schedule 1 precursor pattern detected.</span>
+<span style="color: #8b949e;"># LightningRefusal: CWC Schedule 1 precursor pattern detected.</span>
 <span style="color: #8b949e;">#   Proof: organophosphorus_substrate + fluorinating_agent → escalate_cwc</span>
 <span style="color: #8b949e;">#   Citation: CWC Annex on Chemicals, Schedule 1.A</span></div>
 

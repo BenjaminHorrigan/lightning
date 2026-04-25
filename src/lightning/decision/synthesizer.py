@@ -9,7 +9,7 @@ Converts a ProofTree into a final ClassificationResult with:
 
 The decision logic is itself symbolic — we don't let the LLM decide whether
 to allow or refuse. The LLM only explains decisions the symbolic layer made.
-This is the core trust property of AEGIS.
+This is the core trust property of LIGHTNING.
 """
 from __future__ import annotations
 
