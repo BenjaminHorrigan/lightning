@@ -25,40 +25,55 @@
 <main class="presentation">
 
   <!-- SLIDE 1 - Cold open: animated agent network. Touches: Problem-Solution Fit -->
-  <section class="slide is-active" id="slide-1" data-touches="">
-    <div class="slide__eyebrow">A neurosymbolic safety layer for autonomous research</div>
-    <h1 class="slide__title" style="font-size: var(--fs-3xl); margin-bottom: var(--space-4);">L<span class="accent">i</span>ghtning</h1>
+  <section class="slide is-active" id="slide-1" data-touches="" style="position: relative;">
 
-    <div style="display: flex; gap: var(--space-6); align-items: flex-start;">
-      <!-- SVG agent network graph -->
-      <svg id="agent-net-svg" viewBox="0 0 420 290" style="width: 54%; height: 290px; overflow: visible; flex-shrink: 0;"></svg>
-
-      <!-- Violations panel — hidden until phase 1 -->
-      <div id="s1-violations" style="flex: 1; opacity: 0; transition: opacity 0.5s 0.15s; padding-top: var(--space-1); min-width: 0;">
-        <div style="font-family: var(--font-mono); font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 2px; color: var(--accent-danger); margin-bottom: var(--space-3);">&#9888;&nbsp; Violations detected</div>
-        <div id="s1-viol-items" style="display: flex; flex-direction: column; gap: var(--space-2);"></div>
+    <!-- Phase 0: Lightning front and centre — fades out on first press -->
+    <div id="s1-hero" style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2; transition: opacity 0.7s; pointer-events: none;">
+      <div style="font-size: 5.5rem; font-weight: 800; letter-spacing: 4px; color: var(--text-primary); line-height: 1; margin-bottom: var(--space-5);">
+        L<span class="accent">i</span>ghtning
+      </div>
+      <div style="font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-secondary); text-transform: uppercase; letter-spacing: 3px;">
+        Neurosymbolic safety for autonomous research
       </div>
     </div>
 
-    <!-- Stats row — hidden until phase 2 -->
-    <div id="s1-stats" class="slide__metrics" style="margin-top: var(--space-4); opacity: 0; transition: opacity 0.8s;">
-      <div class="slide__big-stat">
-        <div class="slide__big-stat__value" style="color: var(--accent-warning);">0</div>
-        <div class="slide__big-stat__label">Cloud labs with<br>agent-rate review</div>
+    <!-- Phase 1+: normal slide layout — hidden until hero fades out -->
+    <div id="s1-layout" style="opacity: 0; transition: opacity 0.7s 0.2s;">
+      <div class="slide__eyebrow">A neurosymbolic safety layer for autonomous research</div>
+      <h1 class="slide__title" style="font-size: var(--fs-3xl); margin-bottom: var(--space-4);">L<span class="accent">i</span>ghtning</h1>
+
+      <div style="display: flex; gap: var(--space-6); align-items: flex-start;">
+        <!-- SVG agent network graph -->
+        <svg id="agent-net-svg" viewBox="0 0 420 290" style="width: 54%; height: 290px; overflow: visible; flex-shrink: 0;"></svg>
+
+        <!-- Violations panel — hidden until phase 3 -->
+        <div id="s1-violations" style="flex: 1; opacity: 0; transition: opacity 0.5s 0.15s; padding-top: var(--space-1); min-width: 0;">
+          <div style="font-family: var(--font-mono); font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 2px; color: var(--accent-danger); margin-bottom: var(--space-3);">&#9888;&nbsp; Violations detected</div>
+          <div id="s1-viol-items" style="display: flex; flex-direction: column; gap: var(--space-2);"></div>
+        </div>
       </div>
-      <div class="slide__big-stat">
-        <div class="slide__big-stat__value" style="color: var(--accent-warning);">0</div>
-        <div class="slide__big-stat__label">ChemCrow / Coscientist<br>export-control checks</div>
+
+      <!-- Stats row — hidden until phase 4 -->
+      <div id="s1-stats" class="slide__metrics" style="margin-top: var(--space-4); opacity: 0; transition: opacity 0.8s;">
+        <div class="slide__big-stat">
+          <div class="slide__big-stat__value" style="color: var(--accent-warning);">0</div>
+          <div class="slide__big-stat__label">Cloud labs with<br>agent-rate review</div>
+        </div>
+        <div class="slide__big-stat">
+          <div class="slide__big-stat__value" style="color: var(--accent-warning);">0</div>
+          <div class="slide__big-stat__label">ChemCrow / Coscientist<br>export-control checks</div>
+        </div>
+        <div class="slide__big-stat">
+          <div class="slide__big-stat__value" style="color: var(--accent-warning);">&infin;</div>
+          <div class="slide__big-stat__label">Agent calls per hour<br>vs. human reviewers</div>
+        </div>
       </div>
-      <div class="slide__big-stat">
-        <div class="slide__big-stat__value" style="color: var(--accent-warning);">&infin;</div>
-        <div class="slide__big-stat__label">Agent calls per hour<br>vs. human reviewers</div>
+
+      <div class="criterion-callout" data-criterion="fit">
+        Problem-Solution Fit &middot; the gap is observed, named, unaddressed
       </div>
     </div>
 
-    <div class="criterion-callout" data-criterion="fit">
-      Problem-Solution Fit &middot; the gap is observed, named, unaddressed
-    </div>
   </section>
 
   <!-- SLIDE 2 - Neurosymbolic. Touches: Novelty -->

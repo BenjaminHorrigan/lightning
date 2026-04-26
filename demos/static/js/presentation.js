@@ -88,24 +88,23 @@
     updateCriteria(idx);
 
     // Reset slide timer
-    slideStart = performance.now();
+    slideStart   = performance.now();
     elapsedTotal = DWELL.slice(0, idx).reduce((a, b) => a + b, 0);
+    // On the last slide, anchor elapsedTotal at the full total so tick()
+    // always computes pct = 100 % and the bar stays full.
+    if (idx === totalSlides - 1) elapsedTotal = TOTAL_DWELL;
 
     // Trigger per-slide animations
     if (idx === 0) {
       slide1Phase = 0;
-      initAgentNetwork();       // redraws SVG — root only
-      applySlide1Phase(0);      // resets HTML panels (no transition flash)
-    }
-    // Fill timer bar instantly on last slide
-    if (idx === totalSlides - 1 && timerBar) {
-      timerBar.style.width = '100%';
+      initAgentNetwork();   // redraws SVG (root hidden inside s1-layout)
+      applySlide1Phase(0);  // shows hero, hides layout, resets panels
     }
     if (idx === 4) animateScores(); // slide 5
   }
 
   function next() {
-    if (current === 0 && slide1Phase < 3) {
+    if (current === 0 && slide1Phase < 4) {
       slide1Phase++;
       applySlide1Phase(slide1Phase);
       slideStart = performance.now();
@@ -489,45 +488,57 @@ end_use: space launch`;
 
   /**
    * Apply a slide-1 phase transition.
-   * phase 0 → reset (called on showSlide(0) and reset)
-   * phase 1 → expand green network
-   * phase 2 → controlled nodes turn red, violations panel fades in
-   * phase 3 → stats row fades in
+   *
+   * phase 0 → reset: hero visible, layout hidden, panels zeroed (no flash)
+   * phase 1 → hero fades out, layout fades in — shows root node
+   * phase 2 → expand green agent network
+   * phase 3 → flag violations (red nodes + panel)
+   * phase 4 → stats row fades in
    */
   function applySlide1Phase(phase) {
+    const hero            = document.getElementById('s1-hero');
+    const layout          = document.getElementById('s1-layout');
     const svg             = document.getElementById('agent-net-svg');
     const violationsPanel = document.getElementById('s1-violations');
     const violItems       = document.getElementById('s1-viol-items');
     const statsRow        = document.getElementById('s1-stats');
 
-    // ── phase 0: reset all HTML panels instantly ──────────────────────────
+    // ── phase 0: reset ────────────────────────────────────────────────────
     if (phase === 0) {
-      if (violationsPanel) {
-        violationsPanel.style.transition = 'none';
-        violationsPanel.style.opacity    = '0';
-        // Re-enable transition after the flush so future fade-ins are smooth
-        requestAnimationFrame(() => {
-          if (violationsPanel) violationsPanel.style.transition = 'opacity 0.5s 0.15s';
-        });
-      }
-      if (statsRow) {
-        statsRow.style.transition = 'none';
-        statsRow.style.opacity    = '0';
-        requestAnimationFrame(() => {
-          if (statsRow) statsRow.style.transition = 'opacity 0.8s';
-        });
-      }
+      // Hero: instantly visible
+      if (hero) { hero.style.transition = 'none'; hero.style.opacity = '1'; }
+      // Layout + panels: instantly hidden, then re-enable transitions
+      const els = [
+        [layout,          'opacity 0.7s 0.2s'],
+        [violationsPanel, 'opacity 0.5s 0.15s'],
+        [statsRow,        'opacity 0.8s'],
+      ];
+      els.forEach(([el, tr]) => {
+        if (!el) return;
+        el.style.transition = 'none';
+        el.style.opacity    = '0';
+        requestAnimationFrame(() => { if (el) el.style.transition = tr; });
+      });
+      // Re-enable hero transition after flush
+      requestAnimationFrame(() => { if (hero) hero.style.transition = 'opacity 0.7s'; });
       return;
     }
 
-    // ── phase 1: expand the network ───────────────────────────────────────
+    // ── phase 1: hero → layout swap ───────────────────────────────────────
     if (phase === 1) {
+      if (hero)   hero.style.opacity   = '0';
+      if (layout) layout.style.opacity = '1';
+      return;
+    }
+
+    // ── phase 2: expand green network ─────────────────────────────────────
+    if (phase === 2) {
       expandAgentNetwork();
       return;
     }
 
-    // ── phase 2: flag violations ──────────────────────────────────────────
-    if (phase === 2 && svg) {
+    // ── phase 3: flag violations ──────────────────────────────────────────
+    if (phase === 3 && svg) {
       const controlledNodes = S1_NODES.filter((n) => n.controlled);
       const controlledIds   = new Set(controlledNodes.map((n) => n.id));
 
@@ -589,8 +600,8 @@ end_use: space launch`;
       if (violationsPanel) violationsPanel.style.opacity = '1';
     }
 
-    // ── phase 3: stats row ────────────────────────────────────────────────
-    if (phase === 3) {
+    // ── phase 4: stats row ────────────────────────────────────────────────
+    if (phase === 4) {
       if (statsRow) statsRow.style.opacity = '1';
     }
   }
