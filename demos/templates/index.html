@@ -6,57 +6,220 @@
 <body>
 {% include "_partials/navbar.html" %}
 
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>1. Input Protocol</h5>
-                    </div>
-                    <div class="card-body">
-                        <textarea id="protocol-input" class="form-control" rows="15"
-                                  placeholder="Paste protocol here..."></textarea>
-                        <button id="analyze-btn" class="btn btn-primary mt-3 w-100">
-                            <span id="analyze-spinner" class="spinner-border spinner-border-sm d-none"></span>
-                            Analyze Protocol
-                        </button>
-                        <div id="examples" class="mt-3">
-                            <select id="example-select" class="form-select">
-                                <option value="">Select example...</option>
-                                <option value="benign">Benign Chemistry</option>
-                                <option value="hydrazine">ITAR Controlled</option>
-                                <option value="cross-regime">Cross-Regime</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<main class="lightning-page">
 
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>2. Reasoning</h5>
-                    </div>
-                    <div class="card-body" id="reasoning-pane">
-                        <div class="text-muted">Enter a protocol to see reasoning...</div>
-                    </div>
-                </div>
-            </div>
+  <header class="lightning-page__header">
+    <h1 class="lightning-page__title">Live Demo</h1>
+    <p class="lightning-page__subtitle">
+      Paste a protocol, design, or research proposal. Lightning extracts
+      structured meaning, runs symbolic reasoning across 18 regulatory
+      regimes simultaneously, and returns a deterministic decision with full
+      proof tree and CFR citations.
+    </p>
+  </header>
 
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>3. Decision</h5>
-                    </div>
-                    <div class="card-body" id="decision-pane">
-                        <div class="text-muted">Analysis results will appear here...</div>
-                    </div>
-                </div>
-            </div>
+  <!-- 3-pane grid: Input | Reasoning | Decision -->
+  <div class="demo-grid">
+
+    <!-- ─── Pane 1 · Input ──────────────────────────────────────────── -->
+    <section class="hud-panel hud-panel--flush demo-pane">
+      <header class="hud-panel__header">
+        <h2 class="hud-panel__title">01 · Input</h2>
+        <span class="mono-tag">artifact</span>
+      </header>
+
+      <div class="hud-panel__body">
+        <label for="artifact-input" class="text-mono text-uppercase text-secondary text-xs mb-2" style="display: block;">
+          Protocol / spec / proposal
+        </label>
+        <textarea id="artifact-input" class="tactical-textarea" rows="14"
+                  placeholder="Paste a protocol, spec, or proposal..."></textarea>
+
+        <div class="demo-pane__controls">
+          <button id="analyze-btn" class="btn-tactical btn-tactical--primary w-full">
+            <span id="analyze-btn-text">Analyze Protocol</span>
+          </button>
+
+          <label for="example-select" class="text-mono text-uppercase text-secondary text-xs mt-4 mb-2" style="display: block;">
+            Or load an example
+          </label>
+          <select id="example-select" class="tactical-select">
+            <option value="">Select example...</option>
+            <option value="benign">Benign · Suzuki coupling (ALLOW)</option>
+            <option value="hydrazine">USML IV(h) · Hydrazine for rocket (REFUSE)</option>
+            <option value="turbopump">USML IV · Turbopump spec (REFUSE)</option>
+            <option value="dual_use">Dual-use · intent ambiguous (ESCALATE)</option>
+            <option value="cross_regime">Cross-regime · USML + MTCR (REFUSE)</option>
+            <option value="adversarial">Adversarial · diazane synonym (REFUSE)</option>
+          </select>
         </div>
-    </div>
+      </div>
+    </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/static/js/app.js"></script>
+    <!-- ─── Pane 2 · Reasoning ──────────────────────────────────────── -->
+    <section class="hud-panel hud-panel--flush demo-pane">
+      <header class="hud-panel__header">
+        <h2 class="hud-panel__title">02 · Reasoning</h2>
+        <span class="mono-tag" id="reasoning-tag">awaiting</span>
+      </header>
+
+      <div class="hud-panel__body">
+        <div id="reasoning-output" class="reasoning-output">
+          <div class="reasoning-output__placeholder">
+            <div class="text-mono text-xs text-muted">
+              Enter a protocol to see reasoning steps.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Pane 3 · Decision ──────────────────────────────────────── -->
+    <section class="hud-panel hud-panel--flush demo-pane">
+      <header class="hud-panel__header">
+        <h2 class="hud-panel__title">03 · Decision</h2>
+        <span class="mono-tag" id="decision-time">— ms</span>
+      </header>
+
+      <div class="hud-panel__body">
+        <div id="decision-output" class="decision-output">
+          <div class="decision-output__placeholder">
+            <div class="text-mono text-xs text-muted">
+              Analysis result will appear here.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+</main>
+
+<style>
+  /* Page-local layout. Tokens come from style.css so this stays in lockstep. */
+  .demo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6);
+    align-items: stretch;
+  }
+
+  .demo-pane {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 36rem;
+  }
+
+  .demo-pane > .hud-panel__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .demo-pane__controls {
+    margin-top: var(--space-4);
+  }
+
+  .reasoning-output,
+  .decision-output {
+    flex: 1;
+    background: var(--bg-input);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: var(--space-4);
+    overflow-y: auto;
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    color: var(--text-primary);
+    line-height: var(--lh-snug);
+  }
+
+  .reasoning-output__placeholder,
+  .decision-output__placeholder {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* Reasoning step list */
+  .reasoning-step {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-3);
+    align-items: start;
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .reasoning-step:last-child { border-bottom: 0; }
+
+  .reasoning-step__num {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+    min-width: 1.5rem;
+  }
+
+  .reasoning-step__stage {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: var(--space-1);
+  }
+  .reasoning-step__stage.neural   { color: var(--accent-novel); }
+  .reasoning-step__stage.symbolic { color: var(--accent-primary); }
+  .reasoning-step__stage.hybrid   { color: var(--accent-success); }
+
+  .reasoning-step__body {
+    color: var(--text-secondary);
+    font-size: var(--fs-xs);
+    line-height: var(--lh-normal);
+  }
+
+  /* Decision panel sub-blocks */
+  .decision-block { margin-bottom: var(--space-5); }
+  .decision-block:last-child { margin-bottom: 0; }
+
+  .decision-block__label {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: var(--space-2);
+  }
+
+  .decision-block__rationale {
+    font-family: var(--font-sans);
+    font-size: var(--fs-sm);
+    line-height: var(--lh-normal);
+    color: var(--text-primary);
+  }
+
+  .citation-list { list-style: none; padding: 0; margin: 0; }
+  .citation-list li {
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: var(--fs-xs);
+  }
+  .citation-list li:last-child { border-bottom: 0; }
+
+  .citation-list .authority {
+    color: var(--accent-primary);
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+  @media (max-width: 1024px) {
+    .demo-grid { grid-template-columns: 1fr; }
+    .demo-pane { min-height: auto; }
+  }
+</style>
+
+<script src="/static/js/app.js"></script>
 </body>
 </html>
