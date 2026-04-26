@@ -392,6 +392,121 @@ def artifact_release_120_41_b_4() -> TechnicalArtifact:
     )
 
 
+# --- Cat VIII — Military Aircraft ---
+
+def artifact_combat_aircraft_direct() -> TechnicalArtifact:
+    """VIII(a) — combat aircraft directly enumerated."""
+    return TechnicalArtifact(
+        artifact_type=ArtifactType.DESIGN,
+        components=[Component(name="F-X-variant", category="combat_aircraft")],
+        extraction_confidence=0.9,
+    )
+
+
+def artifact_military_turbofan() -> TechnicalArtifact:
+    """VIII(b) — military turbofan engine."""
+    return TechnicalArtifact(
+        artifact_type=ArtifactType.DESIGN,
+        components=[Component(name="XTE-500", category="military_turbofan")],
+        extraction_confidence=0.9,
+    )
+
+
+def artifact_ejection_seat() -> TechnicalArtifact:
+    """VIII(c) — ejection seat enumerated as a controlled part."""
+    return TechnicalArtifact(
+        artifact_type=ArtifactType.DESIGN,
+        components=[Component(name="ACES-II-mod", category="ejection_seat")],
+        extraction_confidence=0.9,
+    )
+
+
+def artifact_attack_aircraft_performance() -> TechnicalArtifact:
+    """VIII(a) performance threshold — speed > 300 kts with weapons hardpoints."""
+    return TechnicalArtifact(
+        artifact_type=ArtifactType.DESIGN,
+        components=[
+            Component(
+                name="Fighter-X",
+                category="strike_aircraft",  # not in enumeration; caught by performance rule
+                specifications=[PerformanceSpec(parameter="speed_knots", value=450, unit="kts")],
+                attributes=["weapons_hardpoints"],
+            ),
+        ],
+        extraction_confidence=0.9,
+    )
+
+
+def artifact_commercial_aircraft_release() -> TechnicalArtifact:
+    """Cat VIII Note 2 release — commercial derivative, not specially designed for military."""
+    return TechnicalArtifact(
+        artifact_type=ArtifactType.DESIGN,
+        components=[
+            Component(
+                name="737-Airframe",
+                category="combat_aircraft",  # would trip VIII(a) without the release
+                attributes=["commercial_derivative_not_specially_designed"],
+            ),
+        ],
+        extraction_confidence=0.9,
+    )
+
+
+# --- Cat XV — Spacecraft ---
+
+def artifact_military_satellite_direct() -> TechnicalArtifact:
+    """XV(a) — military satellite, directly enumerated system type."""
+    return TechnicalArtifact(
+        artifact_type=ArtifactType.DESIGN,
+        components=[Component(name="MilSat-1", category="military_satellite")],
+        extraction_confidence=0.9,
+    )
+
+
+def artifact_high_res_imaging_satellite() -> TechnicalArtifact:
+    """XV(a_imaging) — sub-meter GSD imaging satellite classified via ground_resolution_m rule."""
+    return TechnicalArtifact(
+        artifact_type=ArtifactType.DESIGN,
+        components=[
+            Component(
+                name="Imager-1",
+                category="imaging_sensor",
+                parent_system="Helios-3 recon satellite",
+                specifications=[
+                    PerformanceSpec(parameter="ground_resolution_m", value=0.3, unit="m"),
+                ],
+            ),
+        ],
+        extraction_confidence=0.9,
+    )
+
+
+def artifact_military_ground_station() -> TechnicalArtifact:
+    """XV(b) — military satellite ground control station."""
+    return TechnicalArtifact(
+        artifact_type=ArtifactType.DESIGN,
+        components=[Component(name="SGCS-Delta", category="military_ground_station")],
+        extraction_confidence=0.9,
+    )
+
+
+def artifact_commercial_satellite_release() -> TechnicalArtifact:
+    """XV EAR/ITAR boundary release — commercial remote-sensing, GSD >= 50 cm → ALLOW."""
+    return TechnicalArtifact(
+        artifact_type=ArtifactType.DESIGN,
+        components=[
+            Component(
+                name="EarthScan-1",
+                category="remote_sensing_satellite",
+                specifications=[
+                    PerformanceSpec(parameter="imaging_resolution_cm", value=100, unit="cm"),
+                ],
+            ),
+        ],
+        extraction_confidence=0.9,
+    )
+
+
 # ============================================================================
 # Layer 1: direct-artifact golden cases
 # ============================================================================
@@ -432,6 +547,17 @@ GOLDEN_CASES = [
     ("cwc_sched_2_above",    artifact_cwc_schedule_2_above_threshold, Decision.REFUSE, "CWC_Schedule_2_threshold"),
     ("cwc_sched_2_below",    artifact_cwc_schedule_2_below_threshold, Decision.ALLOW, None),
     ("cwc_sched_3",          artifact_cwc_schedule_3,        Decision.REFUSE, "CWC_Schedule_3"),
+    # USML Cat VIII — Military Aircraft
+    ("viii_a_combat_aircraft",   artifact_combat_aircraft_direct,      Decision.REFUSE, "USML_VIII_a"),
+    ("viii_b_military_turbofan", artifact_military_turbofan,           Decision.REFUSE, "USML_VIII_b"),
+    ("viii_c_ejection_seat",     artifact_ejection_seat,               Decision.REFUSE, "USML_VIII_c"),
+    ("viii_a_performance",       artifact_attack_aircraft_performance, Decision.REFUSE, "USML_VIII_a_performance"),
+    ("viii_commercial_release",  artifact_commercial_aircraft_release, Decision.ALLOW,  None),
+    # USML Cat XV — Spacecraft
+    ("xv_a_military_satellite",  artifact_military_satellite_direct,    Decision.REFUSE, "USML_XV_a"),
+    ("xv_a_imaging_sub_meter",   artifact_high_res_imaging_satellite,   Decision.REFUSE, "USML_XV_a_imaging"),
+    ("xv_b_ground_station",      artifact_military_ground_station,      Decision.REFUSE, "USML_XV_b"),
+    ("xv_commercial_release",    artifact_commercial_satellite_release, Decision.ALLOW,  None),
 ]
 
 

@@ -166,5 +166,47 @@
     "text": "Overlap Select Agents — organisms under joint HHS and USDA jurisdiction (Bacillus anthracis, Brucella abortus, Burkholderia mallei, Burkholderia pseudomallei).",
     "url": "https://www.selectagents.gov/sat/list.htm",
     "cfr_reference": "42 CFR 73.4; 9 CFR 121.4"
+  },
+  "22 CFR 121.1 Category VIII(a)": {
+    "regime": "USML",
+    "category": "VIII(a)",
+    "text": "Aircraft specifically designed, modified, or configured for a military purpose, including: combat aircraft (fixed-wing and rotary-wing); military trainer aircraft that are armed or weapons-system-capable; electronic warfare aircraft; airborne warning and control system (AWACS) aircraft; armed unmanned aerial vehicles (UAVs); military patrol aircraft; gunships; and military transport aircraft. Also controlled: aircraft exceeding 300 knots airspeed with installed weapons-delivery capability (hardpoints, pylons, or integral gun systems).",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121#p-121.1(Category%20VIII)",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category VIII(b)": {
+    "regime": "USML",
+    "category": "VIII(b)",
+    "text": "Jet engines and gas turbine engines (turbofan, turbojet, turboprop, turboshaft) and ramjet, pulsejet, and scramjet engines specifically designed or modified for the aircraft in paragraph (a) of this category, and parts, components, accessories, and attachments thereof including combustors, compressors, turbines, afterburners, and exhaust nozzles.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121#p-121.1(Category%20VIII)",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category VIII(c)": {
+    "regime": "USML",
+    "category": "VIII(c)",
+    "text": "Parts, components, accessories, and attachments specifically designed or modified for the aircraft in paragraph (a) or the engines in paragraph (b) of this category, and not elsewhere controlled on the USML, including: ejection seats; aircraft gun systems (e.g., M61 Vulcan mounts); military avionics including fire-control and electronic warfare suites; stealth coatings and radar-absorbent structures; combat aircraft landing gear; missile pylons and weapons bay doors; aerial refueling booms; and military flight control computers.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121#p-121.1(Category%20VIII)",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category XV(a)": {
+    "regime": "USML",
+    "category": "XV(a)",
+    "text": "Spacecraft (including satellites) and suborbital craft specifically designed, modified, or configured for a military or intelligence purpose, including: military and intelligence satellites (ISR, SIGINT, ELINT, missile early-warning, MILSATCOM, military navigation/GPS III-class); and any remote-sensing satellite with ground-sampling distance (GSD) less than 50 cm (sub-50 cm imaging resolution is the ITAR/EAR boundary). Note: Commercial remote-sensing satellites with GSD >= 50 cm and no military end-use may qualify for EAR licensing under ECCN 9A515 rather than USML.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121#p-121.1(Category%20XV)",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category XV(b)": {
+    "regime": "USML",
+    "category": "XV(b)",
+    "text": "Ground control stations, mission control equipment, and satellite command-and-control (C2) systems specifically designed or modified for the command, control, and tracking of spacecraft in paragraph (a) of this category, including military ground stations, satellite telemetry/tracking/control (TT&C) terminals, and uplink encryption systems for classified satellite communications.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121#p-121.1(Category%20XV)",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category XV(c)": {
+    "regime": "USML",
+    "category": "XV(c)",
+    "text": "Propulsion systems (solid, liquid, and electric) and thermal management devices specifically designed or modified for the spacecraft in paragraph (a) of this category, and parts, components, accessories, and attachments therefor, including: spacecraft propulsion systems, satellite thrusters, orbit-raising motors, apogee kick motors, and attitude control thrusters.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121#p-121.1(Category%20XV)",
+    "cfr_reference": "22 CFR 121.1"
   }
 }

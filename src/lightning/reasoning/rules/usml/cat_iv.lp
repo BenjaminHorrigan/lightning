@@ -61,6 +61,15 @@ category_iv_h_component("reentry_vehicle_heat_shield").
 category_iv_h_component("penetration_aid").
 category_iv_h_component("decoy_reentry").
 category_iv_h_component("submunition_dispenser").
+% Nozzle materials and TVC systems
+category_iv_h_component("carbon_carbon_nozzle_throat").   % C-C composite throat
+category_iv_h_component("pyrolytic_graphite_nozzle").     % PG nozzle insert
+category_iv_h_component("flex_seal_tvc").                 % flexible bearing TVC
+category_iv_h_component("gimbal_actuator_tvc").           % gimbaled nozzle TVC
+category_iv_h_component("liquid_injection_tvc").          % LITVC system
+category_iv_h_component("turbopump_impeller").            % pump rotor
+category_iv_h_component("gas_generator").                 % pre-burner/gas generator
+category_iv_h_component("propellant_valve_high_pressure"). % >17 bar rated
 
 % ============================================================================
 % "Specially designed" — 22 CFR 120.41
@@ -165,6 +174,10 @@ controlled_propellant("rdx").
 controlled_propellant("cl_20").
 controlled_propellant("gap").
 controlled_propellant("htpb_bound_propellant").
+controlled_propellant("aerozine_50").               % 50/50 hydrazine/UDMH blend
+controlled_propellant("hydroxyl_ammonium_nitrate"). % HAN — liquid monopropellant
+controlled_propellant("ammonium_dinitramide").      % ADN — green propellant
+controlled_propellant("nitrous_oxide_fuel_blend").  % NOFB hybrid oxidizer
 
 % ============================================================================
 % A.1 — Paragraph (b): launch vehicle sub-articles

@@ -164,7 +164,7 @@ def _canonicalize(s: str) -> str:
 
 
 def _infer_system_type(parent_name: str) -> str:
-    """Heuristic parent-system → category-IV type. Refine in production."""
+    """Heuristic parent-system → system_type atom. Refine in production."""
     name = parent_name.lower()
     if "rocket" in name or "launch vehicle" in name or "slv" in name:
         return "rocket"
@@ -174,6 +174,8 @@ def _infer_system_type(parent_name: str) -> str:
         return "rocket"
     if "uav" in name or "drone" in name:
         return "uav"
+    if "satellite" in name or "spacecraft" in name:
+        return "satellite"
     return "unknown"
 
 
@@ -183,8 +185,14 @@ def _infer_system_type(parent_name: str) -> str:
 # (IV(a)(2), MTCR Cat I) can match on standalone submissions without
 # requiring a separate parent_system wrapper.
 _SYSTEM_CATEGORIES = {
+    # Aerospace / USML Cat IV / MTCR
     "rocket", "space_launch_vehicle", "slv", "ballistic_missile",
     "cruise_missile", "sounding_rocket", "uav", "drone", "missile",
+    # Spacecraft / USML Cat XV
+    "military_satellite", "reconnaissance_satellite", "satellite",
+    "spacecraft", "remote_sensing_satellite",
+    "signals_intelligence_satellite", "communications_satellite_military",
+    "early_warning_satellite",
 }
 
 
@@ -200,6 +208,15 @@ def _system_type_for(category: str) -> str:
         return category if category != "missile" else "ballistic_missile"
     if category in ("uav", "drone"):
         return "uav"
+    # Spacecraft categories pass through verbatim so cat_xv.lp
+    # military_spacecraft_type/1 predicates match exactly.
+    if category in (
+        "military_satellite", "reconnaissance_satellite", "satellite",
+        "spacecraft", "remote_sensing_satellite",
+        "signals_intelligence_satellite", "communications_satellite_military",
+        "early_warning_satellite",
+    ):
+        return category
     return category
 
 
