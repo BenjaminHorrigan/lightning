@@ -31,26 +31,31 @@ classified(S, "usml", "system_level_explosive", "System-Level Explosive Device")
 
 % Sensitivity-based classifications
 classified(S, "usml", "high_sensitivity_explosive", "High Sensitivity Explosive") :-
-    substance(S),
-    schedule(S, "usml_explosives", "controlled"),
-    (sensitivity(S, "high"); sensitivity(S, "very_high")).
+    substance(S), schedule(S, "usml_explosives", "controlled"), sensitivity(S, "high").
+classified(S, "usml", "high_sensitivity_explosive", "High Sensitivity Explosive") :-
+    substance(S), schedule(S, "usml_explosives", "controlled"), sensitivity(S, "very_high").
 
 classified(S, "usml", "insensitive_munition", "Insensitive Munition Explosive") :-
-    substance(S),
-    schedule(S, "usml_explosives", "controlled"),
-    (sensitivity(S, "low"); sensitivity(S, "very_low")).
+    substance(S), schedule(S, "usml_explosives", "controlled"), sensitivity(S, "low").
+classified(S, "usml", "insensitive_munition", "Insensitive Munition Explosive") :-
+    substance(S), schedule(S, "usml_explosives", "controlled"), sensitivity(S, "very_low").
 
 % Advanced explosive classifications
 classified(S, "usml", "advanced_explosive", "Advanced Military Explosive") :-
-    substance(S),
-    schedule(S, "usml_explosives", "controlled"),
-    (canonical_name(S, "tatb"); canonical_name(S, "cl_20"); canonical_name(S, "hmx")).
+    substance(S), schedule(S, "usml_explosives", "controlled"), canonical_name(S, "tatb").
+classified(S, "usml", "advanced_explosive", "Advanced Military Explosive") :-
+    substance(S), schedule(S, "usml_explosives", "controlled"), canonical_name(S, "cl_20").
+classified(S, "usml", "advanced_explosive", "Advanced Military Explosive") :-
+    substance(S), schedule(S, "usml_explosives", "controlled"), canonical_name(S, "hmx").
 
 classified(S, "usml", "plastic_explosive", "Military Plastic Explosive") :-
-    substance(S),
-    schedule(S, "usml_explosives", "controlled"),
-    (canonical_name(S, "c4_explosive"); canonical_name(S, "semtex");
-     canonical_name(S, "pbxn_109"); canonical_name(S, "pbxn_5")).
+    substance(S), schedule(S, "usml_explosives", "controlled"), canonical_name(S, "c4_explosive").
+classified(S, "usml", "plastic_explosive", "Military Plastic Explosive") :-
+    substance(S), schedule(S, "usml_explosives", "controlled"), canonical_name(S, "semtex").
+classified(S, "usml", "plastic_explosive", "Military Plastic Explosive") :-
+    substance(S), schedule(S, "usml_explosives", "controlled"), canonical_name(S, "pbxn_109").
+classified(S, "usml", "plastic_explosive", "Military Plastic Explosive") :-
+    substance(S), schedule(S, "usml_explosives", "controlled"), canonical_name(S, "pbxn_5").
 
 % Warhead type classifications
 classified(S, "usml", "shaped_charge_warhead", "Shaped Charge Warhead") :-

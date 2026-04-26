@@ -79,6 +79,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Analyze button
     analyzeBtn.addEventListener('click', analyzeProtocol);
 
+    // Store last result so generateModifiedProtocol can access it
+    let lastAnalysisResult = null;
+    let lastProtocolText = null;
+
     async function analyzeProtocol() {
         const protocolText = protocolInput.value.trim();
         if (!protocolText) {
@@ -105,6 +109,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
 
             if (result.success) {
+                lastAnalysisResult = result;
+                lastProtocolText = protocolText;
                 displayResult(result);
             } else {
                 displayError('Analysis failed: ' + result.detail);
@@ -240,8 +246,61 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Make functions available globally
     window.generateModifiedProtocol = async function() {
-        // Implementation for protocol modification
-        alert('Protocol modification feature - see FastAPI endpoint /api/modify-protocol');
+        if (!lastAnalysisResult || !lastProtocolText) {
+            alert('Run an analysis first.');
+            return;
+        }
+
+        const decisionPane = document.getElementById('decision-pane');
+        const modifyBtn = document.querySelector('[onclick="generateModifiedProtocol()"]');
+        if (modifyBtn) modifyBtn.disabled = true;
+
+        // Show loading state in decision pane
+        decisionPane.insertAdjacentHTML('beforeend', `
+            <div id="modify-loading" class="mt-3 text-muted small">
+                <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                Generating modified protocol...
+            </div>
+        `);
+
+        try {
+            const response = await fetch('/api/modify-protocol', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    original_protocol: lastProtocolText,
+                    controlled_elements: lastAnalysisResult.proof_tree.controlled_elements,
+                    target_application: 'aerospace'
+                })
+            });
+
+            const result = await response.json();
+            document.getElementById('modify-loading')?.remove();
+
+            if (result.success) {
+                const recheckClass = { ALLOW: 'success', REFUSE: 'danger', ESCALATE: 'warning' }[result.recheck_result.decision];
+                decisionPane.insertAdjacentHTML('beforeend', `
+                    <div class="mt-3 border-top pt-3">
+                        <h6>Modified Protocol</h6>
+                        <pre class="bg-light p-2 small" style="white-space:pre-wrap">${result.modified_protocol}</pre>
+                        <h6>Re-check: <span class="badge bg-${recheckClass}">${result.recheck_result.decision}</span></h6>
+                        <p class="small">${result.recheck_result.rationale}</p>
+                        ${result.performance_analysis ? `<h6>Performance Notes:</h6><p class="small">${result.performance_analysis}</p>` : ''}
+                    </div>
+                `);
+            } else {
+                decisionPane.insertAdjacentHTML('beforeend', `
+                    <div class="alert alert-danger mt-3 small">Modification failed: ${result.detail}</div>
+                `);
+            }
+        } catch (error) {
+            document.getElementById('modify-loading')?.remove();
+            decisionPane.insertAdjacentHTML('beforeend', `
+                <div class="alert alert-danger mt-3 small">Error: ${error.message}</div>
+            `);
+        } finally {
+            if (modifyBtn) modifyBtn.disabled = false;
+        }
     };
 });
 

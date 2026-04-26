@@ -11,6 +11,12 @@ const COLORS = {
 };
 
 const NODE_R = { root: 24, branch: 18, leaf: 15 };
+const TRUNC  = { root: 999, branch: 22, leaf: 18 };   // chars before truncation
+
+function trunc(s, type) {
+    const max = TRUNC[type] || 18;
+    return s.length > max ? s.slice(0, max) + '…' : s;
+}
 
 let nodeResults = {};   // leaf_id → {decision, rationale, controlled_elements}
 let currentTopic = 'Design a propulsion system for a 3U CubeSat research satellite';
@@ -171,6 +177,9 @@ function renderTree(data) {
         .transition().delay((_, i) => i * 60).duration(300)
         .style('opacity', 1);
 
+    const tooltip = document.getElementById('node-tooltip');
+    const graphRect = () => document.getElementById('graph-container').getBoundingClientRect();
+
     // Node groups
     const node = g.selectAll('.tree-node')
         .data(root.descendants())
@@ -180,7 +189,23 @@ function renderTree(data) {
         .attr('transform', d => `translate(${d.x},${d.y})`)
         .style('opacity', 0)
         .style('cursor', d => d.data.type === 'leaf' ? 'pointer' : 'default')
-        .on('click', (_, d) => { if (d.data.type === 'leaf') showDetail(d.data); });
+        .on('click', (_, d) => { if (d.data.type === 'leaf') showDetail(d.data); })
+        .on('mouseover', function(event, d) {
+            // Raise to front so label isn't clipped by siblings
+            d3.select(this).raise();
+            // Show tooltip with full label
+            tooltip.textContent = d.data.label;
+            tooltip.style.display = 'block';
+            const gr = graphRect();
+            tooltip.style.left = (event.clientX - gr.left + 12) + 'px';
+            tooltip.style.top  = (event.clientY - gr.top  - 10) + 'px';
+        })
+        .on('mousemove', function(event) {
+            const gr = graphRect();
+            tooltip.style.left = (event.clientX - gr.left + 12) + 'px';
+            tooltip.style.top  = (event.clientY - gr.top  - 10) + 'px';
+        })
+        .on('mouseout', () => { tooltip.style.display = 'none'; });
 
     node.transition().delay((_, i) => i * 80).duration(300).style('opacity', 1);
 
@@ -206,20 +231,21 @@ function renderTree(data) {
 
     node.each(function(d) {
         const grp = d3.select(this);
-        const words = d.data.label.split(' ');
         const isRoot = d.data.type === 'root';
         const cls = isRoot ? 'node-root' : 'node-label';
+        const truncated = trunc(d.data.label, d.data.type);
+        const words = truncated.split(' ');
         const mid = Math.ceil(words.length / 2);
         const line1 = words.slice(0, mid).join(' ');
         const line2 = words.slice(mid).join(' ');
 
         const txt = grp.append('text').attr('class', cls).attr('text-anchor', 'middle');
 
-        if (line2) {
+        if (line2 && d.data.type !== 'root') {
             txt.append('tspan').attr('x', 0).attr('dy', labelY(d)).text(line1);
             txt.append('tspan').attr('x', 0).attr('dy', '1.2em').text(line2);
         } else {
-            txt.append('tspan').attr('x', 0).attr('dy', labelY(d)).text(line1);
+            txt.append('tspan').attr('x', 0).attr('dy', labelY(d)).text(truncated);
         }
     });
 }

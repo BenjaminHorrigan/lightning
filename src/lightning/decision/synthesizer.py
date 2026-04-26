@@ -156,8 +156,8 @@ def _generate_rationale(
     """Generate a human-readable rationale from the proof tree."""
     if not proof.steps and decision == Decision.ALLOW:
         return (
-            f"No controlled elements detected across {len(proof.controlled_elements)} "
-            f"checks. Artifact extraction confidence was "
+            f"No controlled elements detected. Symbolic reasoning found no matches "
+            f"under any evaluated regime. Extraction confidence: "
             f"{artifact.extraction_confidence:.2f}."
         )
 

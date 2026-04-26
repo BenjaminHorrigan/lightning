@@ -39,24 +39,32 @@ classified(S, "bwc_select_agents", "bsl_3_pathogen", "BSL-3 Pathogen - High Cont
 
 % Pathogen type classifications
 classified(S, "bwc_select_agents", "bacterial_pathogen", "Bacterial Select Agent") :-
-    substance(S),
-    pathogen_type(S, "bacterium"),
-    (schedule(S, "hhs_select", "agent"); schedule(S, "usda_select", "agent"); schedule(S, "australia_group", "biological")).
+    substance(S), pathogen_type(S, "bacterium"), schedule(S, "hhs_select", "agent").
+classified(S, "bwc_select_agents", "bacterial_pathogen", "Bacterial Select Agent") :-
+    substance(S), pathogen_type(S, "bacterium"), schedule(S, "usda_select", "agent").
+classified(S, "bwc_select_agents", "bacterial_pathogen", "Bacterial Select Agent") :-
+    substance(S), pathogen_type(S, "bacterium"), schedule(S, "australia_group", "biological").
 
 classified(S, "bwc_select_agents", "viral_pathogen", "Viral Select Agent") :-
-    substance(S),
-    pathogen_type(S, "virus"),
-    (schedule(S, "hhs_select", "agent"); schedule(S, "usda_select", "agent"); schedule(S, "australia_group", "biological")).
+    substance(S), pathogen_type(S, "virus"), schedule(S, "hhs_select", "agent").
+classified(S, "bwc_select_agents", "viral_pathogen", "Viral Select Agent") :-
+    substance(S), pathogen_type(S, "virus"), schedule(S, "usda_select", "agent").
+classified(S, "bwc_select_agents", "viral_pathogen", "Viral Select Agent") :-
+    substance(S), pathogen_type(S, "virus"), schedule(S, "australia_group", "biological").
 
 classified(S, "bwc_select_agents", "fungal_pathogen", "Fungal Select Agent") :-
-    substance(S),
-    pathogen_type(S, "fungus"),
-    (schedule(S, "hhs_select", "agent"); schedule(S, "usda_select", "agent"); schedule(S, "australia_group", "biological")).
+    substance(S), pathogen_type(S, "fungus"), schedule(S, "hhs_select", "agent").
+classified(S, "bwc_select_agents", "fungal_pathogen", "Fungal Select Agent") :-
+    substance(S), pathogen_type(S, "fungus"), schedule(S, "usda_select", "agent").
+classified(S, "bwc_select_agents", "fungal_pathogen", "Fungal Select Agent") :-
+    substance(S), pathogen_type(S, "fungus"), schedule(S, "australia_group", "biological").
 
 classified(S, "bwc_select_agents", "biological_toxin", "Biological Toxin") :-
-    substance(S),
-    pathogen_type(S, "toxin"),
-    (schedule(S, "hhs_select", "agent"); schedule(S, "usda_select", "agent"); schedule(S, "australia_group", "biological")).
+    substance(S), pathogen_type(S, "toxin"), schedule(S, "hhs_select", "agent").
+classified(S, "bwc_select_agents", "biological_toxin", "Biological Toxin") :-
+    substance(S), pathogen_type(S, "toxin"), schedule(S, "usda_select", "agent").
+classified(S, "bwc_select_agents", "biological_toxin", "Biological Toxin") :-
+    substance(S), pathogen_type(S, "toxin"), schedule(S, "australia_group", "biological").
 
 % Proliferation concerns for biological agents
 proliferation_concern(S, "select_agent_diversion") :-

@@ -27,10 +27,11 @@ classified(S, "bwc_select_agents", "toxin_threshold_exceeded", "Biological toxin
 
 % General select agent thresholds
 classified(S, "bwc_select_agents", "select_agent_threshold_exceeded", "Select agent quantity threshold exceeded") :-
-    substance(S),
-    (schedule(S, "hhs_select", "agent"); schedule(S, "usda_select", "agent")),
-    quantity(S, Amount, "g"),
-    Amount > 10.  % 10g general threshold
+    substance(S), schedule(S, "hhs_select", "agent"),
+    quantity(S, Amount, "g"), Amount > 10.  % 10g general threshold
+classified(S, "bwc_select_agents", "select_agent_threshold_exceeded", "Select agent quantity threshold exceeded") :-
+    substance(S), schedule(S, "usda_select", "agent"),
+    quantity(S, Amount, "g"), Amount > 10.  % 10g general threshold
 
 % Enhanced review for threshold exceedances
 requires_human_review(S, "Tier 1 quantity threshold exceeded - enhanced security protocols required") :-

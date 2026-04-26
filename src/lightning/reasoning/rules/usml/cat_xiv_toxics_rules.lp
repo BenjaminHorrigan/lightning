@@ -35,40 +35,47 @@ classified(S, "usml", "biological_toxin_weapon", "Biological Toxin Weapon Materi
     item_type(S, "biological_toxin").
 
 classified(S, "usml", "riot_control_agent", "Riot Control Agent") :-
-    substance(S),
-    schedule(S, "usml_cat_xiv", "controlled"),
-    (lethal_dose(S, "riot_control_agent"); lethal_dose(S, "incapacitating_agent")).
+    substance(S), schedule(S, "usml_cat_xiv", "controlled"), lethal_dose(S, "riot_control_agent").
+classified(S, "usml", "riot_control_agent", "Riot Control Agent") :-
+    substance(S), schedule(S, "usml_cat_xiv", "controlled"), lethal_dose(S, "incapacitating_agent").
 
 % Lethality-based classifications
 classified(S, "usml", "extremely_lethal_agent", "Extremely Lethal Toxic Agent") :-
-    substance(S),
-    schedule(S, "usml_cat_xiv", "controlled"),
-    lethal_dose(S, LD),
-    (LD = "LD50_0.001mg_per_kg"; LD = "LD50_0.01mg_per_kg").
+    substance(S), schedule(S, "usml_cat_xiv", "controlled"), lethal_dose(S, "LD50_0.001mg_per_kg").
+classified(S, "usml", "extremely_lethal_agent", "Extremely Lethal Toxic Agent") :-
+    substance(S), schedule(S, "usml_cat_xiv", "controlled"), lethal_dose(S, "LD50_0.01mg_per_kg").
 
 classified(S, "usml", "highly_lethal_agent", "Highly Lethal Toxic Agent") :-
-    substance(S),
-    schedule(S, "usml_cat_xiv", "controlled"),
-    lethal_dose(S, LD),
-    (LD = "LD50_0.05mg_per_kg"; LD = "LD50_0.1mg_per_kg").
+    substance(S), schedule(S, "usml_cat_xiv", "controlled"), lethal_dose(S, "LD50_0.05mg_per_kg").
+classified(S, "usml", "highly_lethal_agent", "Highly Lethal Toxic Agent") :-
+    substance(S), schedule(S, "usml_cat_xiv", "controlled"), lethal_dose(S, "LD50_0.1mg_per_kg").
 
 % Nerve agent classifications
 classified(S, "usml", "nerve_agent", "Nerve Agent") :-
-    substance(S),
-    schedule(S, "usml_cat_xiv", "controlled"),
-    (canonical_name(S, "sarin"); canonical_name(S, "soman"); canonical_name(S, "tabun"); canonical_name(S, "vx")).
+    substance(S), schedule(S, "usml_cat_xiv", "controlled"), canonical_name(S, "sarin").
+classified(S, "usml", "nerve_agent", "Nerve Agent") :-
+    substance(S), schedule(S, "usml_cat_xiv", "controlled"), canonical_name(S, "soman").
+classified(S, "usml", "nerve_agent", "Nerve Agent") :-
+    substance(S), schedule(S, "usml_cat_xiv", "controlled"), canonical_name(S, "tabun").
+classified(S, "usml", "nerve_agent", "Nerve Agent") :-
+    substance(S), schedule(S, "usml_cat_xiv", "controlled"), canonical_name(S, "vx").
 
 classified(S, "usml", "novichok_agent", "Novichok Nerve Agent") :-
-    substance(S),
-    schedule(S, "usml_cat_xiv", "controlled"),
-    (canonical_name(S, "novichok_a_230"); canonical_name(S, "novichok_a_232")).
+    substance(S), schedule(S, "usml_cat_xiv", "controlled"), canonical_name(S, "novichok_a_230").
+classified(S, "usml", "novichok_agent", "Novichok Nerve Agent") :-
+    substance(S), schedule(S, "usml_cat_xiv", "controlled"), canonical_name(S, "novichok_a_232").
 
 % Blister agent classifications
 classified(S, "usml", "blister_agent", "Blister Agent") :-
-    substance(S),
-    schedule(S, "usml_cat_xiv", "controlled"),
-    (canonical_name(S, "mustard_gas"); canonical_name(S, "nitrogen_mustard");
-     canonical_name(S, "lewisite_1"); canonical_name(S, "lewisite_2"); canonical_name(S, "lewisite_3")).
+    substance(S), schedule(S, "usml_cat_xiv", "controlled"), canonical_name(S, "mustard_gas").
+classified(S, "usml", "blister_agent", "Blister Agent") :-
+    substance(S), schedule(S, "usml_cat_xiv", "controlled"), canonical_name(S, "nitrogen_mustard").
+classified(S, "usml", "blister_agent", "Blister Agent") :-
+    substance(S), schedule(S, "usml_cat_xiv", "controlled"), canonical_name(S, "lewisite_1").
+classified(S, "usml", "blister_agent", "Blister Agent") :-
+    substance(S), schedule(S, "usml_cat_xiv", "controlled"), canonical_name(S, "lewisite_2").
+classified(S, "usml", "blister_agent", "Blister Agent") :-
+    substance(S), schedule(S, "usml_cat_xiv", "controlled"), canonical_name(S, "lewisite_3").
 
 % Proliferation concerns
 proliferation_concern(S, "chemical_weapons_program") :-

@@ -13,6 +13,16 @@
     .node-root  { font-size: 12px; fill: #e5e7eb; font-weight: 700; }
     .pulse-ring { fill: none; stroke-width: 2px; }
     #graph-container svg { display: block; }
+    .legend-dot {
+      display: inline-block; width: 13px; height: 13px;
+      border-radius: 50%; vertical-align: middle; margin-right: 5px;
+    }
+    #node-tooltip {
+      position: absolute; background: #1f2937; border: 1px solid #374151;
+      color: #e5e7eb; font-family: 'JetBrains Mono', monospace; font-size: 11px;
+      padding: 6px 10px; border-radius: 4px; pointer-events: none;
+      display: none; max-width: 240px; line-height: 1.4; z-index: 100;
+    }
     .scenario-btn {
       background: #1f2937; border: 1px solid #374151; color: #9ca3af;
       padding: 6px 14px; border-radius: 4px; cursor: pointer;
@@ -94,13 +104,13 @@
         <div class="hud-panel" style="min-height:480px; overflow:auto;">
           <div id="graph-container"></div>
           <!-- Legend -->
-          <div class="d-flex gap-4 mt-3" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#6b7280;">
-            <span>⬤ <span style="color:#8b5cf6">Goal</span></span>
-            <span>⬤ <span style="color:#6366f1">Approach</span></span>
-            <span>⬤ <span style="color:#4a5568">Pending</span></span>
-            <span>⬤ <span style="color:#22c55e">ALLOW</span></span>
-            <span>⬤ <span style="color:#ef4444">REFUSE</span></span>
-            <span>⬤ <span style="color:#f59e0b">ESCALATE</span></span>
+          <div class="d-flex flex-wrap gap-3 mt-3" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#9ca3af;">
+            <span><span class="legend-dot" style="background:#8b5cf6"></span>Goal</span>
+            <span><span class="legend-dot" style="background:#6366f1"></span>Approach</span>
+            <span><span class="legend-dot" style="background:#374151"></span>Pending</span>
+            <span><span class="legend-dot" style="background:#22c55e"></span>ALLOW</span>
+            <span><span class="legend-dot" style="background:#ef4444"></span>REFUSE</span>
+            <span><span class="legend-dot" style="background:#f59e0b"></span>ESCALATE</span>
           </div>
         </div>
       </div>
@@ -138,6 +148,7 @@
 
   </div>
 
+  <div id="node-tooltip"></div>
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="/static/js/agent_explorer.js"></script>
 </body>

@@ -39,9 +39,9 @@ classified(S, "ear", "eccn_1c116", "ECCN 1C116 - Maraging Steel") :-
 
 % Material type classifications
 classified(S, "ear", "composite_material", "Advanced Composite Material") :-
-    substance(S),
-    schedule(S, "ear_cat1", "controlled"),
-    (item_type(S, "composite_material"); item_type(S, "ceramic_composite")).
+    substance(S), schedule(S, "ear_cat1", "controlled"), item_type(S, "composite_material").
+classified(S, "ear", "composite_material", "Advanced Composite Material") :-
+    substance(S), schedule(S, "ear_cat1", "controlled"), item_type(S, "ceramic_composite").
 
 classified(S, "ear", "refractory_metal", "Refractory Metal") :-
     substance(S),
@@ -54,46 +54,53 @@ classified(S, "ear", "superalloy", "Superalloy Material") :-
     item_type(S, "superalloy").
 
 classified(S, "ear", "high_performance_fiber", "High Performance Fiber") :-
-    substance(S),
-    schedule(S, "ear_cat1", "controlled"),
-    (item_type(S, "fiber"); item_type(S, "glass_fiber")).
+    substance(S), schedule(S, "ear_cat1", "controlled"), item_type(S, "fiber").
+classified(S, "ear", "high_performance_fiber", "High Performance Fiber") :-
+    substance(S), schedule(S, "ear_cat1", "controlled"), item_type(S, "glass_fiber").
 
 % Performance-based classifications
 classified(S, "ear", "ultra_high_strength", "Ultra High Strength Material") :-
-    substance(S),
-    schedule(S, "ear_cat1", "controlled"),
-    performance_threshold(S, Threshold),
-    (Threshold = "tensile_strength_4800_MPa"; Threshold = "yield_strength_2400_MPa").
+    substance(S), schedule(S, "ear_cat1", "controlled"),
+    performance_threshold(S, "tensile_strength_4800_MPa").
+classified(S, "ear", "ultra_high_strength", "Ultra High Strength Material") :-
+    substance(S), schedule(S, "ear_cat1", "controlled"),
+    performance_threshold(S, "yield_strength_2400_MPa").
 
 classified(S, "ear", "ultra_high_temperature", "Ultra High Temperature Material") :-
-    substance(S),
-    schedule(S, "ear_cat1", "controlled"),
-    performance_threshold(S, Threshold),
-    (Threshold = "melting_point_3900C"; Threshold = "operating_temp_1200C").
+    substance(S), schedule(S, "ear_cat1", "controlled"),
+    performance_threshold(S, "melting_point_3900C").
+classified(S, "ear", "ultra_high_temperature", "Ultra High Temperature Material") :-
+    substance(S), schedule(S, "ear_cat1", "controlled"),
+    performance_threshold(S, "operating_temp_1200C").
 
 classified(S, "ear", "lightweight_structural", "Lightweight Structural Material") :-
-    substance(S),
-    schedule(S, "ear_cat1", "controlled"),
-    (performance_threshold(S, "density_1.85_g_per_cm3");
-     performance_threshold(S, "density_2.5_g_per_cm3")).
+    substance(S), schedule(S, "ear_cat1", "controlled"),
+    performance_threshold(S, "density_1.85_g_per_cm3").
+classified(S, "ear", "lightweight_structural", "Lightweight Structural Material") :-
+    substance(S), schedule(S, "ear_cat1", "controlled"),
+    performance_threshold(S, "density_2.5_g_per_cm3").
 
 % Strategic material classifications
 classified(S, "ear", "aerospace_material", "Aerospace-Grade Material") :-
-    substance(S),
-    schedule(S, "ear_cat1", "controlled"),
-    (material_type(S, "titanium"); material_type(S, "aluminum");
-     material_type(S, "fiber_composite"); material_type(S, "ceramic")).
+    substance(S), schedule(S, "ear_cat1", "controlled"), material_type(S, "titanium").
+classified(S, "ear", "aerospace_material", "Aerospace-Grade Material") :-
+    substance(S), schedule(S, "ear_cat1", "controlled"), material_type(S, "aluminum").
+classified(S, "ear", "aerospace_material", "Aerospace-Grade Material") :-
+    substance(S), schedule(S, "ear_cat1", "controlled"), material_type(S, "fiber_composite").
+classified(S, "ear", "aerospace_material", "Aerospace-Grade Material") :-
+    substance(S), schedule(S, "ear_cat1", "controlled"), material_type(S, "ceramic").
 
 classified(S, "ear", "nuclear_material", "Nuclear-Relevant Material") :-
-    substance(S),
-    schedule(S, "ear_cat1", "controlled"),
-    (material_type(S, "hafnium"); material_type(S, "beryllium")).
+    substance(S), schedule(S, "ear_cat1", "controlled"), material_type(S, "hafnium").
+classified(S, "ear", "nuclear_material", "Nuclear-Relevant Material") :-
+    substance(S), schedule(S, "ear_cat1", "controlled"), material_type(S, "beryllium").
 
 classified(S, "ear", "rocket_nozzle_material", "Rocket Nozzle Material") :-
-    substance(S),
-    schedule(S, "ear_cat1", "controlled"),
-    (material_type(S, "tungsten"); material_type(S, "rhenium");
-     material_type(S, "carbide")).
+    substance(S), schedule(S, "ear_cat1", "controlled"), material_type(S, "tungsten").
+classified(S, "ear", "rocket_nozzle_material", "Rocket Nozzle Material") :-
+    substance(S), schedule(S, "ear_cat1", "controlled"), material_type(S, "rhenium").
+classified(S, "ear", "rocket_nozzle_material", "Rocket Nozzle Material") :-
+    substance(S), schedule(S, "ear_cat1", "controlled"), material_type(S, "carbide").
 
 % Proliferation concerns
 proliferation_concern(S, "missile_technology") :-

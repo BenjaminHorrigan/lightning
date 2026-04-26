@@ -60,14 +60,19 @@ classified(S, "ear", "eccn_5d002", "ECCN 5D002 - Information Security Software")
 
 % High-performance computing thresholds
 classified(S, "ear", "high_performance_ai", "High Performance AI System") :-
-    substance(S),
-    schedule(S, "bis_ai_compute", "controlled"),
-    performance_threshold(S, Threshold),
-    (Threshold = "100_TOPS"; Threshold = "1_exaflop"; Threshold = "100_petaflops").
+    substance(S), schedule(S, "bis_ai_compute", "controlled"),
+    performance_threshold(S, "100_TOPS").
+classified(S, "ear", "high_performance_ai", "High Performance AI System") :-
+    substance(S), schedule(S, "bis_ai_compute", "controlled"),
+    performance_threshold(S, "1_exaflop").
+classified(S, "ear", "high_performance_ai", "High Performance AI System") :-
+    substance(S), schedule(S, "bis_ai_compute", "controlled"),
+    performance_threshold(S, "100_petaflops").
 
 classified(S, "ear", "quantum_technology", "Quantum Computing Technology") :-
-    substance(S),
-    (performance_threshold(S, "50_qubits"); performance_threshold(S, "20_qubits")).
+    substance(S), performance_threshold(S, "50_qubits").
+classified(S, "ear", "quantum_technology", "Quantum Computing Technology") :-
+    substance(S), performance_threshold(S, "20_qubits").
 
 classified(S, "ear", "semiconductor_equipment", "Controlled Semiconductor Equipment") :-
     substance(S),
