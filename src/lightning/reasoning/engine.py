@@ -53,6 +53,12 @@ KB_DIR = Path(__file__).parent.parent / "knowledge_base"  # citations.json lives
 # as text rather than loaded from disk.
 _INCLUDE_RE = re.compile(r'^\s*#include\s+"[^"]*"\s*\.\s*$', re.MULTILINE)
 
+# Module-level caches — persist for the lifetime of the process.
+# KB files don't change at runtime, so caching the concatenated text
+# eliminates repeated disk I/O and string building on every check() call.
+_KB_PROGRAM_CACHE: dict[frozenset, str] = {}
+_CITATIONS_CACHE: dict[str, RegulationCitation] | None = None
+
 
 def artifact_to_facts(artifact: TechnicalArtifact) -> list[str]:
     """
@@ -154,7 +160,6 @@ def _canonicalize(s: str) -> str:
     extractor can output "Hydrazine (N2H4)" or "liquid rocket engine" and
     still match KB atoms like hydrazine and liquid_rocket_engine.
     """
-    import re
     s = _sanitize(s).lower()
     # Drop any parenthesized qualifier: "hydrazine (anhydrous)" -> "hydrazine"
     s = re.sub(r"\s*\([^)]*\)", "", s)
@@ -256,6 +261,44 @@ def _to_mg_and_grams(quantity: float, unit: str) -> tuple[int | None, int | None
     return mg, g
 
 
+def _build_kb_program(regimes: list[Regime]) -> str:
+    """
+    Build the static KB portion of the clingo program (rules only, no facts).
+
+    Cached per frozenset of regimes — KB files don't change at runtime so we
+    pay the disk I/O + string concatenation cost only once per process.
+    """
+    cache_key = frozenset(regimes)
+    cached = _KB_PROGRAM_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
+    parts: list[str] = []
+
+    def _append(path: Path, label: str) -> None:
+        text = _INCLUDE_RE.sub("", path.read_text())
+        parts.append(f"\n% === {label} ({path.name}) ===")
+        parts.append(text)
+
+    common_dir = RULES_DIR / "_common"
+    if common_dir.exists():
+        parts.append("\n% ---- Common (cross-regime) ----")
+        for lp in sorted(common_dir.glob("*.lp")):
+            _append(lp, "common")
+
+    parts.append("\n% ---- Regime modules ----")
+    for regime in regimes:
+        regime_dir = RULES_DIR / REGIME_DIRS.get(regime, "")
+        if not regime_dir.exists():
+            continue
+        for lp in sorted(regime_dir.glob("*.lp")):
+            _append(lp, regime.value)
+
+    program = "\n".join(parts)
+    _KB_PROGRAM_CACHE[cache_key] = program
+    return program
+
+
 def run_reasoner(
     artifact: TechnicalArtifact,
     regimes: Optional[list[Regime]] = None,
@@ -286,32 +329,9 @@ def run_reasoner(
 
     facts = artifact_to_facts(artifact)
 
-    # Build the clingo program: facts + _common rules + all selected regimes
-    program_parts = ["% ---- Facts from TechnicalArtifact ----"]
-    program_parts.extend(facts)
-
-    def _append_rule_file(path: Path, label: str) -> None:
-        text = _INCLUDE_RE.sub("", path.read_text())
-        program_parts.append(f"\n% === {label} ({path.name}) ===")
-        program_parts.append(text)
-
-    # Cross-regime doctrines (atom_vocabulary, specially_designed) load first
-    common_dir = RULES_DIR / "_common"
-    if common_dir.exists():
-        program_parts.append("\n% ---- Common (cross-regime) ----")
-        for lp in sorted(common_dir.glob("*.lp")):
-            _append_rule_file(lp, "common")
-
-    # Regime-specific rule files
-    program_parts.append("\n% ---- Regime modules ----")
-    for regime in regimes:
-        regime_dir = RULES_DIR / REGIME_DIRS.get(regime, "")
-        if not regime_dir.exists():
-            continue
-        for lp in sorted(regime_dir.glob("*.lp")):
-            _append_rule_file(lp, regime.value)
-
-    full_program = "\n".join(program_parts)
+    # Facts prepended to the cached KB program — only facts change per call
+    facts_text = "% ---- Facts from TechnicalArtifact ----\n" + "\n".join(facts)
+    full_program = facts_text + "\n" + _build_kb_program(regimes)
 
     # Solve
     ctl = clingo.Control(["--warn=none"])
@@ -708,17 +728,24 @@ def _load_citations() -> dict[str, RegulationCitation]:
     """
     Load the citations lookup table. Maps the citation keys embedded in KB
     rules to full RegulationCitation objects with text and URLs.
+    Cached after the first load — citations.json doesn't change at runtime.
     """
+    global _CITATIONS_CACHE
+    if _CITATIONS_CACHE is not None:
+        return _CITATIONS_CACHE
+
     citations_path = KB_DIR / "citations.json"
     if not citations_path.exists():
-        return {}
+        _CITATIONS_CACHE = {}
+        return _CITATIONS_CACHE
 
     with open(citations_path) as f:
         data = json.load(f)
 
-    return {
+    _CITATIONS_CACHE = {
         key: RegulationCitation(**value) for key, value in data.items()
     }
+    return _CITATIONS_CACHE
 
 
 def _find_cross_regime_connections(derived_atoms: list[str]) -> list[CrossRegimeLink]:

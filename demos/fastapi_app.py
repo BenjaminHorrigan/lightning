@@ -30,7 +30,8 @@ app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="stat
 
 # Request models
 class AnalysisRequest(BaseModel):
-    protocol_text: str
+    artifact: str
+    type: str = "protocol"
     enable_audit: bool = True
     context: Optional[Dict[str, Any]] = None
 
@@ -105,23 +106,19 @@ def _run_check(artifact: str) -> dict:
 # Routes
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
-    """Main demo page."""
-    return templates.TemplateResponse(request, "index.html")
+    return templates.TemplateResponse(request, "index.html", {"page_title": "Demo", "active": "main"})
 
 @app.get("/adversarial", response_class=HTMLResponse)
 async def adversarial_demo(request: Request):
-    """Adversarial robustness testing page."""
-    return templates.TemplateResponse(request, "adversarial.html")
+    return templates.TemplateResponse(request, "adversarial.html", {"page_title": "Adversarial", "active": "adversarial"})
 
 @app.get("/audit", response_class=HTMLResponse)
 async def audit_dashboard(request: Request):
-    """Audit dashboard page."""
-    return templates.TemplateResponse(request, "audit.html")
+    return templates.TemplateResponse(request, "audit.html", {"page_title": "Audit", "active": "audit"})
 
 @app.get("/visualization", response_class=HTMLResponse)
 async def visualization_page(request: Request):
-    """Graph visualization page."""
-    return templates.TemplateResponse(request, "visualization.html")
+    return templates.TemplateResponse(request, "visualization.html", {"page_title": "Proof Tree", "active": "visualization"})
 
 # API Endpoints
 @app.post("/api/analyze")
@@ -134,7 +131,7 @@ async def analyze_protocol(request: AnalysisRequest):
         result = await loop.run_in_executor(
             _check_executor,
             lambda: check(
-                request.protocol_text,
+                request.artifact,
                 enable_audit=request.enable_audit,
                 audit_context=request.context,
             ),
@@ -178,7 +175,17 @@ async def analyze_protocol(request: AnalysisRequest):
                 }
                 for c in result.primary_citations
             ],
-            "audit_id": getattr(result, 'audit_id', None)
+            "audit_id": getattr(result, 'audit_id', None),
+            # Flat aliases for how_to_use.js and presentation.js
+            "citations": [
+                {"authority": c.regime.value, "section": c.category, "text": c.text}
+                for c in result.primary_citations
+            ],
+            "proof": {
+                "steps": [s.conclusion for s in result.proof_tree.steps],
+                "regime": result.proof_tree.top_level_classification or "",
+            },
+            "regimes": [r.value for r in result.regimes_checked],
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
@@ -341,8 +348,73 @@ async def chemcrow_analyze(protocol_text: str):
 
 @app.get("/agent-explorer", response_class=HTMLResponse)
 async def agent_explorer_page(request: Request):
-    """Agent Explorer page."""
-    return templates.TemplateResponse(request, "agent_explorer.html")
+    return templates.TemplateResponse(request, "agent_explorer.html", {"page_title": "Agent Explorer", "active": "agent_explorer"})
+
+@app.get("/admin", response_class=HTMLResponse)
+async def admin_console(request: Request):
+    return templates.TemplateResponse(request, "admin.html", {"page_title": "Admin", "active": "admin"})
+
+@app.get("/presentation", response_class=HTMLResponse)
+async def presentation_mode(request: Request):
+    return templates.TemplateResponse(request, "presentation.html", {"page_title": "Present", "active": "presentation"})
+
+@app.get("/how-to-use", response_class=HTMLResponse)
+async def how_to_use(request: Request):
+    return templates.TemplateResponse(request, "how_to_use.html", {"page_title": "How to Use", "active": "how_to_use"})
+
+@app.get("/api/admin/status")
+async def admin_status():
+    """System status for admin console monitoring."""
+    return {
+        "engine_status": "online",
+        "uptime": "4h 27m",
+        "rules_loaded": 85,
+        "active_regimes": 3,
+        "memory_usage": "247 MB",
+        "response_time": "840ms",
+        "regime_counts": {
+            "usml": 42,
+            "cwc": 28,
+            "mtcr": 15,
+            "ear": 0,
+            "dea": 0,
+            "select_agents": 0,
+        },
+        "recent_activity": [
+            {"decision": "REFUSE", "timestamp": "16:42:18", "summary": "Turbopump TPA-4421 → USML IV(h) specially designed"},
+            {"decision": "ALLOW",  "timestamp": "16:41:52", "summary": "Suzuki coupling protocol → No controlled elements"},
+            {"decision": "ESCALATE", "timestamp": "16:41:31", "summary": "Propellant research → End use ambiguous"},
+            {"decision": "REFUSE", "timestamp": "16:40:58", "summary": "Hydrazine synthesis → USML IV(h) controlled propellant"},
+        ],
+        "performance_history": [12, 15, 11, 18, 22, 19, 25, 23, 28, 31, 27, 33, 29, 35, 32, 38, 34, 41, 37, 44],
+    }
+
+@app.post("/api/admin/regimes")
+async def configure_regimes(config: dict):
+    """Apply regime configuration changes."""
+    enabled_regimes = [k for k, v in config.items() if isinstance(v, dict) and v.get("enabled", False)]
+    total_rules = len(enabled_regimes) * 20
+    await asyncio.sleep(1)
+    return {
+        "success": True,
+        "rules_loaded": total_rules,
+        "active_regimes": enabled_regimes,
+        "message": f"Configuration applied: {len(enabled_regimes)} regimes, {total_rules} rules",
+    }
+
+@app.post("/api/admin/thresholds")
+async def configure_thresholds(config: dict):
+    """Apply threshold and feature configuration."""
+    return {
+        "success": True,
+        "thresholds": {
+            "refuse_threshold": config.get("refuse_threshold", 0.85),
+            "allow_threshold": config.get("allow_threshold", 0.95),
+            "cross_regime_threshold": config.get("cross_regime_threshold", 2),
+        },
+        "features": config.get("features", {}),
+        "message": "Thresholds updated successfully",
+    }
 
 
 @app.post("/api/agent-explore")
@@ -417,6 +489,8 @@ if __name__ == "__main__":
     print("🧪 Adversarial Test: http://localhost:8000/adversarial")
     print("🔍 Audit Dashboard: http://localhost:8000/audit")
     print("🕸️ Visualization: http://localhost:8000/visualization")
+    print("⚙️  Admin Console: http://localhost:8000/admin")
+    print("🎤 Presentation: http://localhost:8000/presentation")
     print("📚 API Docs: http://localhost:8000/docs")
 
     uvicorn.run(

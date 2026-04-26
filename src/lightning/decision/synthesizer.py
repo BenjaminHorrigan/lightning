@@ -13,6 +13,7 @@ This is the core trust property of LIGHTNING.
 """
 from __future__ import annotations
 
+import concurrent.futures
 from typing import Optional
 
 from lightning._client import get_client
@@ -40,14 +41,24 @@ def synthesize(
     decision = _decide(proof, artifact)
     confidence = _confidence(proof, artifact)
     primary_citations = _primary_citations(proof)
-    rationale = _generate_rationale(artifact, proof, decision, client, model)
-    counterfactual = (
-        _generate_counterfactual(artifact, proof, client, model)
-        if decision == Decision.REFUSE
-        else None
-    )
     escalation_reason = _format_escalation(proof) if decision == Decision.ESCALATE else None
     artifact_summary = _summarize_artifact(artifact)
+
+    if decision == Decision.REFUSE and client is not None:
+        # Run rationale and counterfactual concurrently — both are blocking LLM calls
+        # with no dependency on each other. Saves ~1–2 sec per REFUSE decision.
+        with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+            rationale_future = executor.submit(
+                _generate_rationale, artifact, proof, decision, client, model
+            )
+            counterfactual_future = executor.submit(
+                _generate_counterfactual, artifact, proof, client, model
+            )
+        rationale = rationale_future.result()
+        counterfactual = counterfactual_future.result()
+    else:
+        rationale = _generate_rationale(artifact, proof, decision, client, model)
+        counterfactual = None
 
     return ClassificationResult(
         decision=decision,

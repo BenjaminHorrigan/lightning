@@ -241,7 +241,7 @@ class AuditLogger:
     def _hash_artifact(self, artifact: TechnicalArtifact) -> str:
         """Create deterministic hash of artifact content."""
         # Use model_dump to get deterministic serialization
-        content = artifact.model_dump_json(sort_keys=True)
+        content = json.dumps(artifact.model_dump(mode="json"), sort_keys=True)
         return hashlib.sha256(content.encode()).hexdigest()
 
     def _hash_result(self, result: ClassificationResult) -> str:

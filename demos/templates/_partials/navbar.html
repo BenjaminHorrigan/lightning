@@ -1,0 +1,28 @@
+{# =============================================================================
+   _partials/navbar.html — Shared navigation
+   Use as: {% include "_partials/navbar.html" %}
+   The active link is highlighted by passing `active` in context, e.g.
+     return templates.TemplateResponse(request, "admin.html", {"active": "admin"})
+   ============================================================================= #}
+<nav class="lightning-nav" role="navigation" aria-label="Primary">
+  <div class="lightning-nav__inner">
+    <a href="/" class="lightning-nav__brand" aria-label="LIGHTNING home">
+      LIGHTNING
+    </a>
+
+    <div class="lightning-nav__links">
+      <a href="/"               class="lightning-nav__link {% if active == 'main' %}is-active{% endif %}">Demo</a>
+      <a href="/adversarial"    class="lightning-nav__link {% if active == 'adversarial' %}is-active{% endif %}">Adversarial</a>
+      <a href="/audit"          class="lightning-nav__link {% if active == 'audit' %}is-active{% endif %}">Audit</a>
+      <a href="/visualization"  class="lightning-nav__link {% if active == 'visualization' %}is-active{% endif %}">Proof Tree</a>
+      <a href="/agent-explorer" class="lightning-nav__link {% if active == 'agent_explorer' %}is-active{% endif %}">Agent</a>
+      <a href="/admin"          class="lightning-nav__link {% if active == 'admin' %}is-active{% endif %}">Admin</a>
+      <a href="/how-to-use"     class="lightning-nav__link {% if active == 'how_to_use' %}is-active{% endif %}">API</a>
+      <a href="/presentation"   class="lightning-nav__link {% if active == 'presentation' %}is-active{% endif %}">Present</a>
+    </div>
+
+    <div class="lightning-nav__status" aria-label="Engine status">
+      <span class="text-mono">ENGINE ONLINE</span>
+    </div>
+  </div>
+</nav>

@@ -28,11 +28,23 @@ from lightning.models import (
     TechnicalArtifact,
 )
 
+_SCHEMA_TEXT = json.dumps(TechnicalArtifact.model_json_schema(), separators=(",", ":"))
+
 
 DESIGN_EXTRACTION_PROMPT = """You are extracting structured component data from an engineering specification.
 
 Your job is NOT to judge whether the design is controlled. Your job is to produce
 a faithful structured record. A symbolic reasoning layer handles classification.
+
+CRITICAL: Identify components by their actual engineering function, not the name used
+in the text. Common circumlocutions to watch for:
+- "rotating flow acceleration device" / "centrifugal fluid accelerator" → turbopump
+- "high-pressure fluid delivery system" → pump (check if for propulsion)
+- "thrust generation assembly" / "propulsive force generator" → rocket engine
+- "altitude adjustment thruster" → attitude control thruster
+- "energetic compound" / "high-energy material" → propellant/explosive (extract as substance)
+- "reaction control system" → attitude control thruster
+When in doubt, use the engineering function as the category.
 
 Given the input, extract:
 1. Every component, subsystem, or part mentioned
@@ -86,8 +98,6 @@ def extract_from_spec_text(
         from lightning._client import get_client
         client = get_client()
 
-    schema = TechnicalArtifact.model_json_schema()
-
     response = client.messages.create(
         model=model,
         max_tokens=4096,
@@ -95,7 +105,7 @@ def extract_from_spec_text(
             "You extract structured engineering design data for a safety-reasoning system. "
             "You are careful to capture parent-system relationships accurately, because "
             "downstream classification depends on them.\n\n"
-            f"Output must match this JSON schema:\n{json.dumps(schema, indent=2)}"
+            f"Output must match this JSON schema:\n{_SCHEMA_TEXT}"
         ),
         messages=[
             {

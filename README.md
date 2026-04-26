@@ -97,11 +97,12 @@ data/atoms/           # Generated ASP atoms (do not edit by hand)
 curl -LsSf https://astral.sh/uv/install.sh | sh
 uv sync
 
+# FastAPI server with full web UI (recommended)
+uv run python demos/fastapi_app.py
+# Then open http://localhost:8000
+
 # Streamlit demo (three-pane: input / proof tree / decision)
 uv run streamlit run demos/app.py
-
-# FastAPI server with web UI
-uv run python demos/fastapi_app.py
 
 # CLI
 uv run lightning check examples/rocket_protocol.py
@@ -114,6 +115,19 @@ uv run pytest
 ```
 
 Set `ANTHROPIC_API_KEY` in `.env` before running the demo or end-to-end tests.
+
+### Demo pages (FastAPI UI)
+
+| Route | Description |
+|-------|-------------|
+| `/` | Main analyzer — paste any protocol, design, or proposal |
+| `/adversarial` | Adversarial red-team playground |
+| `/visualization` | Proof-tree explorer |
+| `/audit` | Audit dashboard with decision log |
+| `/agent-explorer` | Live agent reasoning tree with per-node LIGHTNING checks |
+| `/how-to-use` | Integration playground — live `/api/analyze` sandbox |
+| `/admin` | Regime toggles and threshold controls |
+| `/presentation` | Slide-mode pitch deck |
 
 ## Repository layout
 
@@ -141,7 +155,7 @@ lightning/
 │   └── fastapi_app.py      # FastAPI server with web UI
 ├── examples/               # Sample inputs for each regime
 └── tests/
-    ├── test_golden.py          # Deterministic artifact-level regression tests (84 cases)
+    ├── test_golden.py          # Deterministic artifact-level regression tests (129 cases)
     └── test_proof_properties.py# LIGHTNING vs LLM: determinism, citations, proof chain
 ```
 

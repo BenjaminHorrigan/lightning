@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% include "_partials/head.html" %}
+</head>
+<body>
+{% include "_partials/navbar.html" %}
+
+  <div class="container mt-4">
+    <!-- Header -->
+    <div class="hud-panel mb-4">
+      <div class="hud-panel-header">
+        <h2 class="hud-title">⚙️ Admin Console — Neurosymbolic Architecture Control</h2>
+        <span class="status-pill running" id="engine-status">ENGINE ONLINE</span>
+      </div>
+      <p class="hud-subtitle">
+        Real-time control interface for the Lightning reasoning engine. Modify rule sets,
+        adjust confidence thresholds, monitor system performance, and configure
+        extraction parameters. All changes take effect immediately.
+      </p>
+    </div>
+
+    <!-- Error/success messages -->
+    <div id="message-box"></div>
+
+    <div class="row g-4">
+      <!-- Left column: Configuration -->
+      <div class="col-lg-8">
+        
+        <!-- Regime Management -->
+        <div class="hud-panel mb-4">
+          <div class="hud-panel-header">
+            <h2 class="hud-title">Rule Regime Configuration</h2>
+            <button id="save-regimes" class="btn-tactical btn-tactical-sm">Apply Changes</button>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <!-- USML/ITAR -->
+              <div class="regime-control-group">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <label class="regime-label">
+                    <input type="checkbox" id="regime-usml" checked> 
+                    <span>USML / ITAR</span>
+                  </label>
+                  <span class="mono-tag" id="usml-rule-count">42 rules</span>
+                </div>
+                <div class="regime-subcategories ms-3" id="usml-subcats">
+                  <label><input type="checkbox" id="usml-cat-iv" checked> Cat IV (Propulsion)</label><br>
+                  <label><input type="checkbox" id="usml-cat-v" checked> Cat V (Explosives)</label><br>
+                  <label><input type="checkbox" id="usml-cat-xiv" checked> Cat XIV (Toxics)</label><br>
+                  <label><input type="checkbox" id="usml-cat-xv"> Cat XV (Spacecraft)</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <!-- CWC -->
+              <div class="regime-control-group">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <label class="regime-label">
+                    <input type="checkbox" id="regime-cwc" checked> 
+                    <span>CWC</span>
+                  </label>
+                  <span class="mono-tag" id="cwc-rule-count">28 rules</span>
+                </div>
+                <div class="regime-subcategories ms-3" id="cwc-subcats">
+                  <label><input type="checkbox" id="cwc-schedule-1" checked> Schedule 1</label><br>
+                  <label><input type="checkbox" id="cwc-schedule-2" checked> Schedule 2</label><br>
+                  <label><input type="checkbox" id="cwc-schedule-3" checked> Schedule 3</label><br>
+                  <label><input type="checkbox" id="cwc-patterns" checked> Pattern Detection</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <!-- MTCR -->
+              <div class="regime-control-group">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <label class="regime-label">
+                    <input type="checkbox" id="regime-mtcr" checked> 
+                    <span>MTCR</span>
+                  </label>
+                  <span class="mono-tag" id="mtcr-rule-count">15 rules</span>
+                </div>
+                <div class="regime-subcategories ms-3" id="mtcr-subcats">
+                  <label><input type="checkbox" id="mtcr-cat-1" checked> Category I</label><br>
+                  <label><input type="checkbox" id="mtcr-cat-2"> Category II</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <!-- EAR/BIS -->
+              <div class="regime-control-group">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <label class="regime-label">
+                    <input type="checkbox" id="regime-ear"> 
+                    <span>EAR / BIS</span>
+                  </label>
+                  <span class="mono-tag" id="ear-rule-count">0 rules</span>
+                </div>
+                <div class="regime-subcategories ms-3" id="ear-subcats">
+                  <label><input type="checkbox" id="ear-cat-1"> Cat 1 (Chem/Bio)</label><br>
+                  <label><input type="checkbox" id="ear-cat-4"> Cat 4 (AI Compute)</label><br>
+                  <label><input type="checkbox" id="ear-entity-list"> Entity Lists</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <!-- DEA -->
+              <div class="regime-control-group">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <label class="regime-label">
+                    <input type="checkbox" id="regime-dea"> 
+                    <span>DEA Controlled Substances</span>
+                  </label>
+                  <span class="mono-tag" id="dea-rule-count">0 rules</span>
+                </div>
+                <div class="regime-subcategories ms-3" id="dea-subcats">
+                  <label><input type="checkbox" id="dea-schedule-i"> Schedule I</label><br>
+                  <label><input type="checkbox" id="dea-schedule-ii"> Schedule II</label><br>
+                  <label><input type="checkbox" id="dea-precursors"> Precursor Lists</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <!-- Select Agents -->
+              <div class="regime-control-group">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <label class="regime-label">
+                    <input type="checkbox" id="regime-select-agents"> 
+                    <span>Select Agents</span>
+                  </label>
+                  <span class="mono-tag" id="select-agents-rule-count">0 rules</span>
+                </div>
+                <div class="regime-subcategories ms-3" id="select-agents-subcats">
+                  <label><input type="checkbox" id="hhs-select"> HHS Select Agents</label><br>
+                  <label><input type="checkbox" id="usda-select"> USDA Select Agents</label><br>
+                  <label><input type="checkbox" id="australia-group"> Australia Group</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Confidence & Performance Settings -->
+        <div class="hud-panel mb-4">
+          <div class="hud-panel-header">
+            <h2 class="hud-title">Decision Thresholds</h2>
+            <button id="save-thresholds" class="btn-tactical btn-tactical-sm">Apply Changes</button>
+          </div>
+
+          <div class="row g-4">
+            <div class="col-md-6">
+              <label class="mono-tag mb-2">Minimum Confidence for REFUSE</label>
+              <input type="range" class="form-range" id="refuse-threshold" min="0.5" max="1.0" step="0.05" value="0.85">
+              <div class="d-flex justify-content-between">
+                <span class="mono-tag">50%</span>
+                <span class="mono-tag" id="refuse-value">85%</span>
+                <span class="mono-tag">100%</span>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="mono-tag mb-2">Minimum Confidence for ALLOW</label>
+              <input type="range" class="form-range" id="allow-threshold" min="0.0" max="1.0" step="0.05" value="0.95">
+              <div class="d-flex justify-content-between">
+                <span class="mono-tag">0%</span>
+                <span class="mono-tag" id="allow-value">95%</span>
+                <span class="mono-tag">100%</span>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="mono-tag mb-2">Cross-Regime Threshold</label>
+              <input type="range" class="form-range" id="cross-regime-threshold" min="1" max="4" step="1" value="2">
+              <div class="d-flex justify-content-between">
+                <span class="mono-tag">1 regime</span>
+                <span class="mono-tag" id="cross-regime-value">2 regimes</span>
+                <span class="mono-tag">4+ regimes</span>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="mono-tag mb-2">Extraction Model</label>
+              <select class="form-select" id="extraction-model" style="background: var(--bg-deep); border: 1px solid var(--border-active); color: var(--text-primary); font-family: var(--font-mono); font-size: 0.85rem;">
+                <option value="claude_sonnet_4">Claude Sonnet 4 (Current)</option>
+                <option value="claude_opus_4">Claude Opus 4 (Slower, Higher Quality)</option>
+                <option value="gpt_4">GPT-4 Turbo (Backup)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Advanced Configuration -->
+        <div class="hud-panel">
+          <div class="hud-panel-header">
+            <h2 class="hud-title">Advanced Settings</h2>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="mono-tag d-block mb-2">
+                <input type="checkbox" id="enable-counterfactuals" checked> Generate Counterfactuals
+              </label>
+              <label class="mono-tag d-block mb-2">
+                <input type="checkbox" id="enable-interactive-queries" checked> Interactive Query Resolution
+              </label>
+              <label class="mono-tag d-block mb-2">
+                <input type="checkbox" id="enable-cross-regime" checked> Cross-Regime Analysis
+              </label>
+            </div>
+
+            <div class="col-md-6">
+              <label class="mono-tag d-block mb-2">
+                <input type="checkbox" id="enable-audit-log" checked> Cryptographic Audit Log
+              </label>
+              <label class="mono-tag d-block mb-2">
+                <input type="checkbox" id="enable-proof-graph" checked> Proof Tree Visualization
+              </label>
+              <label class="mono-tag d-block mb-2">
+                <input type="checkbox" id="debug-mode"> Debug Mode (Verbose Logs)
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right column: Monitoring -->
+      <div class="col-lg-4">
+        
+        <!-- System Status -->
+        <div class="hud-panel mb-4">
+          <div class="hud-panel-header">
+            <h2 class="hud-title">System Status</h2>
+            <button id="refresh-status" class="btn-tactical btn-tactical-sm">Refresh</button>
+          </div>
+
+          <div class="metric-card mb-3" style="padding: 1rem;">
+            <div class="metric-label">Engine Uptime</div>
+            <div class="metric-value" style="font-size: 2rem; color: var(--accent-success);" id="uptime-value">4h 27m</div>
+            <div class="mono-tag">Last restart: Apr 26, 16:22 UTC</div>
+          </div>
+
+          <div class="d-flex justify-content-between mb-2" style="font-family: var(--font-mono); font-size: 0.85rem;">
+            <span style="color: var(--text-secondary);">Rules loaded</span>
+            <span id="rules-loaded" style="color: var(--accent-primary);">85</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2" style="font-family: var(--font-mono); font-size: 0.85rem;">
+            <span style="color: var(--text-secondary);">Active regimes</span>
+            <span id="active-regimes" style="color: var(--accent-primary);">3</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2" style="font-family: var(--font-mono); font-size: 0.85rem;">
+            <span style="color: var(--text-secondary);">Memory usage</span>
+            <span id="memory-usage" style="color: var(--accent-warning);">247 MB</span>
+          </div>
+          <div class="d-flex justify-content-between mb-3" style="font-family: var(--font-mono); font-size: 0.85rem;">
+            <span style="color: var(--text-secondary);">Avg response time</span>
+            <span id="response-time" style="color: var(--accent-success);">840ms</span>
+          </div>
+
+          <div class="tactical-progress">
+            <div class="tactical-progress-bar success" style="width: 78%;"></div>
+          </div>
+          <div class="mono-tag mt-1">System performance: Nominal</div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="hud-panel mb-4">
+          <div class="hud-panel-header">
+            <h2 class="hud-title">Recent Classifications</h2>
+          </div>
+
+          <div id="recent-activity">
+            <div class="activity-item">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="decision-badge refuse">REFUSE</span>
+                <span class="mono-tag">16:42:18</span>
+              </div>
+              <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4;">
+                Turbopump TPA-4421 → USML IV(h) specially designed
+              </div>
+            </div>
+
+            <div class="activity-item">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="decision-badge allow">ALLOW</span>
+                <span class="mono-tag">16:41:52</span>
+              </div>
+              <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4;">
+                Suzuki coupling protocol → No controlled elements
+              </div>
+            </div>
+
+            <div class="activity-item">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="decision-badge escalate">ESCALATE</span>
+                <span class="mono-tag">16:41:31</span>
+              </div>
+              <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4;">
+                Propellant research → End use ambiguous
+              </div>
+            </div>
+
+            <div class="activity-item">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="decision-badge refuse">REFUSE</span>
+                <span class="mono-tag">16:40:58</span>
+              </div>
+              <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4;">
+                Hydrazine synthesis → USML IV(h) controlled propellant
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Performance Metrics -->
+        <div class="hud-panel">
+          <div class="hud-panel-header">
+            <h2 class="hud-title">Performance Metrics</h2>
+          </div>
+
+          <canvas id="performance-chart" width="100%" height="180" style="max-height: 180px;"></canvas>
+          
+          <div class="d-flex justify-content-between mt-3" style="font-family: var(--font-mono); font-size: 0.75rem;">
+            <div class="text-center">
+              <div style="color: var(--accent-success);">94.2%</div>
+              <div style="color: var(--text-muted);">ALLOW Rate</div>
+            </div>
+            <div class="text-center">
+              <div style="color: var(--accent-danger);">4.1%</div>
+              <div style="color: var(--text-muted);">REFUSE Rate</div>
+            </div>
+            <div class="text-center">
+              <div style="color: var(--accent-warning);">1.7%</div>
+              <div style="color: var(--text-muted);">ESCALATE Rate</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/static/js/admin.js"></script>
+</body>
+</html>

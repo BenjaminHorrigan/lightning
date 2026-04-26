@@ -216,3 +216,7 @@ class ClassificationResult(BaseModel):
     artifact_summary: str = Field(
         description="One-paragraph summary of what was submitted, for audit logs"
     )
+    audit_id: Optional[str] = Field(
+        None,
+        description="UUID assigned by the audit logger after a decision is persisted"
+    )

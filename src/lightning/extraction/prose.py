@@ -17,6 +17,8 @@ import anthropic
 from lightning.const import DEFAULT_MODEL
 from lightning.models import ArtifactType, TechnicalArtifact
 
+_SCHEMA_TEXT = json.dumps(TechnicalArtifact.model_json_schema(), separators=(",", ":"))
+
 
 PROPOSAL_EXTRACTION_PROMPT = """You are extracting structured research-intent data from a research proposal.
 
@@ -54,15 +56,13 @@ def extract_from_proposal_text(
         from lightning._client import get_client
         client = get_client()
 
-    schema = TechnicalArtifact.model_json_schema()
-
     response = client.messages.create(
         model=model,
         max_tokens=4096,
         system=(
             "You extract structured research-intent data for a safety-reasoning system. "
             "You attend to both stated and implied goals.\n\n"
-            f"Output must match this JSON schema:\n{json.dumps(schema, indent=2)}"
+            f"Output must match this JSON schema:\n{_SCHEMA_TEXT}"
         ),
         messages=[
             {

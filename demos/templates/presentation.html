@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% include "_partials/head.html" %}
+</head>
+<body class="presentation-mode">
+
+<div class="presentation__timer" id="timer-bar" style="width: 0%;"></div>
+
+<aside class="criteria-rail" aria-label="Judging criteria progress">
+  <span class="criterion-badge" data-criterion="novelty">
+    Novelty <span class="criterion-badge__weight">25%</span>
+  </span>
+  <span class="criterion-badge" data-criterion="technical">
+    Technical <span class="criterion-badge__weight">25%</span>
+  </span>
+  <span class="criterion-badge" data-criterion="impact">
+    Impact <span class="criterion-badge__weight">25%</span>
+  </span>
+  <span class="criterion-badge" data-criterion="fit">
+    Fit <span class="criterion-badge__weight">25%</span>
+  </span>
+</aside>
+
+<main class="presentation">
+
+  <!-- SLIDE 1 - Cold open. Touches: Problem-Solution Fit -->
+  <section class="slide is-active" id="slide-1" data-touches="fit">
+    <div class="slide__eyebrow">A neurosymbolic safety layer for autonomous research</div>
+    <h1 class="slide__title">L<span class="accent">i</span>ghtning</h1>
+    <p class="slide__body" style="font-size: var(--fs-xl); max-width: 56ch;">
+      Every autonomous research agent shipped in the last two years has the
+      same gap: <strong style="color: var(--text-primary);">no formal safety layer.</strong>
+    </p>
+
+    <div class="slide__metrics" style="margin-top: var(--space-12);">
+      <div class="slide__big-stat">
+        <div class="slide__big-stat__value" style="color: var(--accent-warning);">0</div>
+        <div class="slide__big-stat__label">Cloud labs with<br>agent-rate review</div>
+      </div>
+      <div class="slide__big-stat">
+        <div class="slide__big-stat__value" style="color: var(--accent-warning);">0</div>
+        <div class="slide__big-stat__label">ChemCrow / Coscientist<br>export-control checks</div>
+      </div>
+      <div class="slide__big-stat">
+        <div class="slide__big-stat__value" style="color: var(--accent-warning);">&infin;</div>
+        <div class="slide__big-stat__label">Agent calls per hour<br>vs. human reviewers</div>
+      </div>
+    </div>
+
+    <div class="criterion-callout" data-criterion="fit">
+      Problem-Solution Fit &middot; the gap is observed, named, unaddressed
+    </div>
+  </section>
+
+  <!-- SLIDE 2 - Why this is hard. Touches: Novelty -->
+  <section class="slide" id="slide-2" data-touches="novelty">
+    <div class="slide__eyebrow">02 &middot; Why nobody's solved this yet</div>
+    <h2 class="slide__title">LLM filters <span class="accent">leak</span>.</h2>
+
+    <p class="slide__body">
+      Pattern matching can't reason about regulation. Rename
+      <code>hydrazine</code> to <code>diazane</code>, write the SMILES, split
+      the protocol across two prompts &mdash; the filter waves it through.
+    </p>
+
+    <div class="slide__metrics" style="margin-top: var(--space-10);">
+      <div class="slide__big-stat" style="border-right: 1px solid var(--border-subtle); padding-right: var(--space-8);">
+        <div class="slide__big-stat__value" style="color: var(--accent-danger);">20%</div>
+        <div class="slide__big-stat__label">GPT-4 baseline detection<br>on the adversarial suite</div>
+      </div>
+      <div class="slide__big-stat">
+        <div class="slide__big-stat__value" style="color: var(--accent-success);">80%</div>
+        <div class="slide__big-stat__label">Lightning detection<br>on the same suite</div>
+      </div>
+    </div>
+
+    <p class="slide__body" style="margin-top: var(--space-8); font-size: var(--fs-md);">
+      The fix is not a bigger model. It's a different architecture:
+      <strong style="color: var(--accent-novel);">neural extraction + symbolic reasoning over the actual regulatory text</strong>.
+    </p>
+
+    <div class="criterion-callout" data-criterion="novelty">
+      Novelty &middot; neurosymbolic, not "another guard model"
+    </div>
+  </section>
+
+  <!-- SLIDE 3 - Architecture. Touches: Technical Difficulty + Novelty -->
+  <section class="slide" id="slide-3" data-touches="technical,novelty">
+    <div class="slide__eyebrow">03 &middot; Architecture</div>
+    <h2 class="slide__title">Three layers. <span class="accent">One trust property.</span></h2>
+
+    <div style="display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: center; gap: var(--space-4); margin: var(--space-10) 0;">
+      <div class="hud-panel" style="margin: 0;">
+        <div class="text-mono text-uppercase text-novel text-xs mb-2">1 &middot; Neural</div>
+        <div class="text-lg text-primary mb-2">Extraction</div>
+        <p class="text-sm text-secondary" style="margin: 0;">
+          LLM parses the artifact into a typed <code>TechnicalArtifact</code> &mdash;
+          substances, components, quantities, intent.
+        </p>
+      </div>
+
+      <div style="font-size: var(--fs-2xl); color: var(--accent-primary); text-align: center;">&rarr;</div>
+
+      <div class="hud-panel" style="margin: 0; border-color: var(--accent-primary); box-shadow: 0 0 20px var(--accent-primary-dim);">
+        <div class="text-mono text-uppercase text-accent text-xs mb-2">2 &middot; Symbolic</div>
+        <div class="text-lg text-primary mb-2">Reasoning</div>
+        <p class="text-sm text-secondary" style="margin: 0;">
+          <strong>clingo</strong> ASP solver runs <strong>514 substances across
+          18 regimes</strong> simultaneously. Produces a <code>ProofTree</code>.
+        </p>
+      </div>
+
+      <div style="font-size: var(--fs-2xl); color: var(--accent-primary); text-align: center;">&rarr;</div>
+
+      <div class="hud-panel" style="margin: 0;">
+        <div class="text-mono text-uppercase text-success text-xs mb-2">3 &middot; Hybrid</div>
+        <div class="text-lg text-primary mb-2">Decision</div>
+        <p class="text-sm text-secondary" style="margin: 0;">
+          Pure-symbolic <code>decide()</code>; LLM only writes the rationale.
+          ALLOW / REFUSE / ESCALATE with citations.
+        </p>
+      </div>
+    </div>
+
+    <div style="background: var(--accent-primary-dim); border-left: 2px solid var(--accent-primary); padding: var(--space-4) var(--space-5); border-radius: var(--radius-sm);">
+      <div class="text-mono text-uppercase text-accent text-xs mb-2">Trust property</div>
+      <p class="text-base text-primary" style="margin: 0;">
+        The symbolic layer never calls the LLM. The LLM never overrides the
+        symbolic decision. Extraction and rationale generation are the only
+        LLM roles.
+      </p>
+    </div>
+
+    <div class="criterion-callout" data-criterion="technical">
+      Technical Difficulty &middot; clingo + 514 substances + ASP proof trees + cross-regime evaluation
+    </div>
+  </section>
+
+  <!-- SLIDE 4 - Live demo, cross-regime catch. Touches: Technical + Fit -->
+  <section class="slide" id="slide-4" data-touches="technical,fit">
+    <div class="slide__eyebrow">04 &middot; Live Demo &middot; Cross-regime catch</div>
+    <h2 class="slide__title">One protocol, <span class="accent">eighteen regimes</span>.</h2>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); margin-top: var(--space-6);">
+      <div class="hud-panel hud-panel--flush" style="margin: 0;">
+        <div class="hud-panel__header">
+          <span class="hud-panel__title">Artifact</span>
+          <span class="mono-tag">protocol.py</span>
+        </div>
+        <div class="hud-panel__body">
+<pre style="background: var(--bg-input); border-radius: var(--radius-sm); padding: var(--space-4); font-size: var(--fs-sm); color: var(--text-primary); margin: 0; line-height: 1.6; overflow-x: auto;">target:        hydrazine (N2H4)
+quantity:      50 mg
+parent_system: Vulcan-III rocket engine
+range_km:      &gt; 300
+payload_kg:    &gt; 500
+end_use:       space launch</pre>
+          <button id="demo1-run" class="btn-tactical btn-tactical--primary mt-4 w-full">
+            <span id="demo1-run-text">Analyze</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="hud-panel hud-panel--flush" style="margin: 0;">
+        <div class="hud-panel__header">
+          <span class="hud-panel__title">Decision &amp; proof</span>
+          <span class="mono-tag" id="demo1-time">&mdash; ms</span>
+        </div>
+        <div class="hud-panel__body" id="demo1-result" style="min-height: 14rem; color: var(--text-muted); font-family: var(--font-mono); font-size: var(--fs-sm); display: flex; align-items: center; justify-content: center;">
+          Click Analyze to run.
+        </div>
+      </div>
+    </div>
+
+    <div class="criterion-callout" data-criterion="technical">
+      Technical Difficulty &middot; sub-second proof tree, citations to 22 CFR 121.1, MTCR Cat I
+    </div>
+  </section>
+
+  <!-- SLIDE 5 - Adversarial robustness. Touches: Novelty + Technical -->
+  <section class="slide" id="slide-5" data-touches="novelty,technical">
+    <div class="slide__eyebrow">05 &middot; Live Demo &middot; Adversarial bench</div>
+    <h2 class="slide__title">Five evasions. <span class="accent">Same answer.</span></h2>
+
+    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-3); margin: var(--space-8) 0;">
+      <div class="metric-card" data-adv="synonym"><div class="text-mono text-uppercase text-xs text-secondary mb-2">01</div><div class="text-sm text-primary mb-1">Synonym</div><div class="text-xs text-muted">"diazane" &asymp; hydrazine</div><div class="decision-badge refuse mt-3" style="font-size: 0.6rem;">REFUSE</div></div>
+      <div class="metric-card" data-adv="circumlocution"><div class="text-mono text-uppercase text-xs text-secondary mb-2">02</div><div class="text-sm text-primary mb-1">Circumlocution</div><div class="text-xs text-muted">"the colorless liquid"</div><div class="decision-badge refuse mt-3" style="font-size: 0.6rem;">REFUSE</div></div>
+      <div class="metric-card" data-adv="split"><div class="text-mono text-uppercase text-xs text-secondary mb-2">03</div><div class="text-sm text-primary mb-1">Split protocol</div><div class="text-xs text-muted">two prompts</div><div class="decision-badge refuse mt-3" style="font-size: 0.6rem;">REFUSE</div></div>
+      <div class="metric-card" data-adv="foreign"><div class="text-mono text-uppercase text-xs text-secondary mb-2">04</div><div class="text-sm text-primary mb-1">Foreign lang.</div><div class="text-xs text-muted">Spanish protocol</div><div class="decision-badge refuse mt-3" style="font-size: 0.6rem;">REFUSE</div></div>
+      <div class="metric-card" data-adv="smiles"><div class="text-mono text-uppercase text-xs text-secondary mb-2">05</div><div class="text-sm text-primary mb-1">SMILES only</div><div class="text-xs text-muted">no common name</div><div class="decision-badge refuse mt-3" style="font-size: 0.6rem;">REFUSE</div></div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); margin-top: var(--space-6);">
+      <div class="metric-card" style="border-left: 3px solid var(--accent-success);">
+        <div class="text-mono text-uppercase text-success text-xs mb-2">Lightning</div>
+        <div class="metric-value text-success" style="font-size: var(--fs-3xl);" id="lightning-score">80%</div>
+        <div class="text-mono text-xs text-muted">detection on adversarial suite</div>
+      </div>
+      <div class="metric-card" style="border-left: 3px solid var(--accent-danger);">
+        <div class="text-mono text-uppercase text-danger text-xs mb-2">GPT-4 baseline</div>
+        <div class="metric-value text-danger" style="font-size: var(--fs-3xl);" id="gpt4-score">20%</div>
+        <div class="text-mono text-xs text-muted">detection on same suite</div>
+      </div>
+    </div>
+
+    <div class="criterion-callout" data-criterion="novelty">
+      Novelty &middot; symbolic reasoning catches what pattern-matching misses
+    </div>
+  </section>
+
+  <!-- SLIDE 6 - Impact. Touches: National Impact + Fit -->
+  <section class="slide" id="slide-6" data-touches="impact,fit">
+    <div class="slide__eyebrow">06 &middot; What this unlocks</div>
+    <h2 class="slide__title">Agents, <span class="accent">deployable</span>.</h2>
+
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-5); margin: var(--space-8) 0;">
+      <div class="hud-panel" style="margin: 0;">
+        <div class="text-mono text-uppercase text-success text-xs mb-3">Cloud labs</div>
+        <p class="text-base text-primary mb-2">Emerald, Strateos, Ginkgo at agent rate.</p>
+        <p class="text-sm text-secondary" style="margin: 0;">Today: each protocol queued behind a human reviewer. With Lightning: instant per-call screening, human only sees ESCALATE.</p>
+      </div>
+      <div class="hud-panel" style="margin: 0;">
+        <div class="text-mono text-uppercase text-success text-xs mb-3">University compliance</div>
+        <p class="text-base text-primary mb-2">Export-control automation for 4,000+ research universities.</p>
+        <p class="text-sm text-secondary" style="margin: 0;">Replaces hand-filled deemed-export forms with auditable, citable proof trees.</p>
+      </div>
+      <div class="hud-panel" style="margin: 0;">
+        <div class="text-mono text-uppercase text-success text-xs mb-3">DARPA / IARPA / DOE</div>
+        <p class="text-base text-primary mb-2">Autonomous research at federally-regulated facilities.</p>
+        <p class="text-sm text-secondary" style="margin: 0;">514 substances, 18 regimes, every decision cryptographically logged. Auditable end-to-end.</p>
+      </div>
+      <div class="hud-panel" style="margin: 0;">
+        <div class="text-mono text-uppercase text-success text-xs mb-3">National security</div>
+        <p class="text-base text-primary mb-2">A US-built safety layer for the agent economy.</p>
+        <p class="text-sm text-secondary" style="margin: 0;">Nuclear, chemical, biological export controls applied at machine speed. Adversaries' agents won't have this.</p>
+      </div>
+    </div>
+
+    <div class="criterion-callout" data-criterion="impact">
+      National Impact &middot; cloud labs, universities, federal R&amp;D, secure-by-default agents
+    </div>
+  </section>
+
+  <!-- SLIDE 7 - Close. Touches: ALL FOUR -->
+  <section class="slide" id="slide-7" data-touches="novelty,technical,impact,fit">
+    <div class="slide__eyebrow">07 &middot; The ask</div>
+    <h2 class="slide__title">
+      Lightning <span class="accent">ships</span>.
+    </h2>
+
+    <p class="slide__body" style="font-size: var(--fs-xl); max-width: 56ch;">
+      The first neurosymbolic safety layer for autonomous research.
+      Working today on 514 substances across 18 regimes. Sub-second.
+      Cryptographically auditable. Open source.
+    </p>
+
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); margin: var(--space-10) 0;">
+      <div class="metric-card" style="border-left: 3px solid var(--accent-novel);">
+        <div class="text-mono text-uppercase text-novel text-xs mb-2">Novelty</div>
+        <p class="text-sm text-secondary" style="margin: 0;">First production neurosymbolic safety layer for research agents.</p>
+      </div>
+      <div class="metric-card" style="border-left: 3px solid var(--accent-primary);">
+        <div class="text-mono text-uppercase text-accent text-xs mb-2">Technical</div>
+        <p class="text-sm text-secondary" style="margin: 0;">clingo ASP, 514 substances, 18 regimes, full proof trees.</p>
+      </div>
+      <div class="metric-card" style="border-left: 3px solid var(--accent-success);">
+        <div class="text-mono text-uppercase text-success text-xs mb-2">Impact</div>
+        <p class="text-sm text-secondary" style="margin: 0;">Cloud labs, 4,000+ universities, federal R&amp;D.</p>
+      </div>
+      <div class="metric-card" style="border-left: 3px solid var(--accent-warning);">
+        <div class="text-mono text-uppercase text-warning text-xs mb-2">Fit</div>
+        <p class="text-sm text-secondary" style="margin: 0;">A real, named, observed gap. Nothing else fills it.</p>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: var(--space-4); justify-content: center; margin-top: var(--space-8);">
+      <a href="/" class="btn-tactical btn-tactical--primary btn-tactical--lg">Run a demo</a>
+      <a href="/how-to-use" class="btn-tactical btn-tactical--ghost btn-tactical--lg">Read the API</a>
+    </div>
+  </section>
+</main>
+
+<!-- Presenter controls -->
+<div class="presenter-bar">
+  <button class="btn-tactical btn-tactical--ghost btn-tactical--sm" id="prev-btn">&larr;</button>
+  <span class="presenter-bar__counter">
+    <span id="current-slide">1</span> / <span id="total-slides">7</span>
+  </span>
+  <button class="btn-tactical btn-tactical--ghost btn-tactical--sm" id="next-btn">&rarr;</button>
+  <span style="width: 1px; height: 16px; background: var(--border-active); margin: 0 var(--space-2);"></span>
+  <button class="btn-tactical btn-tactical--ghost btn-tactical--sm" id="play-pause-btn">Pause</button>
+  <button class="btn-tactical btn-tactical--ghost btn-tactical--sm" id="reset-btn">Reset</button>
+  <span style="width: 1px; height: 16px; background: var(--border-active); margin: 0 var(--space-2);"></span>
+  <a href="/" class="btn-tactical btn-tactical--ghost btn-tactical--sm">Exit</a>
+</div>
+
+<script src="/static/js/presentation.js"></script>
+</body>
+</html>

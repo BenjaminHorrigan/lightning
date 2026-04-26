@@ -31,26 +31,96 @@ from lightning.models import (
     TechnicalArtifact,
 )
 
+# Pre-computed once at import time — schema is constant, no need to rebuild per call.
+# Compact separators shave ~40% off the JSON size vs. indent=2.
+_SCHEMA_TEXT = json.dumps(TechnicalArtifact.model_json_schema(), separators=(",", ":"))
 
-# Chemical synonym mapping (minimal set for demo)
-CHEMICAL_SYNONYMS = {
-    "diazane": "hydrazine",
-    "hydrazin": "hydrazine",  # German
+
+# Chemical synonym mapping — covers IUPAC names, German, abbreviations, and common obfuscations.
+# Applied deterministically after LLM extraction so the KB always sees canonical names.
+CHEMICAL_SYNONYMS: dict[str, str] = {
+    # Hydrazine variants
+    "diazane": "hydrazine",           # IUPAC systematic name
+    "hydrazin": "hydrazine",          # German
+    "hydrazine anhydrous": "hydrazine",
+    "hydrazine monohydrate": "hydrazine",
     "n2h4": "hydrazine",
+    "diamine": "hydrazine",
+    # MMH variants
     "monomethyl-hydrazine": "monomethylhydrazine",
     "mmh": "monomethylhydrazine",
+    "1-methylhydrazine": "monomethylhydrazine",
+    "methylhydrazine": "monomethylhydrazine",
+    # UDMH variants
+    "udmh": "unsymmetrical_dimethylhydrazine",
+    "1,1-dimethylhydrazine": "unsymmetrical_dimethylhydrazine",
+    "dimethylhydrazine": "unsymmetrical_dimethylhydrazine",
+    "asymmetrical dimethylhydrazine": "unsymmetrical_dimethylhydrazine",
+    # NTO variants
     "nto": "nitrogen_tetroxide",
     "n2o4": "nitrogen_tetroxide",
-    "ammoniak": "ammonia",  # German
-    "natriumhypochlorit": "sodium_hypochlorite",  # German
+    "dinitrogen tetroxide": "nitrogen_tetroxide",
+    "nitrogen(iv) oxide": "nitrogen_tetroxide",
+    "stickstofftetroxid": "nitrogen_tetroxide",  # German
+    # German names for common reagents in Raschig synthesis
+    "ammoniak": "ammonia",
+    "natriumhypochlorit": "sodium_hypochlorite",
+    "calciumhypochlorit": "calcium_hypochlorite",
+    # Perchlorate variants
+    "ap": "ammonium_perchlorate",
+    "ammonium perchlorate": "ammonium_perchlorate",
+    # Explosives / energetics
+    "hmx": "hmx",
+    "octogen": "hmx",
+    "cyclotetramethylenetetranitramine": "hmx",
+    "rdx": "rdx",
+    "hexogen": "rdx",
+    "cyclonite": "rdx",
+    "cl-20": "cl_20",
+    "cl20": "cl_20",
+    "hniw": "cl_20",
+    "hexanitrohexaazaisowurtzitane": "cl_20",
+    "cagliostro": "cl_20",
+    # Sarin / nerve agents
+    "gb": "sarin",
+    "isopropyl methylphosphonofluoridate": "sarin",
+    "vx": "vx",
+    "o-ethyl s-[2-(diisopropylamino)ethyl] methylphosphonothioate": "vx",
+    # Phosgene
+    "carbonyl chloride": "phosgene",
+    "dichloroformaldehyde": "phosgene",
 }
 
-# SMILES to chemical name mapping
-SMILES_TO_NAME = {
+# SMILES → canonical name. Applied case-insensitively after extraction.
+SMILES_TO_NAME: dict[str, str] = {
     "nn": "hydrazine",
+    "n-n": "hydrazine",
+    "[nh2][nh2]": "hydrazine",
     "n": "ammonia",
+    "[nh3]": "ammonia",
     "cnn": "monomethylhydrazine",
+    "cn-n": "monomethylhydrazine",
     "o=n(=o)n(=o)=o": "nitrogen_tetroxide",
+    "o=n+([o-])on+(=o)=o": "nitrogen_tetroxide",
+    "clc(=o)cl": "phosgene",
+    "fp(=o)(oc(c)c)oc(c)c": "sarin",
+}
+
+# CAS registry number → canonical name. Highest-confidence override: CAS numbers are unambiguous.
+CAS_TO_NAME: dict[str, str] = {
+    "302-01-2":     "hydrazine",
+    "60-34-4":      "monomethylhydrazine",
+    "57-14-7":      "unsymmetrical_dimethylhydrazine",
+    "10544-72-6":   "nitrogen_tetroxide",
+    "7616-94-6":    "ammonium_perchlorate",
+    "2691-41-0":    "hmx",
+    "121-82-4":     "rdx",
+    "135285-90-4":  "cl_20",
+    "75-44-5":      "phosgene",
+    "107-44-8":     "sarin",
+    "50782-69-9":   "vx",
+    "7664-41-7":    "ammonia",
+    "7681-52-9":    "sodium_hypochlorite",
 }
 
 
@@ -68,6 +138,49 @@ def _resolve_smiles_to_name(smiles: str) -> Optional[str]:
     return SMILES_TO_NAME.get(smiles_lower)
 
 
+def _normalize_substances(artifact: TechnicalArtifact) -> TechnicalArtifact:
+    """
+    Deterministic post-extraction normalization pass.
+
+    Applies synonym → canonical name, CAS-number override, and SMILES resolution
+    to every substance in the artifact. This runs AFTER the LLM extraction so
+    that adversarial obfuscations (synonym substitution, foreign-language names,
+    SMILES-only encoding) are caught regardless of whether the LLM normalized them.
+
+    Priority: CAS number (unambiguous) > SMILES lookup > synonym table.
+    """
+    if not artifact.substances:
+        return artifact
+
+    normalized = []
+    changed = False
+    for sub in artifact.substances:
+        name = sub.name
+
+        # Synonym table (IUPAC, German, abbreviations)
+        canonical = _normalize_substance_name(name)
+
+        # CAS override — highest confidence: CAS 302-01-2 is always hydrazine
+        if sub.cas_number:
+            cas_key = sub.cas_number.strip()
+            cas_canonical = CAS_TO_NAME.get(cas_key)
+            if cas_canonical:
+                canonical = cas_canonical
+
+        # SMILES resolution — secondary fallback when synonym lookup didn't help
+        if sub.smiles and canonical == name:
+            smiles_canonical = _resolve_smiles_to_name(sub.smiles)
+            if smiles_canonical:
+                canonical = smiles_canonical
+
+        if canonical != name:
+            sub = sub.model_copy(update={"name": canonical})
+            changed = True
+        normalized.append(sub)
+
+    return artifact.model_copy(update={"substances": normalized}) if changed else artifact
+
+
 PROTOCOL_EXTRACTION_PROMPT = """You are extracting a structured representation of a laboratory protocol.
 
 Your job is NOT to judge whether the protocol is safe. Your job is to produce a
@@ -78,6 +191,12 @@ Given the input below, extract:
 1. Every substance mentioned (reagents, products, solvents, catalysts, byproducts)
 2. Every procedure step in order
 3. The stated intent, if present
+4. Any equipment or devices described — even when named circumlocutionally. Identify
+   the actual engineering function: "rotating flow acceleration device for propulsion"
+   → component category "turbopump"; "high-pressure fluid delivery system" → "pump";
+   "energetic compound for propulsion" → extract as a substance with propellant role.
+   Include the parent system when stated (e.g., "for a 500 kN propulsion assembly" →
+   parent_system: "propulsion assembly").
 
 For each substance:
 - Give its common name (normalize synonyms: diazane→hydrazine, MMH→monomethylhydrazine, etc.)
@@ -131,15 +250,13 @@ def extract_from_protocol_text(
         from lightning._client import get_client
         client = get_client()
 
-    schema = TechnicalArtifact.model_json_schema()
-
     response = client.messages.create(
         model=model,
         max_tokens=4096,
         system=(
             "You extract structured protocol data for a safety-reasoning system. "
             "You are meticulous and never invent data you cannot confirm.\n\n"
-            f"Output must match this JSON schema:\n{json.dumps(schema, indent=2)}"
+            f"Output must match this JSON schema:\n{_SCHEMA_TEXT}"
         ),
         messages=[
             {
@@ -161,7 +278,8 @@ def extract_from_protocol_text(
         data = json.loads(raw)
         data["artifact_type"] = ArtifactType.PROTOCOL
         data.setdefault("raw_input", protocol_text)
-        return TechnicalArtifact.model_validate(data)
+        artifact = TechnicalArtifact.model_validate(data)
+        return _normalize_substances(artifact)
     except (json.JSONDecodeError, ValidationError) as e:
         # Extraction failed — return low-confidence stub so downstream ESCALATES
         return TechnicalArtifact(

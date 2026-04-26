@@ -301,6 +301,63 @@ released_from_control(Component) :-
     not parent_system(Component, _).
 
 % ============================================================================
+% CAS number matching — deterministic second layer against synonym obfuscation
+% CAS registry numbers are unambiguous; a match here overrides any name confusion.
+% ============================================================================
+
+controlled_propellant_cas("302-01-2").    % hydrazine (N2H4)
+controlled_propellant_cas("60-34-4").     % monomethylhydrazine (MMH)
+controlled_propellant_cas("57-14-7").     % UDMH (unsymmetrical dimethylhydrazine)
+controlled_propellant_cas("10544-72-6").  % nitrogen tetroxide (NTO / N2O4)
+controlled_propellant_cas("7616-94-6").   % ammonium perchlorate (AP)
+controlled_propellant_cas("2691-41-0").   % HMX (octogen)
+controlled_propellant_cas("121-82-4").    % RDX (hexogen / cyclonite)
+controlled_propellant_cas("135285-90-4"). % CL-20 / HNIW
+
+classified(S, "USML_IV_h_propellant", "22 CFR 121.1 Category IV(h)(1) [CAS match]") :-
+    substance(S),
+    cas_number(S, CAS),
+    controlled_propellant_cas(CAS).
+
+% ============================================================================
+% SMILES-based matching — catches SMILES-only encoding of controlled substances
+% ============================================================================
+
+controlled_propellant_smiles("NN").       % hydrazine H2N-NH2
+controlled_propellant_smiles("nn").       % lowercase variant
+controlled_propellant_smiles("CNN").      % monomethylhydrazine
+controlled_propellant_smiles("cnn").
+controlled_propellant_smiles("CN(N)N").   % UDMH
+
+classified(S, "USML_IV_h_propellant", "22 CFR 121.1 Category IV(h)(1) [SMILES match]") :-
+    substance(S),
+    smiles(S, SMIL),
+    controlled_propellant_smiles(SMIL).
+
+% ============================================================================
+% Raschig synthesis pathway detection
+% NH3 + NaOCl → N2H4 (hydrazine) — primary industrial hydrazine synthesis.
+% Detecting the precursor combination is equivalent to detecting the synthesis
+% attempt; this catches split/obfuscated protocols that omit the product name.
+% ============================================================================
+
+raschig_synthesis_detected :-
+    substance("ammonia"),
+    substance("sodium_hypochlorite").
+
+raschig_synthesis_detected :-
+    substance("ammonia"),
+    substance("calcium_hypochlorite").
+
+raschig_synthesis_detected :-
+    substance("ammonium_hydroxide"),
+    substance("sodium_hypochlorite").
+
+classified("hydrazine_via_raschig_synthesis", "USML_IV_h_propellant",
+    "22 CFR 121.1 Category IV(h)(1) — Raschig synthesis: NH3 + NaOCl precursor combination detected") :-
+    raschig_synthesis_detected.
+
+% ============================================================================
 % Output predicates — what the Python layer reads back
 % ============================================================================
 

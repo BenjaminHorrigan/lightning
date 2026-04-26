@@ -208,5 +208,593 @@
     "text": "Propulsion systems (solid, liquid, and electric) and thermal management devices specifically designed or modified for the spacecraft in paragraph (a) of this category, and parts, components, accessories, and attachments therefor, including: spacecraft propulsion systems, satellite thrusters, orbit-raising motors, apogee kick motors, and attitude control thrusters.",
     "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121#p-121.1(Category%20XV)",
     "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category I(a)": {
+    "regime": "USML",
+    "category": "I(a)",
+    "text": "Nonautomatic, semiautomatic, and fully automatic firearms to and including .50 caliber (12.7 mm), and combat shotguns.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category I(b)": {
+    "regime": "USML",
+    "category": "I(b)",
+    "text": "Firearms using caseless ammunition.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category I(c)": {
+    "regime": "USML",
+    "category": "I(c)",
+    "text": "Components for firearms: suppressors/silencers, sound suppressors, auto conversion kits (auto sears, lightning links), and barrels and receivers specially designed for USML firearms.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category I(f)": {
+    "regime": "USML",
+    "category": "I(f)",
+    "text": "Fully automatic firearms greater than .50 caliber (12.7 mm), including heavy machine guns, autocannon, and rotary cannon systems.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category I(j)": {
+    "regime": "USML",
+    "category": "I(j)",
+    "text": "Parts, components, accessories, and attachments specially designed for firearms in paragraphs (a) through (f) of this category, including barrels, stocks, frames, bolts, bolt carriers, slides, cylinders, and trigger groups.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category II(a)": {
+    "regime": "USML",
+    "category": "II(a)",
+    "text": "Guns and armament greater than 12.7 mm caliber: artillery, howitzers, mortars, recoilless rifles, flamethrowers, grenade launchers, and cannon systems.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category II(b)": {
+    "regime": "USML",
+    "category": "II(b)",
+    "text": "Military flamethrowers with a range of 20 meters or greater.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category II(c)": {
+    "regime": "USML",
+    "category": "II(c)",
+    "text": "Parts, components, accessories, and attachments for Category II weapons: barrels, breeches, carriages, mortar tubes, baseplates, cannon mounts, and military gun sights.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category III(a)": {
+    "regime": "USML",
+    "category": "III(a)",
+    "text": "Ammunition/ordnance for USML firearms: armor-piercing, explosive, incendiary, tracer rounds, artillery shells, mortar bombs, naval projectiles, and grenade rounds.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category III(b)": {
+    "regime": "USML",
+    "category": "III(b)",
+    "text": "Cartridge cases, powder bags, primers, and fuzes for USML Category II weapons.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "26 USC 5845(b)": {
+    "regime": "USML",
+    "category": "NFA machinegun",
+    "text": "The term 'machinegun' means any weapon which shoots, is designed to shoot, or can be readily restored to shoot, automatically more than one shot, without manual reloading, by a single function of the trigger.",
+    "url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title26-section5845&num=0&edition=prelim",
+    "cfr_reference": "26 USC 5845"
+  },
+  "26 USC 5845(a)(1)": {
+    "regime": "USML",
+    "category": "NFA suppressor",
+    "text": "The term 'firearm' means a shotgun having a barrel of less than 18 inches in length... a silencer... any destructive device.",
+    "url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title26-section5845&num=0&edition=prelim",
+    "cfr_reference": "26 USC 5845"
+  },
+  "26 USC 5845(a)(2)": {
+    "regime": "USML",
+    "category": "NFA short-barreled shotgun",
+    "text": "A shotgun having a barrel or barrels of less than 18 inches in length; a weapon made from a shotgun if such weapon has an overall length of less than 26 inches or a barrel of less than 18 inches.",
+    "url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title26-section5845&num=0&edition=prelim",
+    "cfr_reference": "26 USC 5845"
+  },
+  "26 USC 5845(a)(3)": {
+    "regime": "USML",
+    "category": "NFA short-barreled rifle",
+    "text": "A rifle having a barrel or barrels of less than 16 inches in length; a weapon made from a rifle if such weapon has an overall length of less than 26 inches or a barrel of less than 16 inches.",
+    "url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title26-section5845&num=0&edition=prelim",
+    "cfr_reference": "26 USC 5845"
+  },
+  "26 USC 5845(f)": {
+    "regime": "USML",
+    "category": "NFA destructive device",
+    "text": "A destructive device: any explosive, incendiary, or poison gas bomb, grenade, mine, rocket, missile, or similar device; any weapon by whatever name known which will, or which may be readily converted to, expel a projectile by the action of an explosive or other propellant, the barrel or barrels of which have a bore of more than one-half inch in diameter.",
+    "url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title26-section5845&num=0&edition=prelim",
+    "cfr_reference": "26 USC 5845"
+  },
+  "22 CFR 121.1 Category V(a)": {
+    "regime": "USML",
+    "category": "V(a)",
+    "text": "Explosives and explosive devices, as follows: shaped charges, demolition charges, mines, and military explosive devices.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category V(b)": {
+    "regime": "USML",
+    "category": "V(b)",
+    "text": "Military explosives and energetic materials: TNT, PETN, TATB, HMX, RDX, CL-20, composition explosives, PBX formulations, and other high explosives specially formulated for military use.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category V(b) [CAS match]": {
+    "regime": "USML",
+    "category": "V(b)",
+    "text": "Military explosives identified by CAS registry number. CAS match provides a secondary identification layer that defeats synonym obfuscation.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category V(c)": {
+    "regime": "USML",
+    "category": "V(c)",
+    "text": "Detonators, initiators, and fuzes: electric and nonelectric detonators, blasting caps, detonating cord, exploding bridgewire detonators, slapper detonators, exploding foil initiators, safe/arm/fire devices.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category V(d)": {
+    "regime": "USML",
+    "category": "V(d)",
+    "text": "Incendiary agents and devices: thermite, thermate, napalm, white phosphorus munitions, incendiary bombs, fire bombs, and incendiary grenades.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category V(d) [CAS match]": {
+    "regime": "USML",
+    "category": "V(d)",
+    "text": "Incendiary substances identified by CAS registry number (e.g., white phosphorus CAS 7723-14-0).",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category V(e)": {
+    "regime": "USML",
+    "category": "V(e)",
+    "text": "Military pyrotechnics and smoke agents: illumination and infrared flares, tracers, smoke grenades, colored smoke munitions, aircraft countermeasure flares, and chaff.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category V(f)": {
+    "regime": "USML",
+    "category": "V(f)",
+    "text": "Propellant charges and propellants for USML Category II weapons (artillery, mortars): single-base, double-base, and triple-base gun propellants.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category VI(a)": {
+    "regime": "USML",
+    "category": "VI(a)",
+    "text": "Combatant vessels of war and special naval equipment: destroyers, frigates, cruisers, aircraft carriers, submarines, minesweepers, patrol boats, fast attack craft, and amphibious assault ships.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category VI(b)": {
+    "regime": "USML",
+    "category": "VI(b)",
+    "text": "Naval armament: guns greater than 5 mm, torpedoes, depth charges, naval mines, anti-submarine rockets, vertical launch systems, and close-in weapon systems.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category VI(c)": {
+    "regime": "USML",
+    "category": "VI(c)",
+    "text": "Submarine and underwater systems: periscopes, snorkels, torpedo tubes, submarine pressure hulls, swimmer delivery vehicles, and underwater unmanned vehicles.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category VI(d)": {
+    "regime": "USML",
+    "category": "VI(d)",
+    "text": "Naval mine countermeasure systems: mine hunting sonars, mine disposal vehicles, influence sweep systems, magnetic and acoustic sweeps.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category VI(e)": {
+    "regime": "USML",
+    "category": "VI(e)",
+    "text": "Parts, components, accessories, and attachments specially designed for USML Category VI items, including combat management systems, ship signature reduction systems, and torpedo guidance/propulsion.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category VII(a)": {
+    "regime": "USML",
+    "category": "VII(a)",
+    "text": "Tanks and military motor vehicles incorporating armor or weapons: main battle tanks, armored personnel carriers, infantry fighting vehicles, self-propelled artillery, and MRAPs.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category VII(b)": {
+    "regime": "USML",
+    "category": "VII(b)",
+    "text": "Military trucks with a payload greater than 2.5 tons and all tactical trucks designed for military use.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category VII(c)": {
+    "regime": "USML",
+    "category": "VII(c)",
+    "text": "Military engineering vehicles: bridgelayers, armored dozers, mine plow vehicles, mine roller vehicles, and combat breacher vehicles.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category VII(d)": {
+    "regime": "USML",
+    "category": "VII(d)",
+    "text": "Parts, components, and accessories for USML Category VII vehicles: reactive armor, explosive reactive armor, active protection systems, turrets, tank gun systems, fire control systems, and composite/ceramic armor.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category XI(a)(1)": {
+    "regime": "USML",
+    "category": "XI(a)(1)",
+    "text": "Electronic warfare systems: jammers, SIGINT, ELINT, COMINT receivers, direction finding systems, emitter locating systems, and electronic support measures.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category XI(a)(2)": {
+    "regime": "USML",
+    "category": "XI(a)(2)",
+    "text": "Military communications: SATCOM terminals (mil-spec), Type 1 crypto equipment, COMSEC devices, frequency-hopping radios, IFF interrogators/transponders, and military data links (Link 16, JTIDS).",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category XI(a)(3)": {
+    "regime": "USML",
+    "category": "XI(a)(3)",
+    "text": "Radar systems: fire control radar, SAR, ISAR, FMCW, MTI radar, airborne intercept radar, ballistic missile defense radar, AESA systems, and terrain-following radar.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category XI(a)(4)": {
+    "regime": "USML",
+    "category": "XI(a)(4)",
+    "text": "Military sonar: hull-mounted sonar, towed arrays, dipping sonar, sonobuoys, and submarine detection systems.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category XI(a)(5)": {
+    "regime": "USML",
+    "category": "XI(a)(5)",
+    "text": "Directed energy weapons: high-energy lasers (>= 1W), high-power microwave weapons, particle beam weapons, active denial systems, and laser dazzlers for military use.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category XI(b)": {
+    "regime": "USML",
+    "category": "XI(b)",
+    "text": "Night vision and thermal imaging: image intensifier tubes, military NVGs, thermal weapon sights, FLIR systems, and cooled infrared focal plane arrays for military use.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category XI(c)": {
+    "regime": "USML",
+    "category": "XI(c)",
+    "text": "Intelligence collection and processing: signals intelligence processors, cryptanalysis equipment, traffic analysis systems, and military intelligence processing systems.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "22 CFR 121.1 Category XI(d)": {
+    "regime": "USML",
+    "category": "XI(d)",
+    "text": "Parts and components for Category XI electronic systems: TWTs, GaN power amplifiers, AESA modules, ECM pods, chaff dispensers, and flare dispensers.",
+    "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121/section-121.1",
+    "cfr_reference": "22 CFR 121.1"
+  },
+  "10 CFR 110.8; 10 CFR 110.10(a)": {
+    "regime": "10CFR110",
+    "category": "SNM HEU",
+    "text": "Special nuclear material export controls: uranium enriched in the isotope 235 to a concentration of 20 percent or more (highly enriched uranium, HEU) requires a specific NRC export license.",
+    "url": "https://www.ecfr.gov/current/title-10/chapter-I/part-110",
+    "cfr_reference": "10 CFR 110.8; 10 CFR 110.10"
+  },
+  "10 CFR 110.8; 10 CFR 110.10(b)": {
+    "regime": "10CFR110",
+    "category": "SNM Pu-239",
+    "text": "Special nuclear material: plutonium-239, including weapons-grade plutonium. Export requires specific NRC license under 10 CFR 110.",
+    "url": "https://www.ecfr.gov/current/title-10/chapter-I/part-110",
+    "cfr_reference": "10 CFR 110.8; 10 CFR 110.10"
+  },
+  "10 CFR 110.8; 10 CFR 110.10(c)": {
+    "regime": "10CFR110",
+    "category": "SNM U-233",
+    "text": "Special nuclear material: uranium-233. Export requires specific NRC license under 10 CFR 110.",
+    "url": "https://www.ecfr.gov/current/title-10/chapter-I/part-110",
+    "cfr_reference": "10 CFR 110.8; 10 CFR 110.10"
+  },
+  "10 CFR 110.27": {
+    "regime": "10CFR110",
+    "category": "SNM LEU",
+    "text": "Low-enriched uranium (1-20% U-235) for reactor use. General licenses available for certain quantities; specific licenses required above threshold amounts.",
+    "url": "https://www.ecfr.gov/current/title-10/chapter-I/part-110",
+    "cfr_reference": "10 CFR 110.27"
+  },
+  "10 CFR 110.8(z)": {
+    "regime": "10CFR110",
+    "category": "Source material",
+    "text": "Source material: natural uranium, depleted uranium, thorium, uranium ore concentrate (yellowcake). Controlled under 10 CFR 110 export licensing.",
+    "url": "https://www.ecfr.gov/current/title-10/chapter-I/part-110",
+    "cfr_reference": "10 CFR 110.8"
+  },
+  "10 CFR 110.9(a)": {
+    "regime": "10CFR110",
+    "category": "Reactor components",
+    "text": "Nuclear reactors and major components: pressure vessels, fuel handling machines, control rod systems, reactor coolant pumps, pressurizers, steam generators, and containment vessels.",
+    "url": "https://www.ecfr.gov/current/title-10/chapter-I/part-110",
+    "cfr_reference": "10 CFR 110.9"
+  },
+  "10 CFR 110, Appendix A Part 1": {
+    "regime": "10CFR110",
+    "category": "Enrichment equipment",
+    "text": "Uranium enrichment equipment: gas centrifuges (rotors, bearings, cascades), gaseous diffusion barriers, laser isotope separation equipment (AVLIS, MLIS), calutrons, aerodynamic nozzles, vortex tubes, and UF6 handling systems.",
+    "url": "https://www.ecfr.gov/current/title-10/chapter-I/part-110/appendix-Appendix%20A%20to%20Part%20110",
+    "cfr_reference": "10 CFR 110, Appendix A"
+  },
+  "10 CFR 110, Appendix A Part 2": {
+    "regime": "10CFR110",
+    "category": "Enrichment materials",
+    "text": "Uranium hexafluoride (UF6) and associated process materials for uranium enrichment.",
+    "url": "https://www.ecfr.gov/current/title-10/chapter-I/part-110/appendix-Appendix%20A%20to%20Part%20110",
+    "cfr_reference": "10 CFR 110, Appendix A"
+  },
+  "10 CFR 110.9(e)": {
+    "regime": "10CFR110",
+    "category": "Reprocessing equipment",
+    "text": "Plutonium reprocessing equipment (PUREX and other processes): extraction columns, mixer-settlers, pulsed columns, hot cells, fuel chopping machines, dissolution vessels, solvent extraction centrifuges. Associated chemicals: tributyl phosphate (TBP), hydroxylamine nitrate.",
+    "url": "https://www.ecfr.gov/current/title-10/chapter-I/part-110",
+    "cfr_reference": "10 CFR 110.9"
+  },
+  "10 CFR 110.9(e) [CAS match]": {
+    "regime": "10CFR110",
+    "category": "Reprocessing chemical (CAS)",
+    "text": "Tributyl phosphate (TBP, CAS 126-73-8) — the primary extractant in the PUREX process for plutonium separation from irradiated nuclear fuel.",
+    "url": "https://www.ecfr.gov/current/title-10/chapter-I/part-110",
+    "cfr_reference": "10 CFR 110.9"
+  },
+  "10 CFR 110.10(d)": {
+    "regime": "10CFR110",
+    "category": "Heavy water",
+    "text": "Heavy water (deuterium oxide, D2O) and heavy water production equipment: Girdler-Sulfide plants, H2S/deuterium exchange towers, and heavy water distillation columns.",
+    "url": "https://www.ecfr.gov/current/title-10/chapter-I/part-110",
+    "cfr_reference": "10 CFR 110.10"
+  },
+  "10 CFR 110, Appendix A Part 3": {
+    "regime": "10CFR110",
+    "category": "Heavy water production equipment",
+    "text": "Heavy water production equipment controlled under 10 CFR 110 Appendix A: Girdler-Sulfide towers, bithermal exchange columns, and heavy water distillation equipment.",
+    "url": "https://www.ecfr.gov/current/title-10/chapter-I/part-110/appendix-Appendix%20A%20to%20Part%20110",
+    "cfr_reference": "10 CFR 110, Appendix A"
+  },
+  "10 CFR 110.8; 10 CFR 110.9": {
+    "regime": "10CFR110",
+    "category": "Nuclear weapons components",
+    "text": "Nuclear weapons-specific components: implosion lenses, explosive lenses, nuclear initiators (polonium, neutron), weapon pits, nuclear reflectors (beryllium, uranium), and reentry vehicle nuclear sections.",
+    "url": "https://www.ecfr.gov/current/title-10/chapter-I/part-110",
+    "cfr_reference": "10 CFR 110.8; 10 CFR 110.9"
+  },
+  "NSG INFCIRC/254/Rev.15/Part 1, Item 1": {
+    "regime": "10CFR110",
+    "category": "NSG Trigger Item 1",
+    "text": "Nuclear Suppliers Group Trigger List, Item 1: Nuclear reactors and equipment, including reactor pressure vessels, fuel handling machines, control rod systems, reactor coolant pumps, and zircaloy tubes for fuel cladding.",
+    "url": "https://www.iaea.org/publications/documents/infcircs/guidelines-nuclear-transfers",
+    "cfr_reference": "NSG INFCIRC/254/Rev.15/Part 1"
+  },
+  "NSG INFCIRC/254/Rev.15/Part 1, Item 2": {
+    "regime": "10CFR110",
+    "category": "NSG Trigger Item 2",
+    "text": "Nuclear Suppliers Group Trigger List, Item 2: Non-nuclear materials for reactors — heavy water, reactor-grade deuterium, nuclear-grade graphite, and reactor-grade beryllium.",
+    "url": "https://www.iaea.org/publications/documents/infcircs/guidelines-nuclear-transfers",
+    "cfr_reference": "NSG INFCIRC/254/Rev.15/Part 1"
+  },
+  "NSG INFCIRC/254/Rev.15/Part 1, Item 3": {
+    "regime": "10CFR110",
+    "category": "NSG Trigger Item 3",
+    "text": "NSG Trigger List, Item 3: Plants for reprocessing irradiated fuel elements, including hot cells, dissolution vessels, solvent extraction systems.",
+    "url": "https://www.iaea.org/publications/documents/infcircs/guidelines-nuclear-transfers",
+    "cfr_reference": "NSG INFCIRC/254/Rev.15/Part 1"
+  },
+  "NSG INFCIRC/254/Rev.15/Part 1, Item 4": {
+    "regime": "10CFR110",
+    "category": "NSG Trigger Item 4",
+    "text": "NSG Trigger List, Item 4: Plants for fabricating nuclear fuel elements, including sintering furnaces, pellet presses, and fuel rod welding equipment.",
+    "url": "https://www.iaea.org/publications/documents/infcircs/guidelines-nuclear-transfers",
+    "cfr_reference": "NSG INFCIRC/254/Rev.15/Part 1"
+  },
+  "NSG INFCIRC/254/Rev.15/Part 1, Item 5": {
+    "regime": "10CFR110",
+    "category": "NSG Trigger Item 5",
+    "text": "NSG Trigger List, Item 5: Plants for separating isotopes of uranium and equipment therefor: gas centrifuge, gaseous diffusion, laser enrichment, and aerodynamic enrichment plants.",
+    "url": "https://www.iaea.org/publications/documents/infcircs/guidelines-nuclear-transfers",
+    "cfr_reference": "NSG INFCIRC/254/Rev.15/Part 1"
+  },
+  "NSG INFCIRC/254/Rev.15/Part 1, Item 6": {
+    "regime": "10CFR110",
+    "category": "NSG Trigger Item 6",
+    "text": "NSG Trigger List, Item 6: Source material — uranium ore, UO2, UF4, UF6, natural uranium metal, thorium ore and metal. IAEA safeguards required as condition of supply.",
+    "url": "https://www.iaea.org/publications/documents/infcircs/guidelines-nuclear-transfers",
+    "cfr_reference": "NSG INFCIRC/254/Rev.15/Part 1"
+  },
+  "NSG INFCIRC/254/Rev.15/Part 1, Item 6 [CAS match]": {
+    "regime": "10CFR110",
+    "category": "NSG Trigger Item 6 (CAS)",
+    "text": "Source material identified by CAS registry number: UO2 (uranium dioxide, CAS 1344-57-6).",
+    "url": "https://www.iaea.org/publications/documents/infcircs/guidelines-nuclear-transfers",
+    "cfr_reference": "NSG INFCIRC/254/Rev.15/Part 1"
+  },
+  "NSG INFCIRC/254/Rev.15/Part 1, Item 7": {
+    "regime": "10CFR110",
+    "category": "NSG Trigger Item 7",
+    "text": "NSG Trigger List, Item 7: Special fissionable material — highly enriched uranium (>=20% U-235), plutonium-239, uranium-233.",
+    "url": "https://www.iaea.org/publications/documents/infcircs/guidelines-nuclear-transfers",
+    "cfr_reference": "NSG INFCIRC/254/Rev.15/Part 1"
+  },
+  "AG Nuclear-related Dual-Use Equipment Guidelines": {
+    "regime": "AG",
+    "category": "Nuclear dual-use",
+    "text": "Australia Group nuclear-related dual-use equipment guidelines: mass spectrometers and isotope ratio mass spectrometers for nuclear material analysis, alpha spectrometers. Aligned with NSG Part 2.",
+    "url": "https://www.australiagroup.net/en/nuclear.html",
+    "cfr_reference": "AG Nuclear Guidelines"
+  },
+  "31 CFR Parts 515-589; 50 USC 1701 et seq.": {
+    "regime": "CCL",
+    "category": "OFAC embargoed destination",
+    "text": "OFAC comprehensive sanctions programs: transfers to embargoed destinations (Iran, North Korea/DPRK, Cuba, Syria, Russia, Belarus, Crimea/Donbas, Sudan, Myanmar, Venezuela, Nicaragua, Mali, Haiti, Afghanistan/Taliban) prohibited under IEEPA and related statutes.",
+    "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information",
+    "cfr_reference": "31 CFR Parts 515-589"
+  },
+  "EO 13382; 31 CFR Part 544": {
+    "regime": "CCL",
+    "category": "OFAC WMD proliferation",
+    "text": "Executive Order 13382 (Blocking Property of WMD Proliferators) and 31 CFR Part 544: transfers benefiting WMD programs or WMD-designated entities are prohibited.",
+    "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information/weapons-of-mass-destruction-proliferators",
+    "cfr_reference": "EO 13382; 31 CFR Part 544"
+  },
+  "EO 13224; 31 CFR Part 594": {
+    "regime": "CCL",
+    "category": "OFAC terrorist nexus",
+    "text": "Executive Order 13224 (Blocking Terrorist Property) and 31 CFR Part 594 (Global Terrorism Sanctions): transfers benefiting SDGTs, foreign terrorist organizations, or terrorist-affiliated entities prohibited.",
+    "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information/global-terrorism-sanctions",
+    "cfr_reference": "EO 13224; 31 CFR Part 594"
+  },
+  "31 CFR Part 589; EO 14024": {
+    "regime": "CCL",
+    "category": "OFAC Russia sectoral",
+    "text": "31 CFR Part 589 and Executive Order 14024 (Russia sanctions, post-2022): sectoral sanctions on Russia's defense/intelligence sector, military, FSB, SVR, and GRU-affiliated entities.",
+    "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information/russian-harmful-foreign-activities-sanctions",
+    "cfr_reference": "31 CFR Part 589; EO 14024"
+  },
+  "31 CFR Part 560 (ITSR); 31 CFR Part 544": {
+    "regime": "CCL",
+    "category": "OFAC Iran nuclear",
+    "text": "Iranian Transactions and Sanctions Regulations (31 CFR 560) combined with WMD proliferation controls (31 CFR 544): transfers to Iran's nuclear program face dual OFAC prohibition.",
+    "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information/iran-sanctions",
+    "cfr_reference": "31 CFR Part 560; 31 CFR Part 544"
+  },
+  "31 CFR Part 510; EO 13722": {
+    "regime": "CCL",
+    "category": "OFAC DPRK comprehensive",
+    "text": "North Korea Sanctions Regulations (31 CFR Part 510) and Executive Order 13722: comprehensive embargo on North Korea/DPRK.",
+    "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information/north-korea-sanctions",
+    "cfr_reference": "31 CFR Part 510; EO 13722"
+  },
+  "15 CFR Part 774, ECCN 1C350.a": {
+    "regime": "CCL",
+    "category": "1C350.a",
+    "text": "ECCN 1C350.a — Schedule 2A CWC precursor chemicals with chemical weapons potential: amiton, PFIB, BZ (3-quinuclidinyl benzilate).",
+    "url": "https://www.ecfr.gov/current/title-15/subtitle-B/chapter-VII/subchapter-C/part-774",
+    "cfr_reference": "15 CFR Part 774"
+  },
+  "15 CFR Part 774, ECCN 1C350.b": {
+    "regime": "CCL",
+    "category": "1C350.b",
+    "text": "ECCN 1C350.b — Schedule 2B chemicals: precursors to Schedule 1 nerve agents including DMMP, methyl phosphonic acid, thiodiglycol, phosphorus trichloride, thionyl chloride, and related organophosphorus compounds.",
+    "url": "https://www.ecfr.gov/current/title-15/subtitle-B/chapter-VII/subchapter-C/part-774",
+    "cfr_reference": "15 CFR Part 774"
+  },
+  "15 CFR Part 774, ECCN 1C350.c": {
+    "regime": "CCL",
+    "category": "1C350.c",
+    "text": "ECCN 1C350.c — Schedule 3 industrial chemicals with CW potential: phosgene, cyanogen chloride, hydrogen cyanide, chloropicrin, triethanolamine.",
+    "url": "https://www.ecfr.gov/current/title-15/subtitle-B/chapter-VII/subchapter-C/part-774",
+    "cfr_reference": "15 CFR Part 774"
+  },
+  "15 CFR Part 774, ECCN 1C350 [CAS match]": {
+    "regime": "CCL",
+    "category": "1C350 CAS",
+    "text": "ECCN 1C350 chemical weapons precursors identified by CAS registry number.",
+    "url": "https://www.ecfr.gov/current/title-15/subtitle-B/chapter-VII/subchapter-C/part-774",
+    "cfr_reference": "15 CFR Part 774"
+  },
+  "15 CFR Part 774, ECCN 2B001": {
+    "regime": "CCL",
+    "category": "2B001",
+    "text": "ECCN 2B001 — Machine tools with positional accuracy better than 6 microns (6000 nm): CNC lathes, milling machines, and grinding machines capable of producing rocket/missile components.",
+    "url": "https://www.ecfr.gov/current/title-15/subtitle-B/chapter-VII/subchapter-C/part-774",
+    "cfr_reference": "15 CFR Part 774"
+  },
+  "15 CFR Part 774, ECCN 3A001.a": {
+    "regime": "CCL",
+    "category": "3A001.a",
+    "text": "ECCN 3A001.a — Electronic components: GaAs, GaN, and InP monolithic microwave integrated circuits (MMICs) for use above 3 GHz.",
+    "url": "https://www.ecfr.gov/current/title-15/subtitle-B/chapter-VII/subchapter-C/part-774",
+    "cfr_reference": "15 CFR Part 774"
+  },
+  "15 CFR Part 774, ECCN 3A001.a.5": {
+    "regime": "CCL",
+    "category": "3A001.a.5",
+    "text": "ECCN 3A001.a.5 — Analog-to-digital converters (ADCs) with sampling rates greater than 200 MSPS.",
+    "url": "https://www.ecfr.gov/current/title-15/subtitle-B/chapter-VII/subchapter-C/part-774",
+    "cfr_reference": "15 CFR Part 774"
+  },
+  "15 CFR Part 774, ECCN 3A001.a.6": {
+    "regime": "CCL",
+    "category": "3A001.a.6",
+    "text": "ECCN 3A001.a.6 — Digital-to-analog converters (DACs) with output rates greater than 3500 MSPS.",
+    "url": "https://www.ecfr.gov/current/title-15/subtitle-B/chapter-VII/subchapter-C/part-774",
+    "cfr_reference": "15 CFR Part 774"
+  },
+  "15 CFR Part 774, ECCN 3A001.b": {
+    "regime": "CCL",
+    "category": "3A001.b",
+    "text": "ECCN 3A001.b — Frequency synthesizers for microwave and millimeter-wave applications.",
+    "url": "https://www.ecfr.gov/current/title-15/subtitle-B/chapter-VII/subchapter-C/part-774",
+    "cfr_reference": "15 CFR Part 774"
+  },
+  "15 CFR Part 774, ECCN 5A001.b": {
+    "regime": "CCL",
+    "category": "5A001.b",
+    "text": "ECCN 5A001.b — Telecommunications equipment: spread spectrum radios, frequency hopping systems, and software-defined radios with anti-jam capability.",
+    "url": "https://www.ecfr.gov/current/title-15/subtitle-B/chapter-VII/subchapter-C/part-774",
+    "cfr_reference": "15 CFR Part 774"
+  },
+  "15 CFR Part 774, ECCN 5A001.f": {
+    "regime": "CCL",
+    "category": "5A001.f",
+    "text": "ECCN 5A001.f — SATCOM terminals with anti-jam or low probability of intercept/detection capability.",
+    "url": "https://www.ecfr.gov/current/title-15/subtitle-B/chapter-VII/subchapter-C/part-774",
+    "cfr_reference": "15 CFR Part 774"
+  },
+  "15 CFR Part 774, ECCN 6A002.a": {
+    "regime": "CCL",
+    "category": "6A002.a",
+    "text": "ECCN 6A002.a — Optical sensors: cooled (cryogenically cooled) infrared focal plane arrays (FPAs) including HgCdTe and InSb detectors.",
+    "url": "https://www.ecfr.gov/current/title-15/subtitle-B/chapter-VII/subchapter-C/part-774",
+    "cfr_reference": "15 CFR Part 774"
+  },
+  "15 CFR Part 774, ECCN 7A001.a": {
+    "regime": "CCL",
+    "category": "7A001.a",
+    "text": "ECCN 7A001.a — Accelerometers with bias less than 1 mg (1000 micro-g) — suitable for inertial navigation systems used in missiles and aircraft.",
+    "url": "https://www.ecfr.gov/current/title-15/subtitle-B/chapter-VII/subchapter-C/part-774",
+    "cfr_reference": "15 CFR Part 774"
+  },
+  "15 CFR Part 774, ECCN 7A003.a": {
+    "regime": "CCL",
+    "category": "7A003.a",
+    "text": "ECCN 7A003.a — Gyroscopes with drift rate less than 0.5 degrees per hour: ring laser gyroscopes, fiber-optic gyroscopes, and equivalent inertial sensors.",
+    "url": "https://www.ecfr.gov/current/title-15/subtitle-B/chapter-VII/subchapter-C/part-774",
+    "cfr_reference": "15 CFR Part 774"
+  },
+  "15 CFR Part 774, ECCN 7E001": {
+    "regime": "CCL",
+    "category": "7E001",
+    "text": "ECCN 7E001 — Technology for the development or production of controlled inertial navigation systems and inertial measurement units meeting 7A001/7A003 performance thresholds.",
+    "url": "https://www.ecfr.gov/current/title-15/subtitle-B/chapter-VII/subchapter-C/part-774",
+    "cfr_reference": "15 CFR Part 774"
+  },
+  "15 CFR Part 774, ECCN 9A004": {
+    "regime": "CCL",
+    "category": "9A004",
+    "text": "ECCN 9A004 — Space launch vehicles (commercial, not USML-controlled): complete commercial SLVs that have received a Commodity Jurisdiction determination as EAR-controlled rather than ITAR-controlled.",
+    "url": "https://www.ecfr.gov/current/title-15/subtitle-B/chapter-VII/subchapter-C/part-774",
+    "cfr_reference": "15 CFR Part 774"
   }
 }

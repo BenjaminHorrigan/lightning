@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% include "_partials/head.html" %}
+</head>
+<body>
+{% include "_partials/navbar.html" %}
+
+<main class="lightning-page">
+
+  <!-- Page header ------------------------------------------------------ -->
+  <header class="lightning-page__header">
+    <h1 class="lightning-page__title">How to Use Lightning</h1>
+    <p class="lightning-page__subtitle">
+      Drop-in safety layer for autonomous research agents. Wrap a single
+      function call around your LLM, agent, or cloud-lab submission and get
+      back a deterministic <code>ALLOW</code>, <code>REFUSE</code>, or
+      <code>ESCALATE</code> with a full proof tree and CFR citations &mdash; in
+      under a second.
+    </p>
+  </header>
+
+  <!-- Quick start ------------------------------------------------------ -->
+  <section class="hud-panel">
+    <header class="hud-panel__header">
+      <h2 class="hud-panel__title">Quick Start</h2>
+      <span class="mono-tag">3 steps &middot; ~60 seconds</span>
+    </header>
+
+    <ol style="list-style: none; padding: 0; margin: 0;">
+
+      <li style="display: grid; grid-template-columns: auto 1fr; gap: var(--space-5); align-items: start; margin-bottom: var(--space-6);">
+        <div class="metric-value text-accent" style="font-size: var(--fs-2xl);">1</div>
+        <div>
+          <div class="text-mono text-uppercase text-secondary mb-2">Install</div>
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">&#9656; shell</span>
+              <button class="code-block__copy" data-copy>Copy</button>
+            </div>
+<pre><code class="lang-shell">curl -LsSf https://astral.sh/uv/install.sh | sh
+git clone https://github.com/BenjaminHorrigan/lightning
+cd lightning
+uv sync</code></pre>
+          </div>
+        </div>
+      </li>
+
+      <li style="display: grid; grid-template-columns: auto 1fr; gap: var(--space-5); align-items: start; margin-bottom: var(--space-6);">
+        <div class="metric-value text-accent" style="font-size: var(--fs-2xl);">2</div>
+        <div>
+          <div class="text-mono text-uppercase text-secondary mb-2">Set your API key</div>
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">&#9656; .env</span>
+              <button class="code-block__copy" data-copy>Copy</button>
+            </div>
+<pre><code class="lang-shell">ANTHROPIC_API_KEY=sk-ant-...</code></pre>
+          </div>
+        </div>
+      </li>
+
+      <li style="display: grid; grid-template-columns: auto 1fr; gap: var(--space-5); align-items: start;">
+        <div class="metric-value text-accent" style="font-size: var(--fs-2xl);">3</div>
+        <div>
+          <div class="text-mono text-uppercase text-secondary mb-2">Run your first check</div>
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">&#9656; shell</span>
+              <button class="code-block__copy" data-copy>Copy</button>
+            </div>
+<pre><code class="lang-shell">uv run lightning check examples/hydrazine_protocol.py
+# &rarr; REFUSE  (USML IV(h)(1) &mdash; controlled propellant)</code></pre>
+          </div>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- Three integration paths ----------------------------------------- -->
+  <section class="hud-panel">
+    <header class="hud-panel__header">
+      <h2 class="hud-panel__title">Three Ways to Integrate</h2>
+    </header>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="metric-card" style="height: 100%;">
+          <div class="text-mono text-uppercase text-accent mb-3">A &middot; Python SDK</div>
+          <div class="text-secondary text-sm mb-3">
+            One function call. Best for scripts, notebooks, and Python-native agents.
+          </div>
+          <a href="#sdk" class="btn-tactical btn-tactical--ghost btn-tactical--sm">SDK Reference &rarr;</a>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="metric-card" style="height: 100%;">
+          <div class="text-mono text-uppercase text-accent mb-3">B &middot; HTTP API</div>
+          <div class="text-secondary text-sm mb-3">
+            Language-agnostic <code>POST /api/analyze</code>. Best for non-Python stacks
+            and cross-machine agent fleets.
+          </div>
+          <a href="#http" class="btn-tactical btn-tactical--ghost btn-tactical--sm">HTTP Reference &rarr;</a>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="metric-card" style="height: 100%;">
+          <div class="text-mono text-uppercase text-accent mb-3">C &middot; Agent Wrapper</div>
+          <div class="text-secondary text-sm mb-3">
+            <code>@lightning_guard</code> decorator for ChemCrow, LangChain tools,
+            and Coscientist-style runners.
+          </div>
+          <a href="#wrapper" class="btn-tactical btn-tactical--ghost btn-tactical--sm">Wrapper Reference &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- A. Python SDK ---------------------------------------------------- -->
+  <section class="hud-panel" id="sdk">
+    <header class="hud-panel__header">
+      <h2 class="hud-panel__title">A &middot; Python SDK</h2>
+      <span class="mono-tag">lightning.check()</span>
+    </header>
+
+    <p class="hud-panel__subtitle">
+      The single-call entry point. Pass any artifact &mdash; a protocol file, a CAD
+      spec, a research proposal &mdash; and get a structured
+      <code>ClassificationResult</code> back.
+    </p>
+
+    <div class="code-block">
+      <div class="code-block__header">
+        <span class="code-block__lang">&#9656; python</span>
+        <button class="code-block__copy" data-copy>Copy</button>
+      </div>
+<pre><code class="lang-python">from lightning import check
+
+result = check("examples/hydrazine_protocol.py")
+
+print(result.decision)        # "REFUSE"
+print(result.rationale)       # human-readable explanation
+print(result.citations)       # [{authority: "ITAR", section: "22 CFR 121.1 IV(h)(1)", ...}]
+print(result.proof.steps)     # full ASP proof tree
+print(result.confidence)      # 0.0 - 1.0</code></pre>
+    </div>
+
+    <h3 class="text-mono text-uppercase text-accent text-sm mt-8 mb-3">ClassificationResult schema</h3>
+    <div class="code-block">
+      <div class="code-block__header">
+        <span class="code-block__lang">&#9656; pydantic</span>
+        <button class="code-block__copy" data-copy>Copy</button>
+      </div>
+<pre><code class="lang-python">class ClassificationResult(BaseModel):
+    decision:    Literal["ALLOW", "REFUSE", "ESCALATE"]
+    confidence:  float                    # 0.0 - 1.0
+    rationale:   str                      # natural-language explanation
+    citations:   list[Citation]           # CFR / regulatory references
+    proof:       ProofTree                # ASP-derived chain
+    artifact:    TechnicalArtifact        # extracted facts (audit trail)
+    regimes:     list[str]                # which regimes fired
+
+class Citation(BaseModel):
+    authority:   str                      # "ITAR" | "CWC" | "DEA" | ...
+    section:     str                      # "22 CFR 121.1 IV(h)(1)"
+    text:        str                      # actual regulatory language
+
+class ProofTree(BaseModel):
+    steps:       list[ProofStep]
+    regime:      str
+    rule_file:   str                      # e.g. "usml/cat_iv_propellants.lp"</code></pre>
+    </div>
+
+    <h3 class="text-mono text-uppercase text-accent text-sm mt-8 mb-3">Three decisions, three flows</h3>
+    <div class="row g-3">
+      <div class="col-md-4">
+        <div class="metric-card" style="border-left: 3px solid var(--accent-success);">
+          <div class="decision-badge allow mb-3">ALLOW</div>
+          <p class="text-sm text-secondary">No regime fired. Agent proceeds normally with full audit trail of what was checked.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="metric-card" style="border-left: 3px solid var(--accent-danger);">
+          <div class="decision-badge refuse mb-3">REFUSE</div>
+          <p class="text-sm text-secondary">A regime fired with high confidence. Returns rationale + counterfactual ("would be allowed if X were Y").</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="metric-card" style="border-left: 3px solid var(--accent-warning);">
+          <div class="decision-badge escalate mb-3">ESCALATE</div>
+          <p class="text-sm text-secondary">Reasoning gap detected. Returns specific question to resolve (parent system, intent, end-user).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- B. HTTP API ----------------------------------------------------- -->
+  <section class="hud-panel" id="http">
+    <header class="hud-panel__header">
+      <h2 class="hud-panel__title">B &middot; HTTP API</h2>
+      <span class="mono-tag">FastAPI &middot; OpenAPI at /docs</span>
+    </header>
+
+    <p class="hud-panel__subtitle">
+      All endpoints accept and return JSON. Run <code>uv run python demos/fastapi_app.py</code>
+      and you also get auto-generated Swagger UI at <code>/docs</code> and
+      ReDoc at <code>/redoc</code>.
+    </p>
+
+    <!-- Endpoint: POST /api/analyze -->
+    <div class="endpoint-card" data-method="POST">
+      <header class="endpoint-card__header">
+        <span class="method-badge post">POST</span>
+        <span class="endpoint-card__path">/api/analyze</span>
+        <span class="mono-tag">primary</span>
+      </header>
+      <p class="endpoint-card__description">
+        Run an artifact through the full neurosymbolic pipeline. Extraction
+        (LLM) &rarr; reasoning (clingo over 18 regimes) &rarr; decision synthesis.
+      </p>
+
+      <div class="endpoint-card__schema">
+        <div class="schema-block">
+          <div class="schema-block__title">Request</div>
+          <div class="code-block">
+            <div class="code-block__header"><span class="code-block__lang">json</span><button class="code-block__copy" data-copy>Copy</button></div>
+<pre><code class="lang-json">{
+  "artifact": "Synthesize 50 mg of hydrazine for...",
+  "type": "protocol",
+  "metadata": { "submitted_by": "agent_42" }
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="schema-block">
+          <div class="schema-block__title">Response</div>
+          <div class="code-block">
+            <div class="code-block__header"><span class="code-block__lang">json</span><button class="code-block__copy" data-copy>Copy</button></div>
+<pre><code class="lang-json">{
+  "decision":   "REFUSE",
+  "confidence": 0.97,
+  "rationale":  "Hydrazine is a USML IV(h)(1) controlled propellant...",
+  "citations": [{
+    "authority": "ITAR",
+    "section":   "22 CFR 121.1 IV(h)(1)",
+    "text":      "Liquid propellants..."
+  }],
+  "proof":   { "steps": [...], "regime": "usml" },
+  "regimes": ["usml", "cwc"]
+}</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <h4 class="text-mono text-uppercase text-secondary text-xs mt-6 mb-2">Curl</h4>
+      <div class="code-block">
+        <div class="code-block__header"><span class="code-block__lang">&#9656; shell</span><button class="code-block__copy" data-copy>Copy</button></div>
+<pre><code class="lang-shell">curl -X POST http://localhost:8000/api/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"artifact": "Synthesize 50 mg hydrazine...", "type": "protocol"}'</code></pre>
+      </div>
+    </div>
+
+    <!-- Endpoint: GET /api/regimes -->
+    <div class="endpoint-card" data-method="GET">
+      <header class="endpoint-card__header">
+        <span class="method-badge get">GET</span>
+        <span class="endpoint-card__path">/api/regimes</span>
+      </header>
+      <p class="endpoint-card__description">
+        List all 18 regulatory regimes currently loaded by the engine, with
+        rule counts and authority metadata.
+      </p>
+      <div class="code-block">
+        <div class="code-block__header"><span class="code-block__lang">json &middot; response</span><button class="code-block__copy" data-copy>Copy</button></div>
+<pre><code class="lang-json">{
+  "regimes": [
+    { "id": "usml_iv",  "authority": "State Dept / ITAR", "rules": 42, "active": true },
+    { "id": "cwc_1",    "authority": "OPCW",              "rules": 21, "active": true },
+    { "id": "dea_i",    "authority": "DOJ / DEA",         "rules": 36, "active": true }
+  ],
+  "total_rules":  514,
+  "total_regimes": 18
+}</code></pre>
+      </div>
+    </div>
+
+    <div class="endpoint-card" data-method="GET">
+      <header class="endpoint-card__header">
+        <span class="method-badge get">GET</span>
+        <span class="endpoint-card__path">/api/admin/status</span>
+      </header>
+      <p class="endpoint-card__description">
+        Engine health, uptime, memory, recent decision distribution. Powers the Admin console.
+      </p>
+    </div>
+
+    <div class="endpoint-card" data-method="POST">
+      <header class="endpoint-card__header">
+        <span class="method-badge post">POST</span>
+        <span class="endpoint-card__path">/api/admin/regimes</span>
+      </header>
+      <p class="endpoint-card__description">
+        Toggle individual regimes on/off without restarting. Useful for benchmarking and reasoning-coverage A/B tests.
+      </p>
+    </div>
+
+    <div class="endpoint-card" data-method="POST">
+      <header class="endpoint-card__header">
+        <span class="method-badge post">POST</span>
+        <span class="endpoint-card__path">/api/adversarial/run</span>
+      </header>
+      <p class="endpoint-card__description">
+        Execute the 5-vector adversarial test suite (synonym, circumlocution,
+        split protocol, foreign language, SMILES-only). Returns Lightning vs
+        LLM-baseline detection rates.
+      </p>
+    </div>
+
+    <div class="endpoint-card" data-method="GET">
+      <header class="endpoint-card__header">
+        <span class="method-badge get">GET</span>
+        <span class="endpoint-card__path">/api/audit</span>
+      </header>
+      <p class="endpoint-card__description">
+        Cryptographically chained audit log. Each entry includes hash of the
+        previous entry, the artifact, the decision, and a Merkle proof.
+      </p>
+    </div>
+
+    <div class="endpoint-card" data-method="WS">
+      <header class="endpoint-card__header">
+        <span class="method-badge ws">WS</span>
+        <span class="endpoint-card__path">/ws/agent</span>
+        <span class="mono-tag">streaming</span>
+      </header>
+      <p class="endpoint-card__description">
+        Live-intercept channel: an agent streams its planning trace; Lightning
+        injects guard rulings inline as soon as a controlled action is proposed.
+      </p>
+    </div>
+  </section>
+
+  <!-- C. Agent Wrapper ------------------------------------------------ -->
+  <section class="hud-panel" id="wrapper">
+    <header class="hud-panel__header">
+      <h2 class="hud-panel__title">C &middot; Agent Wrapper</h2>
+      <span class="mono-tag">@lightning_guard</span>
+    </header>
+
+    <p class="hud-panel__subtitle">
+      One-line decorator that wraps an agent's tool-call boundary. Works
+      out-of-the-box with ChemCrow; the same pattern fits LangChain
+      <code>Tool</code>, AutoGen functions, and Coscientist task runners.
+    </p>
+
+    <div class="code-block">
+      <div class="code-block__header"><span class="code-block__lang">&#9656; python &middot; ChemCrow</span><button class="code-block__copy" data-copy>Copy</button></div>
+<pre><code class="lang-python">from chemcrow.agents import ChemCrow
+from lightning.integrations.chemcrow import lightning_guard
+
+agent = ChemCrow(model="gpt-4")
+
+@lightning_guard
+def run(prompt: str):
+    return agent.run(prompt)
+
+# Lightning evaluates the agent's planned actions before execution.
+# REFUSE   -> returns refusal + counterfactual instead of running.
+# ESCALATE -> returns gap question; await human resolution.
+# ALLOW    -> proceeds normally.
+result = run("Synthesize 200 mg of fentanyl analog X-1234")</code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-block__header"><span class="code-block__lang">&#9656; python &middot; LangChain</span><button class="code-block__copy" data-copy>Copy</button></div>
+<pre><code class="lang-python">from langchain.agents import Tool
+from lightning.integrations.langchain import LightningGuardedTool
+
+dangerous_tool = Tool(
+    name="run_synthesis",
+    func=actually_run_in_lab,
+    description="Execute a chemical synthesis protocol on the cloud lab.",
+)
+
+guarded = LightningGuardedTool.wrap(dangerous_tool)
+# guarded behaves like dangerous_tool but never executes a REFUSE'd action.</code></pre>
+    </div>
+  </section>
+
+  <!-- Live Playground ------------------------------------------------- -->
+  <section class="hud-panel" id="playground">
+    <header class="hud-panel__header">
+      <h2 class="hud-panel__title">Live Playground</h2>
+      <span class="mono-tag">try it now &middot; calls /api/analyze</span>
+    </header>
+
+    <p class="hud-panel__subtitle">
+      Paste any artifact below, hit <em>Analyze</em>, and watch Lightning
+      classify it in real time. This calls your local engine &mdash; no data leaves
+      the machine.
+    </p>
+
+    <div class="row g-4">
+      <div class="col-md-6">
+        <label class="text-mono text-uppercase text-secondary text-xs mb-2" style="display: block;">Artifact input</label>
+        <textarea id="playground-input" class="tactical-textarea" rows="14" placeholder="Paste a protocol, spec, or proposal..."># Synthesis protocol
+target: hydrazine (N2H4)
+quantity: 50 mg
+purpose: rocket propellant research
+parent_system: Vulcan-III rocket engine
+</textarea>
+
+        <div class="flex justify-between mt-3">
+          <div class="flex gap-2">
+            <button class="btn-tactical btn-tactical--ghost btn-tactical--sm" data-example="benign">Benign</button>
+            <button class="btn-tactical btn-tactical--ghost btn-tactical--sm" data-example="refuse">USML</button>
+            <button class="btn-tactical btn-tactical--ghost btn-tactical--sm" data-example="escalate">Ambiguous</button>
+          </div>
+          <button id="playground-run" class="btn-tactical btn-tactical--primary">
+            <span id="playground-run-text">Analyze</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label class="text-mono text-uppercase text-secondary text-xs mb-2" style="display: block;">Decision &amp; proof</label>
+        <div id="playground-result" style="min-height: 18rem; background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: var(--space-5); font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-muted); display: flex; align-items: center; justify-content: center; text-align: center;">
+          Click Analyze to run a classification.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLI -------------------------------------------------------------- -->
+  <section class="hud-panel">
+    <header class="hud-panel__header">
+      <h2 class="hud-panel__title">CLI Reference</h2>
+      <span class="mono-tag">lightning &lt;cmd&gt;</span>
+    </header>
+
+    <div class="code-block">
+      <div class="code-block__header"><span class="code-block__lang">&#9656; shell</span><button class="code-block__copy" data-copy>Copy</button></div>
+<pre><code class="lang-shell"># Single-file check
+uv run lightning check examples/hydrazine_protocol.py
+
+# Pipe stdin
+echo "Synthesize 50 mg hydrazine" | uv run lightning check -
+
+# JSON output (for scripting)
+uv run lightning check examples/hydrazine_protocol.py --json
+
+# Run only specific regimes
+uv run lightning check ARTIFACT --regimes usml,cwc
+
+# Verbose proof output
+uv run lightning check ARTIFACT --explain</code></pre>
+    </div>
+  </section>
+
+  <!-- Troubleshooting -------------------------------------------------- -->
+  <section class="hud-panel">
+    <header class="hud-panel__header">
+      <h2 class="hud-panel__title">Common Issues</h2>
+    </header>
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="metric-card">
+          <div class="text-mono text-uppercase text-warning text-xs mb-2">clingo not found</div>
+          <p class="text-sm text-secondary mb-2">
+            The reasoning engine needs the <code>clingo</code> binary. <code>uv sync</code> installs the Python wrapper but on some systems you also need:
+          </p>
+          <div class="code-block">
+            <div class="code-block__header"><span class="code-block__lang">shell</span><button class="code-block__copy" data-copy>Copy</button></div>
+<pre><code class="lang-shell">brew install clingo        # macOS
+apt install gringo         # Debian/Ubuntu</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="metric-card">
+          <div class="text-mono text-uppercase text-warning text-xs mb-2">ANTHROPIC_API_KEY missing</div>
+          <p class="text-sm text-secondary">
+            Required only for the extraction stage. The symbolic reasoning and the
+            golden test suite (<code>tests/test_golden.py</code>) run without
+            any API key; useful for offline benchmarking and CI.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="metric-card">
+          <div class="text-mono text-uppercase text-warning text-xs mb-2">Decision says ESCALATE for everything</div>
+          <p class="text-sm text-secondary">
+            Means the extraction layer can't recover one of the slots the
+            reasoning engine needs (parent system, intent, quantity). Open
+            the Admin page and check <em>extraction confidence</em>; raise
+            it or supply explicit metadata in your artifact.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="metric-card">
+          <div class="text-mono text-uppercase text-warning text-xs mb-2">Adding a new regime</div>
+          <p class="text-sm text-secondary">
+            Drop a CSV in <code>data/sources/</code>, add the regime to
+            <code>scripts/generate_substance_atoms.py</code>, write a
+            <code>.lp</code> rule file under <code>src/lightning/reasoning/rules/&lt;regime&gt;/</code>,
+            and register it in <code>REGIME_DIRS</code>. See
+            <code>aegis_tier1_claude_code_guide.md</code> for the full pattern.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Where to next --------------------------------------------------- -->
+  <section class="hud-panel">
+    <header class="hud-panel__header">
+      <h2 class="hud-panel__title">Where to Next</h2>
+    </header>
+    <div class="row g-3">
+      <div class="col-md-3"><a href="/" class="btn-tactical w-full">Run a Demo &rarr;</a></div>
+      <div class="col-md-3"><a href="/adversarial" class="btn-tactical w-full">Adversarial Bench &rarr;</a></div>
+      <div class="col-md-3"><a href="/admin" class="btn-tactical w-full">Admin Console &rarr;</a></div>
+      <div class="col-md-3"><a href="/presentation" class="btn-tactical w-full">Executive Brief &rarr;</a></div>
+    </div>
+  </section>
+
+</main>
+
+<script src="/static/js/how_to_use.js"></script>
+</body>
+</html>
