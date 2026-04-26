@@ -19,6 +19,7 @@ from typing import Optional, Dict, Any
 from lightning import check
 from lightning.models import Decision
 from lightning.observability import metrics, count_rules, count_active_regimes
+from lightning.adversarial_fixtures import get_all_fixtures
 
 # Resolve paths relative to this file so the app can be launched from any cwd
 BASE_DIR = Path(__file__).resolve().parent
@@ -262,6 +263,11 @@ async def run_adversarial_test():
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Adversarial test failed: {str(e)}")
+
+@app.get("/api/adversarial/fixtures")
+async def api_adversarial_fixtures():
+    """Prerecorded LLM-vs-Lightning comparison fixtures for the /adversarial page."""
+    return get_all_fixtures()
 
 @app.post("/api/visualization/generate")
 async def generate_proof_visualization(proof_tree_data: Dict[str, Any]):

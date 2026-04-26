@@ -240,6 +240,26 @@ end_use:       space launch</pre>
     </div>
   </section>
 
+  <!-- SLIDE 4b - Proof construction (step-by-step). Touches: Technical + Novelty -->
+  <section class="slide" id="slide-4-proof" data-touches="technical,novelty"
+           style="justify-content: flex-start; overflow-y: auto;">
+    <div class="slide__eyebrow">04b &middot; How the proof is built</div>
+    <h2 class="slide__title">Step through the <span class="accent">derivation</span>.</h2>
+
+    <p class="slide__body" style="max-width: 72ch; margin-bottom: var(--space-6);">
+      Same hydrazine + rocket-engine artifact, this time walked one rule at a time.
+      Click <strong>Next</strong> to reveal each step, hover for an explanation,
+      or click a rule file to see the actual ASP source. Click <strong>Auto</strong>
+      to play the derivation continuously.
+    </p>
+
+    <div id="proof-tree-container"></div>
+
+    <div class="criterion-callout" data-criterion="technical">
+      Technical Difficulty &middot; every decision traceable to a named rule and a citation
+    </div>
+  </section>
+
   <!-- SLIDE 5 - Adversarial robustness. Touches: Novelty + Technical -->
   <section class="slide" id="slide-5" data-touches="novelty,technical">
     <div class="slide__eyebrow">05 &middot; Live Demo &middot; Adversarial bench</div>
@@ -264,6 +284,15 @@ end_use:       space launch</pre>
         <div class="metric-value text-danger" style="font-size: var(--fs-3xl);" id="gpt4-score">20%</div>
         <div class="text-mono text-xs text-muted">detection on same suite</div>
       </div>
+    </div>
+
+    <div style="display: flex; justify-content: center; margin-top: var(--space-6);">
+      <a href="/adversarial?presentation=true&amp;from=slide-5"
+         class="btn-tactical btn-tactical--primary btn-tactical--lg"
+         style="display: inline-flex; align-items: center; gap: var(--space-3);">
+        <span>Open detailed comparison</span>
+        <span style="font-size: 1.2em; line-height: 1;">&rarr;</span>
+      </a>
     </div>
 
     <div class="criterion-callout" data-criterion="novelty">
@@ -419,5 +448,29 @@ end_use:       space launch</pre>
 </div>
 
 <script src="/static/js/presentation.js"></script>
+<script src="/static/js/presentation_enhancements.js"></script>
+<script>
+  window.currentProofData = {
+    substances: ["hydrazine"],
+    parent_system: "rocket_engine",
+    decision: "REFUSE",
+    proof: {
+      steps: [
+        "controlled_propellant(hydrazine).",
+        "rocket_engine_system(rocket_engine).",
+        "usml_iv_h_1 :- controlled_propellant(X), parent_system(Y), rocket_engine_system(Y).",
+        "refuse :- usml_iv_h_1."
+      ],
+      rule_files: [
+        "src/lightning/knowledge_base/usml_cat_iv.lp",
+        "src/lightning/knowledge_base/usml_cat_iv.lp",
+        "src/lightning/knowledge_base/usml_cat_iv.lp",
+        "src/lightning/knowledge_base/usml_cat_iv.lp"
+      ]
+    },
+    counterfactual: "Would be ALLOW if parent_system were not a controlled rocket engine and the use case were thermodynamic-standards work."
+  };
+</script>
+<script src="/static/js/proof_tree_presentation.js"></script>
 </body>
 </html>

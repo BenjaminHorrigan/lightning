@@ -613,4 +613,12 @@ end_use: space launch`;
 
   // Initialise
   updateCriteria(0);
+
+  // If the URL has a hash matching a slide id (e.g. /presentation#slide-5
+  // when returning from the adversarial tab), jump straight to that slide.
+  const hashTarget = window.location.hash.replace(/^#/, '');
+  if (hashTarget) {
+    const idx = slides.findIndex((s) => s.id === hashTarget);
+    if (idx > 0) showSlide(idx, { animate: false });
+  }
 })();
