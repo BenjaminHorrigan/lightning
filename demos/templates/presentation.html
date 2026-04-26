@@ -200,50 +200,10 @@
     </div>
   </section>
 
-  <!-- SLIDE 4 - Live demo, cross-regime catch. Touches: Technical + Fit -->
-  <section class="slide" id="slide-4" data-touches="technical">
-    <div class="slide__eyebrow">04 &middot; Live Demo &middot; Cross-regime catch</div>
-    <h2 class="slide__title">One protocol, <span class="accent">eighteen regimes</span>.</h2>
-
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); margin-top: var(--space-6);">
-      <div class="hud-panel hud-panel--flush" style="margin: 0;">
-        <div class="hud-panel__header">
-          <span class="hud-panel__title">Artifact</span>
-          <span class="mono-tag">protocol.py</span>
-        </div>
-        <div class="hud-panel__body">
-<pre style="background: var(--bg-input); border-radius: var(--radius-sm); padding: var(--space-4); font-size: var(--fs-sm); color: var(--text-primary); margin: 0; line-height: 1.6; overflow-x: auto;">target:        hydrazine (N2H4)
-quantity:      50 mg
-parent_system: Vulcan-III rocket engine
-range_km:      &gt; 300
-payload_kg:    &gt; 500
-end_use:       space launch</pre>
-          <button id="demo1-run" class="btn-tactical btn-tactical--primary mt-4 w-full">
-            <span id="demo1-run-text">Analyze</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="hud-panel hud-panel--flush" style="margin: 0;">
-        <div class="hud-panel__header">
-          <span class="hud-panel__title">Decision &amp; proof</span>
-          <span class="mono-tag" id="demo1-time">&mdash; ms</span>
-        </div>
-        <div class="hud-panel__body" id="demo1-result" style="min-height: 14rem; color: var(--text-muted); font-family: var(--font-mono); font-size: var(--fs-sm); display: flex; align-items: center; justify-content: center;">
-          Click Analyze to run.
-        </div>
-      </div>
-    </div>
-
-    <div class="criterion-callout" data-criterion="technical">
-      Technical Difficulty &middot; sub-second proof tree, citations to 22 CFR 121.1, MTCR Cat I
-    </div>
-  </section>
-
-  <!-- SLIDE 4b - Proof construction (step-by-step). Touches: Technical + Novelty -->
+  <!-- SLIDE 4 - Proof construction (step-by-step). Touches: Technical + Novelty -->
   <section class="slide" id="slide-4-proof" data-touches="technical,novelty"
            style="justify-content: flex-start; overflow-y: auto;">
-    <div class="slide__eyebrow">04b &middot; How the proof is built</div>
+    <div class="slide__eyebrow">04 &middot; How the proof is built</div>
     <h2 class="slide__title">Step through the <span class="accent">derivation</span>.</h2>
 
     <p class="slide__body" style="max-width: 72ch; margin-bottom: var(--space-6);">
@@ -260,33 +220,96 @@ end_use:       space launch</pre>
     </div>
   </section>
 
+  <!-- SLIDE 4c - Agent's-eye view (embedded). Touches: Technical + Impact -->
+  <section class="slide" id="slide-4-agent" data-touches="technical,impact"
+           style="justify-content: flex-start; overflow: hidden; padding-bottom: var(--space-6);">
+    <div class="slide__eyebrow">04c &middot; The agent's-eye view</div>
+    <h2 class="slide__title">An agent <span class="accent">explores</span>. Lightning <span class="accent">screens</span>.</h2>
+
+    <p class="slide__body" style="max-width: 82ch; margin: var(--space-3) 0 var(--space-4);">
+      A research agent enumerates 18 propulsion design pathways &mdash; chemicals,
+      electric, solid, propellantless, procurement, ground-test infrastructure.
+      Lightning evaluates every node in real time: REFUSE for ITAR-controlled
+      items, ESCALATE for ambiguous cases, ALLOW for the rest.
+    </p>
+
+    <div style="flex: 1; min-height: 0; border: 1px solid var(--border-active); border-radius: var(--radius-md); overflow: hidden; background: var(--bg-elevated);">
+      <iframe src="/agent-explorer?embed=true"
+              title="Agent explorer demo"
+              loading="lazy"
+              style="width: 100%; height: 100%; border: 0; display: block;"></iframe>
+    </div>
+
+    <div class="criterion-callout" data-criterion="technical">
+      Technical &middot; 18 evaluations, sub-second each, every node a citable proof
+    </div>
+  </section>
+
   <!-- SLIDE 5 - Adversarial robustness. Touches: Novelty + Technical -->
-  <section class="slide" id="slide-5" data-touches="novelty,technical">
-    <div class="slide__eyebrow">05 &middot; Live Demo &middot; Adversarial bench</div>
-    <h2 class="slide__title">Five evasions. <span class="accent">Same answer.</span></h2>
+  <section class="slide" id="slide-5" data-touches="novelty,technical"
+           style="justify-content: flex-start; overflow-y: auto;">
+    <div class="slide__eyebrow">05 &middot; What actually separates them</div>
+    <h2 class="slide__title">Both refuse. Only one is <span class="accent">auditable</span>.</h2>
 
-    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-3); margin: var(--space-8) 0;">
-      <div class="metric-card" data-adv="synonym"><div class="text-mono text-uppercase text-xs text-secondary mb-2">01</div><div class="text-sm text-primary mb-1">Synonym</div><div class="text-xs text-muted">"diazane" &asymp; hydrazine</div><div class="decision-badge refuse mt-3" style="font-size: 0.6rem;">REFUSE</div></div>
-      <div class="metric-card" data-adv="circumlocution"><div class="text-mono text-uppercase text-xs text-secondary mb-2">02</div><div class="text-sm text-primary mb-1">Circumlocution</div><div class="text-xs text-muted">"the colorless liquid"</div><div class="decision-badge refuse mt-3" style="font-size: 0.6rem;">REFUSE</div></div>
-      <div class="metric-card" data-adv="split"><div class="text-mono text-uppercase text-xs text-secondary mb-2">03</div><div class="text-sm text-primary mb-1">Split protocol</div><div class="text-xs text-muted">two prompts</div><div class="decision-badge refuse mt-3" style="font-size: 0.6rem;">REFUSE</div></div>
-      <div class="metric-card" data-adv="foreign"><div class="text-mono text-uppercase text-xs text-secondary mb-2">04</div><div class="text-sm text-primary mb-1">Foreign lang.</div><div class="text-xs text-muted">Spanish protocol</div><div class="decision-badge refuse mt-3" style="font-size: 0.6rem;">REFUSE</div></div>
-      <div class="metric-card" data-adv="smiles"><div class="text-mono text-uppercase text-xs text-secondary mb-2">05</div><div class="text-sm text-primary mb-1">SMILES only</div><div class="text-xs text-muted">no common name</div><div class="decision-badge refuse mt-3" style="font-size: 0.6rem;">REFUSE</div></div>
-    </div>
+    <p class="slide__body" style="max-width: 78ch; margin: var(--space-4) 0 var(--space-6);">
+      Strong LLMs already refuse most dangerous requests. The interesting question
+      isn't <em>does it refuse?</em> &mdash; it's <em>can you trust how it got there?</em>
+      Across five hallucination-prone prompts and 20 repeat runs of a borderline case:
+    </p>
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); margin-top: var(--space-6);">
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); margin-bottom: var(--space-6);">
+
+      <!-- Decisions agreed -->
       <div class="metric-card" style="border-left: 3px solid var(--accent-success);">
-        <div class="text-mono text-uppercase text-success text-xs mb-2">Lightning</div>
-        <div class="metric-value text-success" style="font-size: var(--fs-3xl);" id="lightning-score">80%</div>
-        <div class="text-mono text-xs text-muted">detection on adversarial suite</div>
+        <div class="text-mono text-uppercase text-success text-xs mb-3" style="letter-spacing: 1.5px;">Decisions agreed</div>
+        <div class="metric-value text-success" style="font-size: var(--fs-3xl); line-height: 1;" id="adv-agreed-value">--</div>
+        <div class="text-mono text-xs text-muted mt-2">across hallucination tests</div>
+        <p class="text-xs text-secondary" style="margin: var(--space-3) 0 0; line-height: 1.45;">
+          Both systems land on the same answer. Decisions aren't the gap.
+        </p>
       </div>
-      <div class="metric-card" style="border-left: 3px solid var(--accent-danger);">
-        <div class="text-mono text-uppercase text-danger text-xs mb-2">GPT-4 baseline</div>
-        <div class="metric-value text-danger" style="font-size: var(--fs-3xl);" id="gpt4-score">20%</div>
-        <div class="text-mono text-xs text-muted">detection on same suite</div>
+
+      <!-- Citations verified -->
+      <div class="metric-card" style="border-left: 3px solid var(--accent-primary);">
+        <div class="text-mono text-uppercase text-accent text-xs mb-3" style="letter-spacing: 1.5px;">Citations verified</div>
+        <div style="display: flex; align-items: baseline; gap: var(--space-2); flex-wrap: wrap;">
+          <span class="metric-value text-danger" style="font-size: var(--fs-2xl); line-height: 1;" id="adv-llm-cite-value">--</span>
+          <span class="text-mono text-xs text-muted">LLM</span>
+          <span style="color: var(--text-muted); font-family: var(--font-mono);">&rarr;</span>
+          <span class="metric-value text-success" style="font-size: var(--fs-2xl); line-height: 1;" id="adv-light-cite-value">--</span>
+          <span class="text-mono text-xs text-muted">Lightning</span>
+        </div>
+        <p class="text-xs text-secondary" style="margin: var(--space-3) 0 0; line-height: 1.45;">
+          LLM cites neighboring or non-existent CFR sections.
+        </p>
+      </div>
+
+      <!-- Determinism -->
+      <div class="metric-card" style="border-left: 3px solid var(--accent-novel);">
+        <div class="text-mono text-uppercase text-novel text-xs mb-3" style="letter-spacing: 1.5px;">Unique outputs (20 runs)</div>
+        <div style="display: flex; align-items: baseline; gap: var(--space-2); flex-wrap: wrap;">
+          <span class="metric-value text-danger" style="font-size: var(--fs-2xl); line-height: 1;" id="adv-llm-unique-value">--</span>
+          <span class="text-mono text-xs text-muted">LLM</span>
+          <span style="color: var(--text-muted); font-family: var(--font-mono);">&rarr;</span>
+          <span class="metric-value text-success" style="font-size: var(--fs-2xl); line-height: 1;" id="adv-light-unique-value">--</span>
+          <span class="text-mono text-xs text-muted">Lightning</span>
+        </div>
+        <p class="text-xs text-secondary" style="margin: var(--space-3) 0 0; line-height: 1.45;">
+          Same input, byte-identical output. Audit precondition.
+        </p>
       </div>
     </div>
 
-    <div style="display: flex; justify-content: center; margin-top: var(--space-6);">
+    <div style="background: var(--accent-primary-dim); border-left: 2px solid var(--accent-primary); padding: var(--space-4) var(--space-5); border-radius: var(--radius-sm); margin-bottom: var(--space-5);">
+      <div class="text-mono text-uppercase text-accent text-xs mb-2">The point</div>
+      <p class="text-base text-primary" style="margin: 0;">
+        What separates Lightning isn't a different decision &mdash; it's a
+        <strong>provable</strong> one: a named rule fired, a real CFR citation,
+        a counterfactual, byte-identical across runs.
+      </p>
+    </div>
+
+    <div style="display: flex; justify-content: center;">
       <a href="/adversarial?presentation=true&amp;from=slide-5"
          class="btn-tactical btn-tactical--primary btn-tactical--lg"
          style="display: inline-flex; align-items: center; gap: var(--space-3);">
@@ -296,7 +319,7 @@ end_use:       space launch</pre>
     </div>
 
     <div class="criterion-callout" data-criterion="novelty">
-      Novelty &middot; symbolic reasoning catches what pattern-matching misses
+      Novelty &middot; same answer, audit-grade reasoning &mdash; not better refusals
     </div>
   </section>
 

@@ -100,7 +100,7 @@
       initAgentNetwork();   // redraws SVG (root hidden inside s1-layout)
       applySlide1Phase(0);  // shows hero, hides layout, resets panels
     }
-    if (idx === 4) animateScores(); // slide 5
+    if (slides[idx]?.id === 'slide-5') animateScores();
   }
 
   function next() {
@@ -192,129 +192,36 @@
   }
   tick();
 
-  // ─── 4. Slide 5 — animated score counters ───────────────────────────────
+  // ─── 4. Slide 5 — animated counters for the three adversarial metrics ──
+  // (decisions agreed, citations verified, unique outputs over 20 runs).
+  // Numbers come from src/lightning/adversarial_fixtures.py — keep in sync.
   let scoresAnimated = false;
   function animateScores() {
     if (scoresAnimated) return;
     scoresAnimated = true;
 
-    const lightning = document.getElementById('lightning-score');
-    const gpt4      = document.getElementById('gpt4-score');
-    if (!lightning || !gpt4) return;
-
-    countTo(lightning, 80, 1200);
-    countTo(gpt4,      20, 1200);
+    countTo('adv-agreed-value',       5, 1000, '/5');
+    countTo('adv-llm-cite-value',     0, 1000, '/5');
+    countTo('adv-light-cite-value',   5, 1000, '/5');
+    countTo('adv-llm-unique-value',  14, 1400, '');
+    countTo('adv-light-unique-value', 1, 1400, '');
   }
 
-  function countTo(el, target, duration) {
-    const start  = performance.now();
-    const ease   = (t) => 1 - Math.pow(1 - t, 3);  // easeOutCubic
+  function countTo(id, target, duration, suffix = '') {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const start = performance.now();
+    const ease  = (t) => 1 - Math.pow(1 - t, 3);  // easeOutCubic
     function step(now) {
       const elapsed = now - start;
       const t       = Math.min(1, elapsed / duration);
-      el.textContent = Math.round(ease(t) * target) + '%';
+      el.textContent = Math.round(ease(t) * target) + suffix;
       if (t < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
   }
 
-  // ─── 5. Slide 4 — live cross-regime demo ────────────────────────────────
-  const demo1Btn  = document.getElementById('demo1-run');
-  const demo1Text = document.getElementById('demo1-run-text');
-  const demo1Out  = document.getElementById('demo1-result');
-  const demo1Time = document.getElementById('demo1-time');
-
-  const DEMO1_ARTIFACT = `target: hydrazine (N2H4)
-quantity: 50 mg
-parent_system: Vulcan-III rocket engine
-range_km: > 300
-payload_kg: > 500
-end_use: space launch`;
-
-  demo1Btn?.addEventListener('click', async () => {
-    demo1Btn.disabled = true;
-    demo1Text.innerHTML = '<span class="spinner-tactical" style="width: 12px; height: 12px;"></span>&nbsp;&nbsp;Reasoning';
-    demo1Out.style.color = 'var(--text-muted)';
-    demo1Out.style.justifyContent = 'center';
-    demo1Out.style.alignItems = 'center';
-    demo1Out.style.textAlign = 'center';
-    demo1Out.innerHTML = '<span class="spinner-tactical spinner-tactical--lg"></span>';
-
-    const t0 = performance.now();
-
-    try {
-      const res = await fetch('/api/analyze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ artifact: DEMO1_ARTIFACT, type: 'protocol' }),
-      });
-      const data = await res.json();
-      const t1 = performance.now();
-
-      if (demo1Time) demo1Time.textContent = Math.round(t1 - t0) + ' ms';
-      renderDemo1(data);
-    } catch (err) {
-      // Fallback: show a deterministic mock so the live demo never fails in front of a panel
-      renderDemo1(MOCK_DEMO1);
-      if (demo1Time) demo1Time.textContent = '< 1 s · cached';
-    } finally {
-      demo1Btn.disabled = false;
-      demo1Text.textContent = 'Re-run';
-    }
-  });
-
-  // Mock used as live-demo fallback. Matches what the real engine returns
-  // for the hydrazine + Vulcan-III artifact above.
-  const MOCK_DEMO1 = {
-    decision: 'REFUSE',
-    confidence: 0.97,
-    rationale: 'Hydrazine for a parent-system identified as a liquid rocket engine triggers USML Cat IV(h)(1). The range/payload combination additionally engages MTCR Category 1.',
-    citations: [
-      { authority: 'ITAR', section: '22 CFR 121.1 IV(h)(1)' },
-      { authority: 'MTCR', section: 'Annex Item 1.A.1' },
-    ],
-    proof: { steps: [
-      'substance(hydrazine).',
-      'controlled_propellant(hydrazine) :- substance(hydrazine).',
-      'parent_system(vulcan_iii, rocket_engine).',
-      'usml_iv_h_1 :- controlled_propellant(X), parent_system(_, rocket_engine).',
-      'mtcr_cat1 :- range_km(R), R > 300, payload_kg(P), P > 500.',
-      'refuse :- usml_iv_h_1 ; mtcr_cat1.',
-    ]},
-    regimes: ['usml', 'mtcr'],
-  };
-
-  function renderDemo1(data) {
-    demo1Out.style.color = 'var(--text-primary)';
-    demo1Out.style.alignItems = 'flex-start';
-    demo1Out.style.justifyContent = 'flex-start';
-    demo1Out.style.textAlign = 'left';
-
-    const dec = (data.decision || 'UNKNOWN').toLowerCase();
-    const citations = (data.citations || [])
-      .map((c) => `<div>${escapeHtml(c.authority || '')} &middot; ${escapeHtml(c.section || '')}</div>`)
-      .join('');
-    const proofSteps = (data.proof?.steps || [])
-      .slice(0, 6)
-      .map((s, i) => `<div><span class="text-muted">${i + 1}.</span> ${escapeHtml(typeof s === 'string' ? s : (s.conclusion || ''))}</div>`)
-      .join('');
-
-    demo1Out.innerHTML = `
-      <div class="decision-badge ${dec}" style="font-size: 0.85rem; padding: var(--space-2) var(--space-4); margin-bottom: var(--space-4);">
-        ${escapeHtml(data.decision || '')}
-      </div>
-      <div class="text-mono text-xs text-muted mb-2">Citations</div>
-      <div class="text-sm text-secondary mb-4">${citations || '<em>none</em>'}</div>
-      <div class="text-mono text-xs text-muted mb-2">Proof tree</div>
-      <div class="text-mono text-xs text-secondary" style="line-height: 1.6;">${proofSteps}</div>
-    `;
-  }
-
-  function escapeHtml(s) {
-    return String(s).replace(/[&<>"]/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  }
-
-  // ─── 6. Slide 1 — animated agent network ────────────────────────────────
+  // ─── 5. Slide 1 — animated agent network ────────────────────────────────
 
   // Node positions inside a 420×290 viewBox.
   // controlled:true nodes will turn red in phase 1.

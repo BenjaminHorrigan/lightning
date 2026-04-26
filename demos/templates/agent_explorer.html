@@ -40,6 +40,19 @@
     .badge-ALLOW    { background: #14532d; color: #22c55e; }
     .badge-REFUSE   { background: #450a0a; color: #ef4444; }
     .badge-ESCALATE { background: #451a03; color: #f59e0b; }
+
+    /* Embed mode: page hosted inside an iframe in a presentation slide.
+       Hides the chrome that doesn't make sense outside the standalone tab. */
+    body.embed-mode nav,
+    body.embed-mode .navbar,
+    body.embed-mode #scenario-btns,
+    body.embed-mode #custom-row,
+    body.embed-mode #demo-btn,
+    body.embed-mode #run-btn,
+    body.embed-mode .hud-subtitle { display: none !important; }
+    body.embed-mode .hud-panel-header h2 { font-size: 1rem; margin: 0; }
+    body.embed-mode .container { margin-top: 0.5rem !important; padding-top: 0; }
+    body.embed-mode .hud-panel { margin-bottom: 0.75rem; }
   </style>
 </head>
 <body>
