@@ -25,6 +25,7 @@
   const TOTAL_DWELL = DWELL.reduce((a, b) => a + b, 0);
 
   let current      = 0;
+  let slide1Phase  = 0; // 0 = green net, 1 = red violations, 2 = stats
   let isPlaying    = true;
   let slideStart   = performance.now();
   let elapsedTotal = 0;
@@ -91,10 +92,22 @@
     elapsedTotal = DWELL.slice(0, idx).reduce((a, b) => a + b, 0);
 
     // Trigger per-slide animations
+    if (idx === 0) {
+      slide1Phase = 0;
+      applySlide1Phase(0);
+      initAgentNetwork();
+    }
     if (idx === 4) animateScores(); // slide 5
   }
 
   function next() {
+    if (current === 0 && slide1Phase < 2) {
+      slide1Phase++;
+      applySlide1Phase(slide1Phase);
+      // Reset the per-slide timer so auto-advance restarts from now
+      slideStart = performance.now();
+      return;
+    }
     if (current < totalSlides - 1) showSlide(current + 1);
     else if (isPlaying) togglePlay(); // stop at the end
   }
@@ -303,6 +316,197 @@ end_use: space launch`;
   function escapeHtml(s) {
     return String(s).replace(/[&<>"]/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   }
+
+  // ─── 6. Slide 1 — animated agent network ────────────────────────────────
+
+  // Node positions inside a 420×290 viewBox.
+  // controlled:true nodes will turn red in phase 1.
+  const S1_NODES = [
+    { id: 'root',    x: 55,  y: 145, r: 22, lines: ['Research Goal:', 'CubeSat Propellant'] },
+    { id: 'lit',     x: 175, y: 38,  r: 16, lines: ['Literature', 'review'] },
+    { id: 'contact', x: 175, y: 105, r: 16, lines: ['Contact Veonika', 'GmbH (DE)'],
+      controlled: true,  violation: 'ITAR §120.17',  detail: 'Foreign-national\ntechnical communication' },
+    { id: 'procure', x: 175, y: 178, r: 16, lines: ['Procure', 'hydrazine 500 mL'],
+      controlled: true,  violation: 'DFARS 252.225', detail: 'Controlled substance\nprocurement' },
+    { id: 'patent',  x: 175, y: 252, r: 16, lines: ['Patent', 'search'] },
+    { id: 'msds',    x: 318, y: 14,  r: 11, lines: ['Download', 'MSDS'] },
+    { id: 'sim',     x: 318, y: 56,  r: 11, lines: ['Run CFD', 'simulation'] },
+    { id: 'email',   x: 318, y: 87,  r: 11, lines: ['Email', 'exchange'],
+      controlled: true,  violation: 'ITAR §120.17',  detail: 'Technical data to\nforeign national' },
+    { id: 'sdata',   x: 318, y: 124, r: 11, lines: ['Share test', 'results'],
+      controlled: true,  violation: 'ITAR §120.6',   detail: 'Controlled technical\ndata transfer' },
+    { id: 'po',      x: 318, y: 158, r: 11, lines: ['Submit PO', 'to vendor'],
+      controlled: true,  violation: 'DFARS 252.225', detail: 'Foreign-source\nrestriction violation' },
+    { id: 'quote',   x: 318, y: 196, r: 11, lines: ['Request', 'quote'] },
+    { id: 'epo',     x: 318, y: 232, r: 11, lines: ['EPO', 'search'] },
+    { id: 'jaxa',    x: 318, y: 268, r: 11, lines: ['JAXA', 'database'],
+      controlled: true,  violation: 'EAR §740.13',   detail: 'Foreign govt\ntechnology transfer' },
+  ];
+
+  const S1_LINKS = [
+    ['root','lit'], ['root','contact'], ['root','procure'], ['root','patent'],
+    ['lit','msds'], ['lit','sim'],
+    ['contact','email'], ['contact','sdata'],
+    ['procure','po'], ['procure','quote'],
+    ['patent','epo'], ['patent','jaxa'],
+  ];
+
+  const COL_GREEN  = '#00d4ff';   // --accent-primary (cyan-green tint at low opacity)
+  const COL_OK     = '#22d36a';   // --accent-success
+  const COL_RED    = '#ff3b3b';   // --accent-danger
+  const COL_EDGE   = 'rgba(0,212,255,0.25)';
+  const COL_EDGE_R = 'rgba(255,59,59,0.35)';
+
+  let s1NodeById = {};
+
+  function initAgentNetwork() {
+    const svg = document.getElementById('agent-net-svg');
+    if (!svg) return;
+    svg.innerHTML = '';
+    s1NodeById = {};
+
+    // Build lookup
+    S1_NODES.forEach((n) => { s1NodeById[n.id] = n; });
+
+    // ── Edges ──────────────────────────────────────────────
+    S1_LINKS.forEach(([a, b], i) => {
+      const na = s1NodeById[a];
+      const nb = s1NodeById[b];
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', na.x); line.setAttribute('y1', na.y);
+      line.setAttribute('x2', nb.x); line.setAttribute('y2', nb.y);
+      line.setAttribute('stroke', COL_EDGE);
+      line.setAttribute('stroke-width', '1.5');
+      line.setAttribute('opacity', '0');
+      line.setAttribute('data-edge', `${a}-${b}`);
+      line.style.transition = 'stroke 0.4s, stroke-width 0.4s, opacity 0.4s';
+      svg.appendChild(line);
+
+      // Stagger edge fade-in
+      setTimeout(() => { line.setAttribute('opacity', '1'); }, 300 + i * 60);
+    });
+
+    // ── Nodes ──────────────────────────────────────────────
+    S1_NODES.forEach((n, i) => {
+      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      g.setAttribute('data-node', n.id);
+      g.setAttribute('opacity', '0');
+      g.style.transition = 'opacity 0.35s';
+
+      // Circle
+      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('cx', n.x); circle.setAttribute('cy', n.y); circle.setAttribute('r', n.r);
+      circle.setAttribute('fill', 'rgba(0,212,255,0.08)');
+      circle.setAttribute('stroke', COL_OK);
+      circle.setAttribute('stroke-width', n.id === 'root' ? '2.5' : '1.5');
+      circle.style.transition = 'fill 0.4s, stroke 0.4s';
+      g.appendChild(circle);
+
+      // Label lines
+      const labelY0 = n.y - (n.lines.length - 1) * 6;
+      n.lines.forEach((line, li) => {
+        const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        t.setAttribute('x', n.x); t.setAttribute('y', labelY0 + li * 13);
+        t.setAttribute('text-anchor', 'middle');
+        t.setAttribute('dominant-baseline', 'middle');
+        t.setAttribute('font-family', 'var(--font-mono, monospace)');
+        t.setAttribute('font-size', n.id === 'root' ? '8' : '7');
+        t.setAttribute('fill', n.id === 'root' ? '#e8f4fd' : '#b0cce4');
+        t.setAttribute('pointer-events', 'none');
+        t.style.transition = 'fill 0.4s';
+        t.textContent = line;
+        g.appendChild(t);
+      });
+
+      svg.appendChild(g);
+
+      // Stagger node fade-in (after edges)
+      setTimeout(() => { g.setAttribute('opacity', '1'); }, 500 + i * 80);
+    });
+  }
+
+  /**
+   * Apply a slide-1 phase transition.
+   * phase 1 → controlled nodes turn red, violations panel fades in
+   * phase 2 → stats row fades in
+   */
+  function applySlide1Phase(phase) {
+    const svg = document.getElementById('agent-net-svg');
+    const violationsPanel = document.getElementById('s1-violations');
+    const violItems       = document.getElementById('s1-viol-items');
+    const statsRow        = document.getElementById('s1-stats');
+
+    if (phase === 1 && svg) {
+      // ── Turn controlled nodes red ──────────────────────
+      const controlledNodes = S1_NODES.filter((n) => n.controlled);
+      const controlledIds   = new Set(controlledNodes.map((n) => n.id));
+
+      controlledNodes.forEach((n, i) => {
+        const g      = svg.querySelector(`[data-node="${n.id}"]`);
+        if (!g) return;
+        const circle = g.querySelector('circle');
+        const texts  = g.querySelectorAll('text');
+
+        setTimeout(() => {
+          if (circle) {
+            circle.setAttribute('stroke', COL_RED);
+            circle.setAttribute('fill', 'rgba(255,59,59,0.12)');
+          }
+          texts.forEach((t) => t.setAttribute('fill', '#ff9999'));
+
+          // Add ✕ mark
+          const x = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          x.setAttribute('x', n.x + n.r - 6); x.setAttribute('y', n.y - n.r + 6);
+          x.setAttribute('text-anchor', 'middle');
+          x.setAttribute('dominant-baseline', 'middle');
+          x.setAttribute('font-size', n.r < 14 ? '9' : '11');
+          x.setAttribute('fill', COL_RED);
+          x.setAttribute('font-weight', 'bold');
+          x.setAttribute('pointer-events', 'none');
+          x.textContent = '✕';
+          g.appendChild(x);
+        }, i * 120);
+      });
+
+      // ── Redden edges from/to controlled nodes ─────────
+      S1_LINKS.forEach(([a, b]) => {
+        if (!controlledIds.has(a) && !controlledIds.has(b)) return;
+        const line = svg.querySelector(`[data-edge="${a}-${b}"]`);
+        if (line) {
+          setTimeout(() => {
+            line.setAttribute('stroke', COL_EDGE_R);
+            line.setAttribute('stroke-width', '2');
+          }, 200);
+        }
+      });
+
+      // ── Build violations list ──────────────────────────
+      if (violItems) {
+        const seen = new Map();
+        S1_NODES.filter((n) => n.controlled).forEach((n) => {
+          if (!seen.has(n.violation)) seen.set(n.violation, n.detail);
+        });
+        violItems.innerHTML = '';
+        seen.forEach((detail, violation) => {
+          const item = document.createElement('div');
+          item.style.cssText = 'background: rgba(255,59,59,0.08); border-left: 2px solid var(--accent-danger); padding: 6px 10px; border-radius: 2px;';
+          item.innerHTML = `<div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--accent-danger);font-weight:700;">${violation}</div>`
+                         + `<div style="font-size:0.72rem;color:var(--text-secondary);margin-top:2px;white-space:pre-line;">${detail}</div>`;
+          violItems.appendChild(item);
+        });
+      }
+      if (violationsPanel) violationsPanel.style.opacity = '1';
+    }
+
+    if (phase === 2) {
+      if (statsRow) statsRow.style.opacity = '1';
+    }
+  }
+
+  // Kick off the network on initial page load (slide 0 is already active)
+  initAgentNetwork();
+
+  // ─────────────────────────────────────────────────────────────────────────
 
   // Initialise
   updateCriteria(0);

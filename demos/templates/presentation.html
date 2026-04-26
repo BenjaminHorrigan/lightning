@@ -24,16 +24,24 @@
 
 <main class="presentation">
 
-  <!-- SLIDE 1 - Cold open. Touches: Problem-Solution Fit -->
+  <!-- SLIDE 1 - Cold open: animated agent network. Touches: Problem-Solution Fit -->
   <section class="slide is-active" id="slide-1" data-touches="">
     <div class="slide__eyebrow">A neurosymbolic safety layer for autonomous research</div>
-    <h1 class="slide__title">L<span class="accent">i</span>ghtning</h1>
-    <p class="slide__body" style="font-size: var(--fs-xl); max-width: 56ch;">
-      Every autonomous research agent shipped in the last two years has the
-      same gap: <strong style="color: var(--text-primary);">no formal safety layer.</strong>
-    </p>
+    <h1 class="slide__title" style="font-size: var(--fs-3xl); margin-bottom: var(--space-4);">L<span class="accent">i</span>ghtning</h1>
 
-    <div class="slide__metrics" style="margin-top: var(--space-12);">
+    <div style="display: flex; gap: var(--space-6); align-items: flex-start;">
+      <!-- SVG agent network graph -->
+      <svg id="agent-net-svg" viewBox="0 0 420 290" style="width: 54%; height: 290px; overflow: visible; flex-shrink: 0;"></svg>
+
+      <!-- Violations panel — hidden until phase 1 -->
+      <div id="s1-violations" style="flex: 1; opacity: 0; transition: opacity 0.5s 0.15s; padding-top: var(--space-1); min-width: 0;">
+        <div style="font-family: var(--font-mono); font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 2px; color: var(--accent-danger); margin-bottom: var(--space-3);">&#9888;&nbsp; Violations detected</div>
+        <div id="s1-viol-items" style="display: flex; flex-direction: column; gap: var(--space-2);"></div>
+      </div>
+    </div>
+
+    <!-- Stats row — hidden until phase 2 -->
+    <div id="s1-stats" class="slide__metrics" style="margin-top: var(--space-4); opacity: 0; transition: opacity 0.8s;">
       <div class="slide__big-stat">
         <div class="slide__big-stat__value" style="color: var(--accent-warning);">0</div>
         <div class="slide__big-stat__label">Cloud labs with<br>agent-rate review</div>
