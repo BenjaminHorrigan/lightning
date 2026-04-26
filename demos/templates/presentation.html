@@ -241,9 +241,70 @@ end_use:       space launch</pre>
     </div>
   </section>
 
-  <!-- SLIDE 7 - Close. Touches: ALL FOUR -->
-  <section class="slide" id="slide-7" data-touches="novelty,technical,impact,fit">
-    <div class="slide__eyebrow">07 &middot; The ask</div>
+  <!-- SLIDE 7 - Use cases. Touches: Fit + Impact -->
+  <section class="slide" id="slide-7" data-touches="fit,impact">
+    <div class="slide__eyebrow">07 &middot; Three deployments. One integration.</div>
+    <h2 class="slide__title">Where <span class="accent">Lightning</span> plugs in.</h2>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); margin: var(--space-8) 0;">
+
+      <div class="hud-panel" style="margin: 0; border-top: 3px solid var(--accent-primary);">
+        <div class="text-mono text-uppercase text-accent text-xs mb-3">① Internal R&amp;D</div>
+        <div class="text-lg text-primary mb-3">Safe research, at speed.</div>
+        <p class="text-sm text-secondary" style="margin: 0 0 var(--space-4);">
+          Every protocol and design screened before the agent acts.
+          Researchers get instant guidance — not a legal hold.
+        </p>
+        <div style="display: flex; flex-direction: column; gap: var(--space-2);">
+          <span class="decision-badge allow" style="width: fit-content;">ALLOW &rarr; proceed</span>
+          <span class="decision-badge refuse" style="width: fit-content;">REFUSE &rarr; blocked + why</span>
+          <span class="decision-badge escalate" style="width: fit-content;">ESCALATE &rarr; human flag</span>
+        </div>
+      </div>
+
+      <div class="hud-panel" style="margin: 0; border-top: 3px solid var(--accent-success);">
+        <div class="text-mono text-uppercase text-success text-xs mb-3">② Agent Actions</div>
+        <div class="text-lg text-primary mb-3">Agents that can act.</div>
+        <p class="text-sm text-secondary" style="margin: 0 0 var(--space-4);">
+          Procurement, foreign data sharing, IP transfer — agents check
+          compliance before every action. No human bottleneck.
+        </p>
+        <div style="display: flex; flex-direction: column; gap: var(--space-2); font-family: var(--font-mono); font-size: var(--fs-xs);">
+          <span style="color: var(--accent-success);">✓ &nbsp;Order reagents from suppliers</span>
+          <span style="color: var(--accent-success);">✓ &nbsp;Share data with foreign collaborators</span>
+          <span style="color: var(--accent-danger);">✗ &nbsp;Export controlled material or IP</span>
+        </div>
+      </div>
+
+      <div class="hud-panel" style="margin: 0; border-top: 3px solid var(--accent-novel);">
+        <div class="text-mono text-uppercase text-novel text-xs mb-3">③ Portfolio Audit</div>
+        <div class="text-lg text-primary mb-3">What's flagged. What isn't.</div>
+        <p class="text-sm text-secondary" style="margin: 0 0 var(--space-4);">
+          Legal teams scan entire research portfolios across 18 regimes —
+          every decision cryptographically logged, citable, defensible.
+        </p>
+        <div style="font-family: var(--font-mono); font-size: var(--fs-xs); line-height: 2;">
+          <span style="color: var(--text-secondary);">514 substances checked</span><br>
+          <span style="color: var(--text-secondary);">18 export regimes evaluated</span><br>
+          <span style="color: var(--accent-novel);">Full tamper-proof audit trail</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="background: var(--bg-input); border: 1px solid var(--border-active); border-radius: var(--radius-sm); padding: var(--space-3) var(--space-5); font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-secondary); text-align: center;">
+      Integration: <code style="color: var(--accent-primary);">result = lightning.check(artifact)</code>
+      &nbsp;&middot;&nbsp; one line, any agent, any framework
+    </div>
+
+    <div class="criterion-callout" data-criterion="fit">
+      Problem-Solution Fit &middot; R&amp;D labs, autonomous agent platforms, legal / compliance teams
+    </div>
+  </section>
+
+  <!-- SLIDE 8 - Close. Touches: ALL FOUR -->
+  <section class="slide" id="slide-8" data-touches="novelty,technical,impact,fit">
+    <div class="slide__eyebrow">08 &middot; The ask</div>
     <h2 class="slide__title">
       Lightning <span class="accent">ships</span>.
     </h2>
@@ -284,7 +345,7 @@ end_use:       space launch</pre>
 <div class="presenter-bar">
   <button class="btn-tactical btn-tactical--ghost btn-tactical--sm" id="prev-btn">&larr;</button>
   <span class="presenter-bar__counter">
-    <span id="current-slide">1</span> / <span id="total-slides">7</span>
+    <span id="current-slide">1</span> / <span id="total-slides">8</span>
   </span>
   <button class="btn-tactical btn-tactical--ghost btn-tactical--sm" id="next-btn">&rarr;</button>
   <span style="width: 1px; height: 16px; background: var(--border-active); margin: 0 var(--space-2);"></span>
