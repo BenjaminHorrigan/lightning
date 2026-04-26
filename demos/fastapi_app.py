@@ -128,10 +128,16 @@ async def visualization_page(request: Request):
 async def analyze_protocol(request: AnalysisRequest):
     """Main LIGHTNING analysis endpoint."""
     try:
-        result = check(
-            request.protocol_text,
-            enable_audit=request.enable_audit,
-            audit_context=request.context
+        # check() makes blocking LLM calls — run in thread pool so the
+        # event loop stays live and the browser connection is not dropped.
+        loop = asyncio.get_event_loop()
+        result = await loop.run_in_executor(
+            _check_executor,
+            lambda: check(
+                request.protocol_text,
+                enable_audit=request.enable_audit,
+                audit_context=request.context,
+            ),
         )
 
         return {
@@ -192,8 +198,9 @@ async def modify_protocol(request: ModifyProtocolRequest):
             request.target_application
         )
 
-        # Re-analyze the modified protocol
-        recheck_result = check(modified_protocol)
+        # Re-analyze the modified protocol (offload blocking LLM call)
+        loop = asyncio.get_event_loop()
+        recheck_result = await loop.run_in_executor(_check_executor, lambda: check(modified_protocol))
 
         # Generate performance comparison
         performance_analysis = generate_performance_comparison(
@@ -317,7 +324,8 @@ async def get_recent_decisions(limit: int = 10):
 async def chemcrow_analyze(protocol_text: str):
     """Endpoint for ChemCrow integration."""
     try:
-        result = check(protocol_text, audit_context={"source": "chemcrow"})
+        loop = asyncio.get_event_loop()
+        result = await loop.run_in_executor(_check_executor, lambda: check(protocol_text, audit_context={"source": "chemcrow"}))
 
         # Return simplified response for agent integration
         return {
