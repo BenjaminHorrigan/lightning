@@ -25,7 +25,7 @@
 <main class="presentation">
 
   <!-- SLIDE 1 - Cold open. Touches: Problem-Solution Fit -->
-  <section class="slide is-active" id="slide-1" data-touches="fit">
+  <section class="slide is-active" id="slide-1" data-touches="">
     <div class="slide__eyebrow">A neurosymbolic safety layer for autonomous research</div>
     <h1 class="slide__title">L<span class="accent">i</span>ghtning</h1>
     <p class="slide__body" style="font-size: var(--fs-xl); max-width: 56ch;">
@@ -53,40 +53,80 @@
     </div>
   </section>
 
-  <!-- SLIDE 2 - Why this is hard. Touches: Novelty -->
+  <!-- SLIDE 2 - Neurosymbolic. Touches: Novelty -->
   <section class="slide" id="slide-2" data-touches="novelty">
-    <div class="slide__eyebrow">02 &middot; Why nobody's solved this yet</div>
-    <h2 class="slide__title">LLM filters <span class="accent">leak</span>.</h2>
+    <div class="slide__eyebrow">02 &middot; A different architecture</div>
+    <h2 class="slide__title">Neural <span style="color: var(--text-muted); font-size: 0.7em;">+</span> <span class="accent">Symbolic</span>.</h2>
 
-    <p class="slide__body">
-      Pattern matching can't reason about regulation. Rename
-      <code>hydrazine</code> to <code>diazane</code>, write the SMILES, split
-      the protocol across two prompts &mdash; the filter waves it through.
-    </p>
+    <div style="display: grid; grid-template-columns: 1fr 72px 1fr; gap: var(--space-4); align-items: stretch; margin: var(--space-8) 0;">
 
-    <div class="slide__metrics" style="margin-top: var(--space-10);">
-      <div class="slide__big-stat" style="border-right: 1px solid var(--border-subtle); padding-right: var(--space-8);">
-        <div class="slide__big-stat__value" style="color: var(--accent-danger);">20%</div>
-        <div class="slide__big-stat__label">GPT-4 baseline detection<br>on the adversarial suite</div>
+      <!-- Neuro column -->
+      <div class="hud-panel" style="margin: 0; border-top: 3px solid var(--accent-novel);">
+        <div class="text-mono text-uppercase text-xs mb-3" style="color: var(--accent-novel); letter-spacing: 2px;">Neural (LLM)</div>
+        <div style="font-size: var(--fs-lg); color: var(--text-primary); margin-bottom: var(--space-4); font-weight: 600;">Reads anything.</div>
+        <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+          <div style="display: flex; gap: var(--space-3); align-items: baseline;">
+            <span style="color: var(--accent-novel); flex-shrink: 0;">◆</span>
+            <span style="color: var(--text-primary); font-size: var(--fs-sm);">Handles synonyms, SMILES strings, foreign language</span>
+          </div>
+          <div style="display: flex; gap: var(--space-3); align-items: baseline;">
+            <span style="color: var(--accent-novel); flex-shrink: 0;">◆</span>
+            <span style="color: var(--text-primary); font-size: var(--fs-sm);">Extracts substances, quantities, and intent from raw text</span>
+          </div>
+          <div style="display: flex; gap: var(--space-3); align-items: baseline;">
+            <span style="color: var(--accent-novel); flex-shrink: 0;">◆</span>
+            <span style="color: var(--text-primary); font-size: var(--fs-sm);">Flexible — no fixed input schema required</span>
+          </div>
+        </div>
+        <div style="margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--border-subtle); font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--text-muted);">
+          Weakness: non-deterministic, can be fooled, no proof
+        </div>
       </div>
-      <div class="slide__big-stat">
-        <div class="slide__big-stat__value" style="color: var(--accent-success);">80%</div>
-        <div class="slide__big-stat__label">Lightning detection<br>on the same suite</div>
+
+      <!-- Plus sign -->
+      <div style="display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: var(--fs-3xl); color: var(--accent-primary); font-weight: 300;">+</div>
+
+      <!-- Symbolic column -->
+      <div class="hud-panel" style="margin: 0; border-top: 3px solid var(--accent-primary);">
+        <div class="text-mono text-uppercase text-accent text-xs mb-3" style="letter-spacing: 2px;">Symbolic (ASP)</div>
+        <div style="font-size: var(--fs-lg); color: var(--text-primary); margin-bottom: var(--space-4); font-weight: 600;">Reasons formally.</div>
+        <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+          <div style="display: flex; gap: var(--space-3); align-items: baseline;">
+            <span style="color: var(--accent-primary); flex-shrink: 0;">◆</span>
+            <span style="color: var(--text-primary); font-size: var(--fs-sm);">Deterministic — same input always yields same answer</span>
+          </div>
+          <div style="display: flex; gap: var(--space-3); align-items: baseline;">
+            <span style="color: var(--accent-primary); flex-shrink: 0;">◆</span>
+            <span style="color: var(--text-primary); font-size: var(--fs-sm);">Cites the exact regulation and paragraph that fired</span>
+          </div>
+          <div style="display: flex; gap: var(--space-3); align-items: baseline;">
+            <span style="color: var(--accent-primary); flex-shrink: 0;">◆</span>
+            <span style="color: var(--text-primary); font-size: var(--fs-sm);">Produces a complete, auditable proof tree</span>
+          </div>
+        </div>
+        <div style="margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--border-subtle); font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--text-muted);">
+          Weakness: can't read raw text — needs structured input
+        </div>
+      </div>
+
+    </div>
+
+    <!-- The result -->
+    <div style="background: var(--accent-primary-dim); border: 1px solid var(--accent-primary); border-radius: var(--radius-sm); padding: var(--space-4) var(--space-6); display: flex; align-items: center; gap: var(--space-6);">
+      <div style="font-family: var(--font-mono); font-size: var(--fs-2xl); color: var(--accent-primary); flex-shrink: 0;">=</div>
+      <div>
+        <div class="text-mono text-uppercase text-accent text-xs mb-1">Lightning</div>
+        <div style="color: var(--text-primary); font-size: var(--fs-base);">LLM reads and extracts. Symbolic logic decides. Neither can override the other — that separation is the trust property.</div>
       </div>
     </div>
 
-    <p class="slide__body" style="margin-top: var(--space-8); font-size: var(--fs-md);">
-      The fix is not a bigger model. It's a different architecture:
-      <strong style="color: var(--accent-novel);">neural extraction + symbolic reasoning over the actual regulatory text</strong>.
-    </p>
-
     <div class="criterion-callout" data-criterion="novelty">
-      Novelty &middot; neurosymbolic, not "another guard model"
+      Novelty &middot; neural extraction + formal symbolic reasoning — not another guard model
     </div>
   </section>
 
   <!-- SLIDE 3 - Architecture. Touches: Technical Difficulty + Novelty -->
-  <section class="slide" id="slide-3" data-touches="technical,novelty">
+  <section class="slide" id="slide-3" data-touches="technical">
     <div class="slide__eyebrow">03 &middot; Architecture</div>
     <h2 class="slide__title">Three layers. <span class="accent">One trust property.</span></h2>
 
@@ -138,7 +178,7 @@
   </section>
 
   <!-- SLIDE 4 - Live demo, cross-regime catch. Touches: Technical + Fit -->
-  <section class="slide" id="slide-4" data-touches="technical,fit">
+  <section class="slide" id="slide-4" data-touches="technical">
     <div class="slide__eyebrow">04 &middot; Live Demo &middot; Cross-regime catch</div>
     <h2 class="slide__title">One protocol, <span class="accent">eighteen regimes</span>.</h2>
 
@@ -209,7 +249,7 @@ end_use:       space launch</pre>
   </section>
 
   <!-- SLIDE 6 - Impact. Touches: National Impact + Fit -->
-  <section class="slide" id="slide-6" data-touches="impact,fit">
+  <section class="slide" id="slide-6" data-touches="impact">
     <div class="slide__eyebrow">06 &middot; What this unlocks</div>
     <h2 class="slide__title">Agents, <span class="accent">deployable</span>.</h2>
 
@@ -242,7 +282,7 @@ end_use:       space launch</pre>
   </section>
 
   <!-- SLIDE 7 - Use cases. Touches: Fit + Impact -->
-  <section class="slide" id="slide-7" data-touches="fit,impact">
+  <section class="slide" id="slide-7" data-touches="fit">
     <div class="slide__eyebrow">07 &middot; Three deployments. One integration.</div>
     <h2 class="slide__title">Where <span class="accent">Lightning</span> plugs in.</h2>
 

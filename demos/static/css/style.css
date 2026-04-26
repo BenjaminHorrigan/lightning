@@ -125,8 +125,8 @@ select.form-control, select.form-select, .form-select {
 
   /* Color — Text */
   --text-primary:   #e6edf7;
-  --text-secondary: #8b96ad;
-  --text-muted:     #5a6480;
+  --text-secondary: #bdc8da;
+  --text-muted:     #8a96b0;
   --text-inverse:   #050912;
 
   /* Typography */

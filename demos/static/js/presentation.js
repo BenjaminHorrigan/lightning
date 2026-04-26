@@ -21,7 +21,7 @@
 
   // Per-slide auto-advance dwell times (seconds).
   // Total: ~6 minutes — adjust to your speaking cadence.
-  const DWELL = [40, 50, 60, 65, 65, 60, 45];
+  const DWELL = [40, 50, 60, 65, 65, 60, 50, 45];
   const TOTAL_DWELL = DWELL.reduce((a, b) => a + b, 0);
 
   let current      = 0;
