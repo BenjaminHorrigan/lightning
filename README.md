@@ -45,11 +45,13 @@ All regimes run by default on every artifact. A single protocol or design is sim
 
 ### Active Regimes
 
-| Regime | Authority | Substances/Entities | Coverage |
-|--------|-----------|-------------------|----------|
-| **USML Cat IV** | State Dept / ITAR | Rockets, missiles, propellants | Deep (22 CFR 121.1) |
+| Regime | Authority | Substances / Article Types | Coverage |
+|--------|-----------|---------------------------|----------|
+| **USML Cat IV** | State Dept / ITAR | Rockets, missiles, propellants | Deep (22 CFR 121.1 IV(a)–(h)) |
+| **USML Cat VIII** | State Dept / ITAR | Military aircraft, engines, parts | Deep (22 CFR 121.1 VIII(a)–(c)) |
 | **USML Cat XIV** | State Dept / ITAR | Chemical/biological warfare agents | 33 agents |
-| **USML Cat IV-V Explosives** | State Dept / ITAR | Military explosives, warheads | 39 items |
+| **USML Cat XV** | State Dept / ITAR | Military spacecraft, ground stations | Deep (22 CFR 121.1 XV(a)–(c)) |
+| **USML Explosives** | State Dept / ITAR | Military explosives, warheads | 39 items |
 | **CWC Schedule 1** | Commerce/State | Weapons-grade chemical agents | 21 substances (~100%) |
 | **CWC Schedule 2** | Commerce/State | Precursor chemicals | 27 substances (~55%) |
 | **CWC Schedule 3** | Commerce/State | Industrial dual-use chemicals | 32 substances (~90%) |
@@ -64,14 +66,20 @@ All regimes run by default on every artifact. A single protocol or design is sim
 | **EAR Category 1** | Commerce/BIS (EAR) | Dual-use advanced materials | 38 materials |
 | **MTCR** | Multilateral | Missile/rocket range×payload | Parametric rules |
 
-**Total: ~477 named substances/entities across 16 regimes.**
+**Total: ~514 named substances/entities/article-types across 18 regimes.**
 
 ### Knowledge Base Structure
 
 ```
 src/lightning/reasoning/rules/
 ├── _common/          # Cross-regime vocabulary (atom_vocabulary.lp, specially_designed.lp)
-├── usml/             # ITAR USML rules (Cat IV deep, Cat XIV, Explosives)
+├── usml/             # ITAR USML rules
+│   ├── cat_iv.lp           # Cat IV rockets/missiles — deep (specially-designed inheritance)
+│   ├── cat_iv_propellants.lp
+│   ├── cat_viii.lp         # Cat VIII military aircraft, engines, parts — deep
+│   ├── cat_xiv_toxics_*.lp # Cat XIV chemical/biological warfare agents
+│   ├── cat_xv.lp           # Cat XV military spacecraft, ground stations — deep
+│   └── explosives_*.lp     # Military explosives and warheads
 ├── cwc/              # CWC Schedules 1-3
 ├── dea/              # DEA Schedules I-V
 ├── bwc_select_agents/# HHS, USDA, Australia Group biological agents
@@ -89,17 +97,23 @@ data/atoms/           # Generated ASP atoms (do not edit by hand)
 curl -LsSf https://astral.sh/uv/install.sh | sh
 uv sync
 
-# Run the demo server
+# Streamlit demo (three-pane: input / proof tree / decision)
+uv run streamlit run demos/app.py
+
+# FastAPI server with web UI
 uv run python demos/fastapi_app.py
 
-# Run the CLI
+# CLI
 uv run lightning check examples/rocket_protocol.py
 
-# Run the test suite
-uv run pytest tests/test_golden.py
+# Deterministic test suite (no API key needed)
+uv run pytest tests/test_golden.py tests/test_proof_properties.py -q
+
+# Full suite including LLM extraction tests (requires ANTHROPIC_API_KEY)
+uv run pytest
 ```
 
-Set `ANTHROPIC_API_KEY` (or AWS Bedrock credentials) in `.env` before running.
+Set `ANTHROPIC_API_KEY` in `.env` before running the demo or end-to-end tests.
 
 ## Repository layout
 
@@ -127,7 +141,8 @@ lightning/
 │   └── fastapi_app.py      # FastAPI server with web UI
 ├── examples/               # Sample inputs for each regime
 └── tests/
-    └── test_golden.py      # Deterministic artifact-level regression tests
+    ├── test_golden.py          # Deterministic artifact-level regression tests (84 cases)
+    └── test_proof_properties.py# LIGHTNING vs LLM: determinism, citations, proof chain
 ```
 
 ## Adding a new regime
