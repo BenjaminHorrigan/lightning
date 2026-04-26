@@ -94,17 +94,20 @@
     // Trigger per-slide animations
     if (idx === 0) {
       slide1Phase = 0;
-      applySlide1Phase(0);
-      initAgentNetwork();
+      initAgentNetwork();       // redraws SVG — root only
+      applySlide1Phase(0);      // resets HTML panels (no transition flash)
+    }
+    // Fill timer bar instantly on last slide
+    if (idx === totalSlides - 1 && timerBar) {
+      timerBar.style.width = '100%';
     }
     if (idx === 4) animateScores(); // slide 5
   }
 
   function next() {
-    if (current === 0 && slide1Phase < 2) {
+    if (current === 0 && slide1Phase < 3) {
       slide1Phase++;
       applySlide1Phase(slide1Phase);
-      // Reset the per-slide timer so auto-advance restarts from now
       slideStart = performance.now();
       return;
     }
@@ -383,6 +386,7 @@ end_use: space launch`;
     return d;
   }
 
+  /** Draw the SVG network — root node visible, all others hidden until expandAgentNetwork(). */
   function initAgentNetwork() {
     const svg = document.getElementById('agent-net-svg');
     if (!svg) return;
@@ -391,9 +395,7 @@ end_use: space launch`;
 
     S1_NODES.forEach((n) => { s1NodeById[n.id] = n; });
 
-    const delays = _s1Delays();
-
-    // ── Edges — appear just before their target node ────────────────────────
+    // ── Edges — all hidden initially ────────────────────────────────────────
     S1_LINKS.forEach(([a, b]) => {
       const na = s1NodeById[a];
       const nb = s1NodeById[b];
@@ -406,14 +408,13 @@ end_use: space launch`;
       line.setAttribute('data-edge', `${a}-${b}`);
       line.style.transition = 'stroke 0.4s, stroke-width 0.4s, opacity 0.55s';
       svg.appendChild(line);
-      setTimeout(() => line.setAttribute('opacity', '1'), Math.max(80, delays[b] - 180));
     });
 
-    // ── Nodes ───────────────────────────────────────────────────────────────
+    // ── Nodes — root visible immediately, all others hidden ─────────────────
     S1_NODES.forEach((n) => {
       const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
       g.setAttribute('data-node', n.id);
-      g.setAttribute('opacity', '0');
+      g.setAttribute('opacity', n.id === 'root' ? '1' : '0');
       g.style.transition = 'opacity 0.55s';
 
       // Circle
@@ -425,24 +426,22 @@ end_use: space launch`;
       circle.style.transition = 'fill 0.5s, stroke 0.5s';
       g.appendChild(circle);
 
-      // Dark background rect so labels are always legible over any bg
-      const fontSize  = n.id === 'root' ? 8.5 : 7.5;
-      const lineH     = 13;
-      const maxLen    = Math.max(...n.lines.map((l) => l.length));
-      const bgW       = maxLen * fontSize * 0.6 + 14;
-      const bgH       = n.lines.length * lineH + 8;
-      const bgX       = n.x - bgW / 2;
-      const bgY       = n.y - bgH / 2;
+      // Dark background rect so labels are always legible
+      const fontSize = n.id === 'root' ? 8.5 : 7.5;
+      const lineH    = 13;
+      const maxLen   = Math.max(...n.lines.map((l) => l.length));
+      const bgW      = maxLen * fontSize * 0.6 + 14;
+      const bgH      = n.lines.length * lineH + 8;
 
       const bgRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-      bgRect.setAttribute('x', bgX);       bgRect.setAttribute('y', bgY);
-      bgRect.setAttribute('width', bgW);   bgRect.setAttribute('height', bgH);
-      bgRect.setAttribute('rx', '3');      bgRect.setAttribute('ry', '3');
+      bgRect.setAttribute('x', n.x - bgW / 2); bgRect.setAttribute('y', n.y - bgH / 2);
+      bgRect.setAttribute('width', bgW);        bgRect.setAttribute('height', bgH);
+      bgRect.setAttribute('rx', '3');           bgRect.setAttribute('ry', '3');
       bgRect.setAttribute('fill', 'rgba(3, 7, 18, 0.86)');
       bgRect.setAttribute('pointer-events', 'none');
       g.appendChild(bgRect);
 
-      // Label text (centered on node, readable over the dark rect)
+      // Label text
       const firstLineY = n.y - ((n.lines.length - 1) * lineH) / 2;
       n.lines.forEach((lineText, li) => {
         const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
@@ -461,23 +460,74 @@ end_use: space launch`;
       });
 
       svg.appendChild(g);
-      setTimeout(() => g.setAttribute('opacity', '1'), delays[n.id] || 500);
+    });
+  }
+
+  /**
+   * Animate the non-root nodes and edges expanding outward from the root.
+   * Called on phase 1. Uses freshly-generated random delays each time
+   * so each expansion looks different (simulates a live agent search).
+   */
+  function expandAgentNetwork() {
+    const svg = document.getElementById('agent-net-svg');
+    if (!svg) return;
+    const delays = _s1Delays();
+
+    // Edges appear just before their target node
+    S1_LINKS.forEach(([a, b]) => {
+      const line = svg.querySelector(`[data-edge="${a}-${b}"]`);
+      if (line) setTimeout(() => line.setAttribute('opacity', '1'), Math.max(80, delays[b] - 180));
+    });
+
+    // Non-root nodes fade in with level-wave timing
+    S1_NODES.forEach((n) => {
+      if (n.id === 'root') return;
+      const g = svg.querySelector(`[data-node="${n.id}"]`);
+      if (g) setTimeout(() => g.setAttribute('opacity', '1'), delays[n.id] || 600);
     });
   }
 
   /**
    * Apply a slide-1 phase transition.
-   * phase 1 → controlled nodes turn red, violations panel fades in
-   * phase 2 → stats row fades in
+   * phase 0 → reset (called on showSlide(0) and reset)
+   * phase 1 → expand green network
+   * phase 2 → controlled nodes turn red, violations panel fades in
+   * phase 3 → stats row fades in
    */
   function applySlide1Phase(phase) {
-    const svg = document.getElementById('agent-net-svg');
+    const svg             = document.getElementById('agent-net-svg');
     const violationsPanel = document.getElementById('s1-violations');
     const violItems       = document.getElementById('s1-viol-items');
     const statsRow        = document.getElementById('s1-stats');
 
-    if (phase === 1 && svg) {
-      // ── Turn controlled nodes red ──────────────────────
+    // ── phase 0: reset all HTML panels instantly ──────────────────────────
+    if (phase === 0) {
+      if (violationsPanel) {
+        violationsPanel.style.transition = 'none';
+        violationsPanel.style.opacity    = '0';
+        // Re-enable transition after the flush so future fade-ins are smooth
+        requestAnimationFrame(() => {
+          if (violationsPanel) violationsPanel.style.transition = 'opacity 0.5s 0.15s';
+        });
+      }
+      if (statsRow) {
+        statsRow.style.transition = 'none';
+        statsRow.style.opacity    = '0';
+        requestAnimationFrame(() => {
+          if (statsRow) statsRow.style.transition = 'opacity 0.8s';
+        });
+      }
+      return;
+    }
+
+    // ── phase 1: expand the network ───────────────────────────────────────
+    if (phase === 1) {
+      expandAgentNetwork();
+      return;
+    }
+
+    // ── phase 2: flag violations ──────────────────────────────────────────
+    if (phase === 2 && svg) {
       const controlledNodes = S1_NODES.filter((n) => n.controlled);
       const controlledIds   = new Set(controlledNodes.map((n) => n.id));
 
@@ -485,7 +535,6 @@ end_use: space launch`;
         const g      = svg.querySelector(`[data-node="${n.id}"]`);
         if (!g) return;
         const circle = g.querySelector('circle');
-        // Only recolour actual label texts (data-label="1"), not any other elements
         const labels = g.querySelectorAll('text[data-label]');
 
         setTimeout(() => {
@@ -493,16 +542,14 @@ end_use: space launch`;
             circle.setAttribute('stroke', COL_RED);
             circle.setAttribute('fill', 'rgba(255,59,59,0.13)');
           }
-          // Darken the bg rect to red tint
           const bgRect = g.querySelector('rect');
           if (bgRect) bgRect.setAttribute('fill', 'rgba(40, 4, 4, 0.90)');
           labels.forEach((t) => t.setAttribute('fill', '#ff9a9a'));
 
-          // ✕ badge — positioned at top-right of circle, clearly outside the label area
+          // ✕ badge at top-right of the circle
           const xMark = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-          const bx = n.x + n.r * 0.72;
-          const by = n.y - n.r * 0.72;
-          xMark.setAttribute('x', bx); xMark.setAttribute('y', by);
+          xMark.setAttribute('x', n.x + n.r * 0.72);
+          xMark.setAttribute('y', n.y - n.r * 0.72);
           xMark.setAttribute('text-anchor', 'middle');
           xMark.setAttribute('dominant-baseline', 'middle');
           xMark.setAttribute('font-size', n.r < 14 ? '10' : '13');
@@ -514,28 +561,26 @@ end_use: space launch`;
         }, i * 140);
       });
 
-      // ── Redden edges from/to controlled nodes ─────────
+      // Redden edges touching controlled nodes
       S1_LINKS.forEach(([a, b]) => {
         if (!controlledIds.has(a) && !controlledIds.has(b)) return;
         const line = svg.querySelector(`[data-edge="${a}-${b}"]`);
-        if (line) {
-          setTimeout(() => {
-            line.setAttribute('stroke', COL_EDGE_R);
-            line.setAttribute('stroke-width', '2');
-          }, 200);
-        }
+        if (line) setTimeout(() => {
+          line.setAttribute('stroke', COL_EDGE_R);
+          line.setAttribute('stroke-width', '2');
+        }, 200);
       });
 
-      // ── Build violations list ──────────────────────────
+      // Build violations list
       if (violItems) {
         const seen = new Map();
-        S1_NODES.filter((n) => n.controlled).forEach((n) => {
+        controlledNodes.forEach((n) => {
           if (!seen.has(n.violation)) seen.set(n.violation, n.detail);
         });
         violItems.innerHTML = '';
         seen.forEach((detail, violation) => {
           const item = document.createElement('div');
-          item.style.cssText = 'background: rgba(255,59,59,0.08); border-left: 2px solid var(--accent-danger); padding: 6px 10px; border-radius: 2px;';
+          item.style.cssText = 'background:rgba(255,59,59,0.08);border-left:2px solid var(--accent-danger);padding:6px 10px;border-radius:2px;';
           item.innerHTML = `<div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--accent-danger);font-weight:700;">${violation}</div>`
                          + `<div style="font-size:0.72rem;color:var(--text-secondary);margin-top:2px;white-space:pre-line;">${detail}</div>`;
           violItems.appendChild(item);
@@ -544,7 +589,8 @@ end_use: space launch`;
       if (violationsPanel) violationsPanel.style.opacity = '1';
     }
 
-    if (phase === 2) {
+    // ── phase 3: stats row ────────────────────────────────────────────────
+    if (phase === 3) {
       if (statsRow) statsRow.style.opacity = '1';
     }
   }
