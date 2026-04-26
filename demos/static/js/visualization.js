@@ -71,8 +71,50 @@ for the Vulcan-III space launch vehicle.`;
     return 'none';
   }
 
+  // ── Pre-computed result for the sample turbopump protocol ─────────────
+  const PRELOADED_VIZ = {
+    decision: 'REFUSE', confidence: 0.91,
+    proof_tree: {
+      top_level_classification: 'USML Category IV(h) — Specially Designed Component',
+      steps: [
+        { rule_name: 'component/1',          conclusion: 'component(turbopump_impeller)' },
+        { rule_name: 'parent_system/2',       conclusion: 'parent_system(vulcan_iii, rocket_engine)' },
+        { rule_name: '22cfr120_41_test/1',    conclusion: 'specially_designed(turbopump_impeller, vulcan_iii)' },
+        { rule_name: 'usml_iv_h/2',           conclusion: 'classified(turbopump_impeller, usml, "IV(h)")' },
+        { rule_name: 'refuse_rule/1',         conclusion: 'refuse :- classified(_, usml, _)' },
+      ],
+      gaps: [],
+      controlled_elements: ['turbopump_impeller'],
+    },
+    primary_citations: [
+      { regime: 'ITAR', category: '22 CFR 121.1 IV(h)',  text: 'Parts, components, accessories, and attachments specially designed for the articles in paragraphs (a) through (g) of this category.' },
+      { regime: 'ITAR', category: '22 CFR 120.41',       text: 'Specially designed — has or is developed to have properties that distinguish it for use in or with a controlled article.' },
+    ],
+    regimes_checked: ['usml', 'cwc', 'mtcr', 'dea', 'select_agent', 'bis'],
+  };
+
   loadExampleBtn.addEventListener('click', () => {
     protocolInput.value = SAMPLE_PROTOCOL;
+    // Render preloaded result immediately — no API wait needed
+    renderMetadata(PRELOADED_VIZ);
+    resultsStage.style.display = 'block';
+    setStatus('complete', 'STAGE 3 · COMPLETE (preloaded)');
+    // Show static proof-tree placeholder in the graph iframe
+    graphLoading.style.display = 'none';
+    graphIframe.style.display = 'block';
+    graphStats.textContent = '5 nodes · 4 edges (preloaded)';
+    graphIframe.srcdoc = wrapHtmlContent(`
+      <div style="padding:2rem;font-family:'JetBrains Mono',monospace;font-size:12px;color:#9ca3af;line-height:2;">
+        <div style="color:#ef4444;font-size:1.1rem;margin-bottom:1.5rem;">⬛ REFUSE — USML Category IV(h)</div>
+        <pre style="color:#e8eef5;background:transparent;margin:0;line-height:1.9;">
+turbopump_impeller
+    └─ specially_designed(turbopump_impeller, vulcan_iii)
+           └─ parent_system(vulcan_iii, rocket_engine)  [22 CFR 121.1 IV(h)]
+                  └─ classified(turbopump_impeller, usml, "IV(h)")
+                         └─ refuse</pre>
+      </div>
+    `);
+    resultsStage.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 
   resetBtn.addEventListener('click', () => {

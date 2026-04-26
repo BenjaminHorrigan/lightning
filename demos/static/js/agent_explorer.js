@@ -23,7 +23,73 @@ let currentTopic = 'Design a propulsion system for a 3U CubeSat research satelli
 
 // ─── Init ────────────────────────────────────────────────────────────────────
 
+// ── Pre-computed demo tree ────────────────────────────────────────────────────
+
+const DEMO_TREE = {
+    root_label: 'Design a propulsion system for a 3U CubeSat research satellite',
+    branches: [
+        {
+            id: 'branch_0', label: 'Chemical propulsion',
+            leaves: [
+                { id: 'leaf_0_0', label: 'Hydrazine monoprop thruster', artifact: 'Hydrazine (N2H4) monopropellant thruster, 1N thrust, Isp 220s, titanium tank, heritage design for LEO CubeSat. Parent system: 3U research satellite propulsion bus.' },
+                { id: 'leaf_0_1', label: 'Butane cold-gas system',      artifact: 'Butane cold-gas thruster, 0.1N thrust, Isp 65s, MEMS micro-valve. Intended for attitude control on 3U CubeSat LEO mission.' },
+                { id: 'leaf_0_2', label: 'AF-M315E green propellant',   artifact: 'AF-M315E (hydroxyl ammonium nitrate) green monopropellant, 1N thruster, Isp 250s. Replacement for hydrazine in low-Earth orbit research satellite.' },
+            ],
+        },
+        {
+            id: 'branch_1', label: 'Electric propulsion',
+            leaves: [
+                { id: 'leaf_1_0', label: 'Iodine ion thruster',        artifact: 'Iodine-propellant gridded ion thruster, 0.8 mN thrust, Isp 2000s, 40W input power. Intended for 3U CubeSat LEO research mission orbit maintenance.' },
+                { id: 'leaf_1_1', label: 'Electrospray FEEP system',   artifact: 'Field-emission electrospray propulsion (FEEP), ionic liquid propellant, 0.1 mN, Isp 5000s. Precision attitude control for 3U science CubeSat.' },
+            ],
+        },
+        {
+            id: 'branch_2', label: 'Propellantless / novel',
+            leaves: [
+                { id: 'leaf_2_0', label: 'Solar sail deployment',      artifact: 'Mylar solar sail, 4m² deployed area, 3U stowage volume. Propellantless propulsion for LEO-to-GEO transfer on research CubeSat.' },
+                { id: 'leaf_2_1', label: 'Momentum wheel desaturation', artifact: 'Reaction wheel assembly, 3-axis attitude control, 30 mNms momentum capacity. No propellant — magnetic torquer desaturation. 3U CubeSat bus.' },
+            ],
+        },
+    ],
+};
+
+const DEMO_RESULTS = {
+    leaf_0_0: { decision: 'REFUSE',   confidence: 0.97, rationale: 'Hydrazine (N₂H₄) for satellite propulsion triggers USML IV(h)(1) — liquid propellants specially designed for spacecraft propulsion systems.',   controlled_elements: ['hydrazine'] },
+    leaf_0_1: { decision: 'ALLOW',    confidence: 0.99, rationale: 'Butane cold-gas system. No controlled substance, no USML/CWC/MTCR match. Standard commercial CubeSat component.',                                  controlled_elements: [] },
+    leaf_0_2: { decision: 'ESCALATE', confidence: 0.71, rationale: 'AF-M315E (HAN-based) is not on current controlled substance lists but is an energetic ionic liquid. Classification depends on export destination and end-user.', controlled_elements: [] },
+    leaf_1_0: { decision: 'ALLOW',    confidence: 0.95, rationale: 'Iodine ion thruster. Iodine is not a controlled propellant. Electric propulsion at this thrust level does not trigger MTCR range/payload thresholds.', controlled_elements: [] },
+    leaf_1_1: { decision: 'ALLOW',    confidence: 0.97, rationale: 'FEEP electrospray with ionic liquid propellant. No controlled substance match. Precision attitude propulsion within commercial CubeSat norms.',         controlled_elements: [] },
+    leaf_2_0: { decision: 'ALLOW',    confidence: 0.99, rationale: 'Solar sail — propellantless. No controlled substance, no USML/MTCR trigger. Standard research spacecraft technology.',                                 controlled_elements: [] },
+    leaf_2_1: { decision: 'ALLOW',    confidence: 0.99, rationale: 'Reaction wheel attitude control — propellantless. No controlled elements. Standard commercial spacecraft component.',                                   controlled_elements: [] },
+};
+
+function loadDemo() {
+    nodeResults = {};
+    document.getElementById('graph-container').innerHTML = '';
+    document.getElementById('detail-panel').textContent = 'Click any leaf node to see the LIGHTNING decision.';
+    document.getElementById('detail-node-label').textContent = '';
+    setCounters(null);
+    setStatus('Rendering demo tree…', 'standby');
+
+    renderTree(DEMO_TREE);
+
+    // Apply all results with staggered animation
+    const leaves = Object.keys(DEMO_RESULTS);
+    leaves.forEach((id, i) => {
+        setTimeout(() => {
+            const r = DEMO_RESULTS[id];
+            nodeResults[id] = r;
+            updateNode(id, r.decision, r.rationale);
+            updateCounters();
+            if (i === leaves.length - 1) setStatus('Analysis complete (preloaded)', 'verified');
+        }, 200 + i * 180);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    const demoBtn = document.getElementById('demo-btn');
+    if (demoBtn) demoBtn.addEventListener('click', loadDemo);
+
     // Scenario buttons
     document.querySelectorAll('.scenario-btn').forEach(btn => {
         btn.addEventListener('click', () => {

@@ -88,10 +88,41 @@
               '# end_use: ???',
   };
 
+  const PRELOADED = {
+    benign: {
+      decision: 'ALLOW', confidence: 0.99,
+      rationale: 'Standard Suzuki coupling. No controlled substances detected across all 18 active regimes.',
+      citations: [],
+      proof: { steps: ['substance(aryl_bromide). substance(phenylboronic_acid).', 'no_match(usml). no_match(cwc). no_match(dea). no_match(mtcr).', 'allow :- not any_regime_matches.'] },
+      regimes: [],
+    },
+    refuse: {
+      decision: 'REFUSE', confidence: 0.97,
+      rationale: 'Hydrazine (N₂H₄) for the Vulcan-III rocket engine triggers USML IV(h)(1). Export requires DDTC license.',
+      citations: [
+        { authority: 'ITAR', section: '22 CFR 121.1 IV(h)(1)', text: 'Liquid propellants and propellant ingredients specially designed for rockets or missiles.' },
+      ],
+      proof: { steps: ['substance(hydrazine). controlled_propellant(hydrazine).', 'parent_system(vulcan_iii, rocket_engine).', 'usml_iv_h_1 :- controlled_propellant(X), parent_system(_, rocket_engine).', 'classified(hydrazine, usml, "IV(h)(1)"). refuse :- classified(_, usml, _).'] },
+      regimes: ['usml'],
+    },
+    escalate: {
+      decision: 'ESCALATE', confidence: 0.61,
+      rationale: 'High-strength turbopump impeller — parent system and end-use are unspecified. Cannot complete the 22 CFR 120.41 specially-designed test without them.',
+      citations: [
+        { authority: 'ITAR', section: '22 CFR 120.41', text: 'Specially designed determination requires parent-system context not present in submission.' },
+      ],
+      proof: { steps: ['component(impeller).', 'gap(parent_system, "unspecified").', 'gap(end_use, "unspecified").', 'escalate :- gap(parent_system) ; gap(end_use).'] },
+      regimes: ['usml'],
+    },
+  };
+
   document.querySelectorAll('button[data-example]').forEach((btn) => {
     btn.addEventListener('click', () => {
-      input.value = EXAMPLES[btn.dataset.example] || '';
+      const key = btn.dataset.example;
+      input.value = EXAMPLES[key] || '';
       input.focus();
+      // Render preloaded result immediately
+      if (PRELOADED[key]) renderResult(PRELOADED[key]);
     });
   });
 

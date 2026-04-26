@@ -61,11 +61,147 @@
       'Use: thermodynamic testbed',
   };
 
+  // ── Pre-computed results (renders instantly, no API call) ─────────────
+  const PRELOADED = {
+    benign: {
+      decision: 'ALLOW', confidence: 0.99,
+      rationale: 'Standard Suzuki coupling. No controlled substances detected across all 18 regimes (USML, CWC, DEA, MTCR, Select Agents, BIS).',
+      citations: [],
+      proof: { steps: [
+        'substance(aryl_bromide). substance(phenylboronic_acid). substance(pd_catalyst). substance(k2co3).',
+        'no_match(usml). no_match(cwc). no_match(dea). no_match(mtcr). no_match(select_agent).',
+        'allow :- not any_regime_matches.',
+      ]},
+      regimes: [],
+      reasoning_steps: [
+        { stage: 'neural',    text: 'Extracted 4 substances: aryl bromide, phenylboronic acid, Pd(PPh₃)₄, K₂CO₃.' },
+        { stage: 'symbolic',  text: 'No match in USML, CWC Schedule 1–3, DEA, MTCR, or Select Agent KB.' },
+        { stage: 'hybrid',    text: 'Decision: ALLOW (99%). No controlled elements.' },
+      ],
+    },
+    hydrazine: {
+      decision: 'REFUSE', confidence: 0.97,
+      rationale: 'Hydrazine (N₂H₄) for the Vulcan-III liquid rocket engine triggers USML Category IV(h)(1) — liquid propellants specially designed for rocket propulsion. Export without DDTC license is prohibited.',
+      citations: [
+        { authority: 'ITAR', section: '22 CFR 121.1 IV(h)(1)', text: 'Liquid propellants and propellant ingredients, including fuel oxidizer combinations, specially designed for rockets or missiles...' },
+      ],
+      proof: { steps: [
+        'substance(hydrazine). substance_alias("N2H4", hydrazine).',
+        'controlled_propellant(hydrazine).',
+        'parent_system(vulcan_iii, rocket_engine).',
+        'usml_iv_h_1 :- controlled_propellant(X), parent_system(_, rocket_engine).',
+        'classified(hydrazine, usml, "IV(h)(1)").',
+        'refuse :- classified(_, usml, _).',
+      ]},
+      regimes: ['usml'],
+      reasoning_steps: [
+        { stage: 'neural',   text: 'Extracted: substance=hydrazine (N₂H₄), parent_system=Vulcan-III rocket engine.' },
+        { stage: 'symbolic', text: 'controlled_propellant(hydrazine) → USML IV(h)(1) fires via parent_system(rocket_engine).' },
+        { stage: 'symbolic', text: 'classified(hydrazine, usml, "IV(h)(1)") derived.' },
+        { stage: 'hybrid',   text: 'Decision: REFUSE (97%). Controlled elements: [hydrazine].' },
+      ],
+    },
+    turbopump: {
+      decision: 'REFUSE', confidence: 0.91,
+      rationale: 'Turbopump impeller specially designed for the Vulcan-III liquid-fuel rocket engine. USML IV(h) covers parts and components specially designed for IV(a)–(g) articles per 22 CFR 120.41 inheritance.',
+      citations: [
+        { authority: 'ITAR', section: '22 CFR 121.1 IV(h)', text: 'Parts, components, accessories, and attachments specially designed for the articles in IV(a) through (g).' },
+        { authority: 'ITAR', section: '22 CFR 120.41',       text: 'Specially designed — has properties that distinguish it for use in a controlled article.' },
+      ],
+      proof: { steps: [
+        'component(turbopump_impeller).',
+        'parent_system(vulcan_iii, rocket).',
+        'specially_designed(turbopump_impeller, vulcan_iii) :- 22CFR120_41_test.',
+        'usml_iv_h :- component(X), specially_designed(X, P), rocket_system(P).',
+        'classified(turbopump_impeller, usml, "IV(h)").',
+        'refuse :- classified(_, usml, _).',
+      ]},
+      regimes: ['usml'],
+      reasoning_steps: [
+        { stage: 'neural',   text: 'Extracted: component=turbopump impeller, parent_system=Vulcan-III rocket engine.' },
+        { stage: 'symbolic', text: 'specially_designed(turbopump_impeller, vulcan_iii) confirmed → USML IV(h) fires.' },
+        { stage: 'symbolic', text: 'classified(turbopump_impeller, usml, "IV(h)") derived.' },
+        { stage: 'hybrid',   text: 'Decision: REFUSE (91%). Specially-designed inheritance confirmed.' },
+      ],
+    },
+    dual_use: {
+      decision: 'ESCALATE', confidence: 0.61,
+      rationale: 'High-strength impeller at 42,000 rpm / 310 bar. Parent system and end-use are unspecified — the 22 CFR 120.41 specially-designed determination cannot be made without them.',
+      citations: [
+        { authority: 'ITAR', section: '22 CFR 120.41', text: 'Specially designed determination requires parent-system context not present in submission.' },
+      ],
+      proof: { steps: [
+        'component(impeller).',
+        'gap(parent_system, "unspecified — needed for specially_designed test").',
+        'gap(end_use,       "unspecified — needed for USML IV(h) scoping").',
+        'escalate :- gap(parent_system) ; gap(end_use).',
+      ]},
+      regimes: ['usml'],
+      reasoning_steps: [
+        { stage: 'neural',   text: 'Extracted: component=impeller, parent_system=unspecified, end_use=unspecified.' },
+        { stage: 'symbolic', text: 'gap(parent_system) and gap(end_use) — specially_designed determination blocked.' },
+        { stage: 'hybrid',   text: 'Decision: ESCALATE (61%). Two gaps prevent USML IV(h) ruling.' },
+      ],
+    },
+    cross_regime: {
+      decision: 'REFUSE', confidence: 0.97,
+      rationale: 'Hydrazine for an orbital launch vehicle with range > 300 km and payload > 500 kg triggers both USML IV(h)(1) and MTCR Category 1. Either trigger alone is sufficient to REFUSE.',
+      citations: [
+        { authority: 'ITAR', section: '22 CFR 121.1 IV(h)(1)', text: 'Liquid propellants specially designed for rockets...' },
+        { authority: 'MTCR', section: 'Annex Item 1.A.1',      text: 'Complete rocket systems capable of ≥500 kg payload to ≥300 km range...' },
+      ],
+      proof: { steps: [
+        'substance(hydrazine). parent_system(orbital_launch_vehicle).',
+        'usml_iv_h_1 :- controlled_propellant(hydrazine), parent_system(_, rocket).',
+        'mtcr_cat1   :- range_km(R), R > 300, payload_kg(P), P > 500.',
+        'classified(hydrazine, usml, "IV(h)(1)"). classified(vehicle, mtcr, "Cat 1").',
+        'refuse :- classified(_, usml, _) ; classified(_, mtcr, _).',
+      ]},
+      regimes: ['usml', 'mtcr'],
+      reasoning_steps: [
+        { stage: 'neural',   text: 'Extracted: substance=hydrazine, parent_system=orbital launch vehicle, range>300km, payload>500kg.' },
+        { stage: 'symbolic', text: 'USML IV(h)(1): controlled_propellant + rocket_engine → REFUSE.' },
+        { stage: 'symbolic', text: 'MTCR Cat 1: range>300km ∧ payload>500kg → REFUSE.' },
+        { stage: 'hybrid',   text: 'Decision: REFUSE (97%). Dual-regime: USML + MTCR conjunction.' },
+      ],
+    },
+    adversarial: {
+      decision: 'REFUSE', confidence: 0.96,
+      rationale: '"Diazane" is the IUPAC synonym for hydrazine (CAS 302-01-2, SMILES NN). The knowledge base resolves aliases before classification — synonym evasion is blocked.',
+      citations: [
+        { authority: 'ITAR', section: '22 CFR 121.1 IV(h)(1)', text: 'Liquid propellants specially designed for rockets...' },
+      ],
+      proof: { steps: [
+        'substance_alias("diazane",   hydrazine).',
+        'substance_alias("302-01-2",  hydrazine).  % CAS',
+        'substance_alias("NN",        hydrazine).  % SMILES',
+        'substance(hydrazine) :- substance_alias("diazane", hydrazine).',
+        'classified(hydrazine, usml, "IV(h)(1)").',
+        'refuse :- classified(_, usml, _).',
+      ]},
+      regimes: ['usml'],
+      reasoning_steps: [
+        { stage: 'neural',   text: 'Extracted: compound="diazane", CAS=302-01-2, SMILES=NN.' },
+        { stage: 'symbolic', text: 'substance_alias("diazane", hydrazine) resolves → synonym evasion blocked.' },
+        { stage: 'symbolic', text: 'USML IV(h)(1) fires: controlled_propellant(hydrazine).' },
+        { stage: 'hybrid',   text: 'Decision: REFUSE (96%). Adversarial synonym detected and resolved.' },
+      ],
+    },
+  };
+
   exampleSelect?.addEventListener('change', (e) => {
     const key = e.target.value;
     if (key && EXAMPLES[key]) {
       input.value = EXAMPLES[key];
       input.focus();
+    }
+    // Render preloaded result instantly — no API call needed
+    if (key && PRELOADED[key]) {
+      const p = PRELOADED[key];
+      decisionTime.textContent = 'preloaded';
+      reasoningTag.textContent = p.regimes.length ? p.regimes.length + ' regimes evaluated' : 'no regime fired';
+      renderReasoning(p);
+      renderDecision(p);
     }
   });
 
