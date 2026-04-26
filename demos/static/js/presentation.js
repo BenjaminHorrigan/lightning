@@ -173,22 +173,17 @@
     }
   });
 
-  // ─── 3. Auto-advance + timer-bar tick ───────────────────────────────────
+  // ─── 3. Timer-bar tick (no auto-advance — manual navigation only) ─────────
   function tick() {
     if (!isPlaying) return;
-    const now            = performance.now();
-    const slideElapsed   = (now - slideStart) / 1000;
-    const totalElapsed   = elapsedTotal + slideElapsed;
-    const dwell          = DWELL[current] || 60;
+    const now          = performance.now();
+    const slideElapsed = (now - slideStart) / 1000;
+    const totalElapsed = elapsedTotal + slideElapsed;
 
     // Update top timer bar
     if (timerBar) {
       const pct = Math.min(100, (totalElapsed / TOTAL_DWELL) * 100);
       timerBar.style.width = pct + '%';
-    }
-
-    if (slideElapsed >= dwell) {
-      next();
     }
 
     raf = requestAnimationFrame(tick);
@@ -359,17 +354,47 @@ end_use: space launch`;
 
   let s1NodeById = {};
 
+  /**
+   * Compute per-node appearance delays that simulate an agent branching out
+   * from a root: root first, then L1 children with random spread, then L2
+   * children appearing after their parent with additional random jitter.
+   * Each call to initAgentNetwork() re-randomises so it feels "live".
+   */
+  function _s1Delays() {
+    const d = {};
+    d['root'] = 250;
+
+    // L1 — direct children of root, spread over ~1.5 s with jitter
+    const L1 = ['lit', 'contact', 'procure', 'patent'];
+    L1.forEach((id, i) => {
+      d[id] = 900 + i * 280 + Math.random() * 450;
+    });
+
+    // L2 — children of L1, appear after their parent + random wait
+    const parentOf = {
+      msds: 'lit',     sim: 'lit',
+      email: 'contact', sdata: 'contact',
+      po: 'procure',   quote: 'procure',
+      epo: 'patent',   jaxa: 'patent',
+    };
+    Object.entries(parentOf).forEach(([child, parent]) => {
+      d[child] = d[parent] + 480 + Math.random() * 680;
+    });
+    return d;
+  }
+
   function initAgentNetwork() {
     const svg = document.getElementById('agent-net-svg');
     if (!svg) return;
     svg.innerHTML = '';
     s1NodeById = {};
 
-    // Build lookup
     S1_NODES.forEach((n) => { s1NodeById[n.id] = n; });
 
-    // ── Edges ──────────────────────────────────────────────
-    S1_LINKS.forEach(([a, b], i) => {
+    const delays = _s1Delays();
+
+    // ── Edges — appear just before their target node ────────────────────────
+    S1_LINKS.forEach(([a, b]) => {
       const na = s1NodeById[a];
       const nb = s1NodeById[b];
       const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
@@ -379,49 +404,64 @@ end_use: space launch`;
       line.setAttribute('stroke-width', '1.5');
       line.setAttribute('opacity', '0');
       line.setAttribute('data-edge', `${a}-${b}`);
-      line.style.transition = 'stroke 0.4s, stroke-width 0.4s, opacity 0.4s';
+      line.style.transition = 'stroke 0.4s, stroke-width 0.4s, opacity 0.55s';
       svg.appendChild(line);
-
-      // Stagger edge fade-in
-      setTimeout(() => { line.setAttribute('opacity', '1'); }, 300 + i * 60);
+      setTimeout(() => line.setAttribute('opacity', '1'), Math.max(80, delays[b] - 180));
     });
 
-    // ── Nodes ──────────────────────────────────────────────
-    S1_NODES.forEach((n, i) => {
+    // ── Nodes ───────────────────────────────────────────────────────────────
+    S1_NODES.forEach((n) => {
       const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
       g.setAttribute('data-node', n.id);
       g.setAttribute('opacity', '0');
-      g.style.transition = 'opacity 0.35s';
+      g.style.transition = 'opacity 0.55s';
 
       // Circle
       const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
       circle.setAttribute('cx', n.x); circle.setAttribute('cy', n.y); circle.setAttribute('r', n.r);
-      circle.setAttribute('fill', 'rgba(0,212,255,0.08)');
+      circle.setAttribute('fill', 'rgba(34,211,106,0.07)');
       circle.setAttribute('stroke', COL_OK);
       circle.setAttribute('stroke-width', n.id === 'root' ? '2.5' : '1.5');
-      circle.style.transition = 'fill 0.4s, stroke 0.4s';
+      circle.style.transition = 'fill 0.5s, stroke 0.5s';
       g.appendChild(circle);
 
-      // Label lines
-      const labelY0 = n.y - (n.lines.length - 1) * 6;
-      n.lines.forEach((line, li) => {
+      // Dark background rect so labels are always legible over any bg
+      const fontSize  = n.id === 'root' ? 8.5 : 7.5;
+      const lineH     = 13;
+      const maxLen    = Math.max(...n.lines.map((l) => l.length));
+      const bgW       = maxLen * fontSize * 0.6 + 14;
+      const bgH       = n.lines.length * lineH + 8;
+      const bgX       = n.x - bgW / 2;
+      const bgY       = n.y - bgH / 2;
+
+      const bgRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      bgRect.setAttribute('x', bgX);       bgRect.setAttribute('y', bgY);
+      bgRect.setAttribute('width', bgW);   bgRect.setAttribute('height', bgH);
+      bgRect.setAttribute('rx', '3');      bgRect.setAttribute('ry', '3');
+      bgRect.setAttribute('fill', 'rgba(3, 7, 18, 0.86)');
+      bgRect.setAttribute('pointer-events', 'none');
+      g.appendChild(bgRect);
+
+      // Label text (centered on node, readable over the dark rect)
+      const firstLineY = n.y - ((n.lines.length - 1) * lineH) / 2;
+      n.lines.forEach((lineText, li) => {
         const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        t.setAttribute('x', n.x); t.setAttribute('y', labelY0 + li * 13);
+        t.setAttribute('x', n.x);
+        t.setAttribute('y', firstLineY + li * lineH);
         t.setAttribute('text-anchor', 'middle');
         t.setAttribute('dominant-baseline', 'middle');
         t.setAttribute('font-family', 'var(--font-mono, monospace)');
-        t.setAttribute('font-size', n.id === 'root' ? '8' : '7');
-        t.setAttribute('fill', n.id === 'root' ? '#e8f4fd' : '#b0cce4');
+        t.setAttribute('font-size', fontSize);
+        t.setAttribute('fill', n.id === 'root' ? '#ffffff' : '#d8ecfc');
         t.setAttribute('pointer-events', 'none');
-        t.style.transition = 'fill 0.4s';
-        t.textContent = line;
+        t.setAttribute('data-label', '1');
+        t.style.transition = 'fill 0.5s';
+        t.textContent = lineText;
         g.appendChild(t);
       });
 
       svg.appendChild(g);
-
-      // Stagger node fade-in (after edges)
-      setTimeout(() => { g.setAttribute('opacity', '1'); }, 500 + i * 80);
+      setTimeout(() => g.setAttribute('opacity', '1'), delays[n.id] || 500);
     });
   }
 
@@ -445,27 +485,33 @@ end_use: space launch`;
         const g      = svg.querySelector(`[data-node="${n.id}"]`);
         if (!g) return;
         const circle = g.querySelector('circle');
-        const texts  = g.querySelectorAll('text');
+        // Only recolour actual label texts (data-label="1"), not any other elements
+        const labels = g.querySelectorAll('text[data-label]');
 
         setTimeout(() => {
           if (circle) {
             circle.setAttribute('stroke', COL_RED);
-            circle.setAttribute('fill', 'rgba(255,59,59,0.12)');
+            circle.setAttribute('fill', 'rgba(255,59,59,0.13)');
           }
-          texts.forEach((t) => t.setAttribute('fill', '#ff9999'));
+          // Darken the bg rect to red tint
+          const bgRect = g.querySelector('rect');
+          if (bgRect) bgRect.setAttribute('fill', 'rgba(40, 4, 4, 0.90)');
+          labels.forEach((t) => t.setAttribute('fill', '#ff9a9a'));
 
-          // Add ✕ mark
-          const x = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-          x.setAttribute('x', n.x + n.r - 6); x.setAttribute('y', n.y - n.r + 6);
-          x.setAttribute('text-anchor', 'middle');
-          x.setAttribute('dominant-baseline', 'middle');
-          x.setAttribute('font-size', n.r < 14 ? '9' : '11');
-          x.setAttribute('fill', COL_RED);
-          x.setAttribute('font-weight', 'bold');
-          x.setAttribute('pointer-events', 'none');
-          x.textContent = '✕';
-          g.appendChild(x);
-        }, i * 120);
+          // ✕ badge — positioned at top-right of circle, clearly outside the label area
+          const xMark = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          const bx = n.x + n.r * 0.72;
+          const by = n.y - n.r * 0.72;
+          xMark.setAttribute('x', bx); xMark.setAttribute('y', by);
+          xMark.setAttribute('text-anchor', 'middle');
+          xMark.setAttribute('dominant-baseline', 'middle');
+          xMark.setAttribute('font-size', n.r < 14 ? '10' : '13');
+          xMark.setAttribute('fill', COL_RED);
+          xMark.setAttribute('font-weight', 'bold');
+          xMark.setAttribute('pointer-events', 'none');
+          xMark.textContent = '✕';
+          g.appendChild(xMark);
+        }, i * 140);
       });
 
       // ── Redden edges from/to controlled nodes ─────────
