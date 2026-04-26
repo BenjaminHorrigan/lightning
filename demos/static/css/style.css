@@ -1274,3 +1274,223 @@ code {
     color: black;
   }
 }
+/* =============================================================================
+   spacing_fix.css  -  PASTE AT THE BOTTOM of static/css/style.css
+
+   What this fixes:
+     1. No vertical gap between siblings inside hud-panel bodies.
+     2. Decision badges abutting their adjacent text on classification rows.
+     3. No spacing between header and the first body element when there's a
+        button in between (the "REFRESH" → uptime tile case).
+     4. Adds .metric-row and .classification-row layout primitives so the
+        admin page (and any future page) gets right-aligned values and
+        2-line classification entries with built-in spacing.
+
+   Defensive: every selector is scoped tightly so this can't bleed onto
+   pages that already laid out correctly.
+   ============================================================================= */
+
+/* ── 1. Vertical rhythm inside panel bodies ───────────────────────────────── */
+.hud-panel__body > * + * {
+  margin-top: var(--space-4);
+}
+
+/* Tighter rhythm when the body is a stack of stat rows */
+.hud-panel__body.is-tight > * + * {
+  margin-top: var(--space-2);
+}
+
+/* Looser when it's a stack of cards/sections */
+.hud-panel__body.is-loose > * + * {
+  margin-top: var(--space-6);
+}
+
+/* ── 2. Header → button → content gap ─────────────────────────────────────── */
+.hud-panel__header + .btn-tactical,
+.hud-panel__header + button {
+  margin-top: 0;            /* sits directly under the header */
+  margin-bottom: var(--space-5);   /* but separated from what follows */
+}
+
+/* Button followed by anything in a panel body */
+.hud-panel__body > .btn-tactical + *,
+.hud-panel__body > button + * {
+  margin-top: var(--space-5);
+}
+
+/* ── 3. Metric rows  (label .................... value) ───────────────────── */
+.metric-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--border-subtle);
+  margin: 0 !important;   /* defeat the .hud-panel__body * + * inherit */
+}
+
+.metric-row:first-child { padding-top: 0; }
+.metric-row:last-child  { border-bottom: 0; padding-bottom: 0; }
+
+.metric-row__label {
+  font-family: var(--font-sans);
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+}
+
+.metric-row__value {
+  font-family: var(--font-mono);
+  color: var(--accent-primary);
+  font-size: var(--fs-base);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.metric-row__value.success { color: var(--accent-success); }
+.metric-row__value.warning { color: var(--accent-warning); }
+.metric-row__value.danger  { color: var(--accent-danger); }
+.metric-row__value.muted   { color: var(--text-muted); }
+
+/* Stat list wrapper (groups multiple metric rows) */
+.metric-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 4. Classification row (decision badge + summary + timestamp) ─────────── */
+.classification-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--border-subtle);
+  margin: 0 !important;
+}
+
+.classification-row:first-child { padding-top: 0; }
+.classification-row:last-child  { border-bottom: 0; padding-bottom: 0; }
+
+.classification-row__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.classification-row__time {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  white-space: nowrap;
+}
+
+.classification-row__summary {
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-snug);
+  color: var(--text-secondary);
+}
+
+.classification-row__regimes {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Badges inside classification rows shouldn't carry their own bottom margin */
+.classification-row .decision-badge {
+  margin-bottom: 0;
+}
+
+/* ── 5. Performance bar (the "system performance: nominal" bar) ───────────── */
+.performance-bar {
+  margin-top: var(--space-5);
+}
+
+.performance-bar__label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-top: var(--space-2);
+}
+
+/* ── 6. Big-number callout block (the "ENGINE UPTIME / 4h 27m" tile) ──────── */
+.callout-block {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--space-5);
+}
+
+.callout-block__label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: var(--space-3);
+}
+
+.callout-block__value {
+  font-family: var(--font-mono);
+  font-size: var(--fs-3xl);
+  font-weight: 700;
+  color: var(--accent-success);
+  line-height: 1;
+  margin-bottom: var(--space-2);
+}
+
+.callout-block__sub {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ── 7. SVG performance chart container ───────────────────────────────────── */
+.perf-chart {
+  width: 100%;
+  height: 240px;
+  display: block;
+}
+
+.perf-chart-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 240px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 1px;
+  text-align: center;
+  padding: var(--space-6);
+}
+
+/* ── 8. Subtle "live data" tag pulse (used on tile headers) ───────────────── */
+.live-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--accent-success);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.live-tag::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-success);
+  box-shadow: 0 0 6px var(--accent-success-glow);
+  animation: pulse-dot 2s var(--ease-in-out) infinite;
+}

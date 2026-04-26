@@ -8,6 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 from pydantic import BaseModel
 import asyncio
+import time
 import uvicorn
 import json
 from concurrent.futures import ThreadPoolExecutor
@@ -17,6 +18,7 @@ from typing import Optional, Dict, Any
 # Import LIGHTNING components
 from lightning import check
 from lightning.models import Decision
+from lightning.observability import metrics, count_rules, count_active_regimes
 
 # Resolve paths relative to this file so the app can be launched from any cwd
 BASE_DIR = Path(__file__).resolve().parent
@@ -125,8 +127,7 @@ async def visualization_page(request: Request):
 async def analyze_protocol(request: AnalysisRequest):
     """Main LIGHTNING analysis endpoint."""
     try:
-        # check() makes blocking LLM calls — run in thread pool so the
-        # event loop stays live and the browser connection is not dropped.
+        t0 = time.perf_counter()
         loop = asyncio.get_event_loop()
         result = await loop.run_in_executor(
             _check_executor,
@@ -135,6 +136,14 @@ async def analyze_protocol(request: AnalysisRequest):
                 enable_audit=request.enable_audit,
                 audit_context=request.context,
             ),
+        )
+        latency_ms = (time.perf_counter() - t0) * 1000
+        summary = next((ln.strip() for ln in request.artifact.splitlines() if ln.strip()), request.artifact[:80])[:80]
+        metrics.record(
+            decision=result.decision.value,
+            latency_ms=latency_ms,
+            summary=summary,
+            regimes_fired=[r.value for r in result.regimes_checked],
         )
 
         return {
@@ -364,30 +373,15 @@ async def how_to_use(request: Request):
 
 @app.get("/api/admin/status")
 async def admin_status():
-    """System status for admin console monitoring."""
-    return {
-        "engine_status": "online",
-        "uptime": "4h 27m",
-        "rules_loaded": 85,
-        "active_regimes": 3,
-        "memory_usage": "247 MB",
-        "response_time": "840ms",
-        "regime_counts": {
-            "usml": 42,
-            "cwc": 28,
-            "mtcr": 15,
-            "ear": 0,
-            "dea": 0,
-            "select_agents": 0,
-        },
-        "recent_activity": [
-            {"decision": "REFUSE", "timestamp": "16:42:18", "summary": "Turbopump TPA-4421 → USML IV(h) specially designed"},
-            {"decision": "ALLOW",  "timestamp": "16:41:52", "summary": "Suzuki coupling protocol → No controlled elements"},
-            {"decision": "ESCALATE", "timestamp": "16:41:31", "summary": "Propellant research → End use ambiguous"},
-            {"decision": "REFUSE", "timestamp": "16:40:58", "summary": "Hydrazine synthesis → USML IV(h) controlled propellant"},
-        ],
-        "performance_history": [12, 15, 11, 18, 22, 19, 25, 23, 28, 31, 27, 33, 29, 35, 32, 38, 34, 41, 37, 44],
-    }
+    return metrics.status(rules_loaded=count_rules(), active_regimes=count_active_regimes())
+
+@app.get("/api/admin/recent")
+async def admin_recent(n: int = 10):
+    return {"recent": metrics.recent(n=n)}
+
+@app.get("/api/admin/performance")
+async def admin_performance(window_minutes: int = 30, buckets: int = 30):
+    return metrics.performance(buckets=buckets, window_minutes=window_minutes)
 
 @app.post("/api/admin/regimes")
 async def configure_regimes(config: dict):

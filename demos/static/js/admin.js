@@ -1,383 +1,350 @@
 /* =============================================================================
-   admin.js — Lightning Admin Console
+   admin.js  -  Live admin console
+   Polls three real endpoints every 5 seconds and renders:
+     - System status tile (uptime, rules, regimes, memory, latency)
+     - Recent classifications tile (most recent 10)
+     - Performance metrics tile (30-min latency chart, min/max/total)
+   No mocks.  If an endpoint is unreachable, the tile shows "--" rather
+   than fabricating numbers.
    ============================================================================= */
-
 (() => {
-  // UI Elements
-  const engineStatus = document.getElementById('engine-status');
-  const messageBox = document.getElementById('message-box');
-  const saveRegimesBtn = document.getElementById('save-regimes');
-  const saveThresholdsBtn = document.getElementById('save-thresholds');
-  const refreshStatusBtn = document.getElementById('refresh-status');
-  
-  // Threshold sliders
-  const refuseThresholdSlider = document.getElementById('refuse-threshold');
-  const allowThresholdSlider = document.getElementById('allow-threshold');
-  const crossRegimeSlider = document.getElementById('cross-regime-threshold');
-  const refuseValue = document.getElementById('refuse-value');
-  const allowValue = document.getElementById('allow-value');
-  const crossRegimeValue = document.getElementById('cross-regime-value');
+  'use strict';
 
-  // Chart instance
-  let performanceChart = null;
+  const POLL_MS = 5000;
 
-  function showMessage(msg, type = 'info') {
-    const colors = {
-      'success': { bg: 'var(--accent-success)', border: 'var(--accent-success)' },
-      'error':   { bg: 'var(--accent-danger)',  border: 'var(--accent-danger)'  },
-      'warning': { bg: 'var(--accent-warning)', border: 'var(--accent-warning)' },
-      'info':    { bg: 'var(--accent-primary)', border: 'var(--accent-primary)' },
-    }[type] || { bg: 'var(--accent-primary)', border: 'var(--accent-primary)' };
+  // ── DOM ─────────────────────────────────────────────────────────────────
+  const $ = (id) => document.getElementById(id);
 
-    // Fixed-position toast so it's visible regardless of scroll position
-    const toast = document.createElement('div');
-    toast.style.cssText = `
-      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999;
-      background: var(--bg-surface); border: 1px solid ${colors.border};
-      color: ${colors.bg}; font-family: var(--font-mono); font-size: 0.82rem;
-      padding: 0.75rem 1.25rem; border-radius: 3px; max-width: 360px;
-      box-shadow: 0 0 16px ${colors.bg}40; line-height: 1.5;
-      animation: fadeInUp 0.2s ease;
+  const els = {
+    refreshBtn:     $('refresh-btn'),
+    refreshBtnText: $('refresh-btn-text'),
+
+    uptime:        $('uptime'),
+    startedAt:     $('started-at'),
+    rulesLoaded:   $('rules-loaded'),
+    activeRegimes: $('active-regimes'),
+    memory:        $('memory-usage'),
+    avgResp:       $('avg-response'),
+    p95Resp:       $('p95-response'),
+    callsWindow:   $('calls-window'),
+    perfBar:       $('performance-bar'),
+    perfLabel:     $('performance-label'),
+
+    recentList:    $('recent-list'),
+    recentCount:   $('recent-count'),
+
+    perfChartHost: $('perf-chart-host'),
+    perfTotal:     $('perf-total'),
+    perfMin:       $('perf-min'),
+    perfMax:       $('perf-max'),
+    perfWindow:    $('perf-window'),
+  };
+
+  // ── Polling loop ────────────────────────────────────────────────────────
+  let pollHandle = null;
+
+  async function refreshAll() {
+    const [status, recent, perf] = await Promise.allSettled([
+      fetchJson('/api/admin/status'),
+      fetchJson('/api/admin/recent?n=10'),
+      fetchJson('/api/admin/performance?window_minutes=30&buckets=30'),
+    ]);
+
+    if (status.status === 'fulfilled') renderStatus(status.value);
+    else                                renderStatusError();
+
+    if (recent.status === 'fulfilled') renderRecent(recent.value);
+    else                                renderRecentError();
+
+    if (perf.status === 'fulfilled') renderPerformance(perf.value);
+    else                              renderPerfError();
+  }
+
+  async function fetchJson(url) {
+    const r = await fetch(url, { headers: { 'Accept': 'application/json' } });
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    return r.json();
+  }
+
+  // ── Renderers ───────────────────────────────────────────────────────────
+  function renderStatus(s) {
+    if (els.uptime) els.uptime.textContent = `${s.uptime_hours}h ${pad2(s.uptime_minutes)}m`;
+    if (els.startedAt) {
+      els.startedAt.textContent = formatLocal(s.started_at, true);
+    }
+    setText(els.rulesLoaded,   s.rules_loaded);
+    setText(els.activeRegimes, s.active_regimes);
+    setText(els.memory,        `${s.memory_mb} MB`);
+    setText(els.avgResp,       s.calls_in_window > 0 ? `${formatMs(s.avg_response_ms)}` : '--');
+    setText(els.p95Resp,       s.calls_in_window > 0 ? `${formatMs(s.p95_response_ms)}` : '--');
+    setText(els.callsWindow,   s.calls_in_window);
+
+    // Performance bar based on avg response time
+    // Green: < 500ms, amber: 500-1500ms, red: > 1500ms
+    const avg = s.avg_response_ms || 0;
+    let pct, cls, label;
+    if (s.calls_in_window === 0) {
+      pct = 0; cls = ''; label = 'No requests yet';
+    } else if (avg < 500) {
+      pct = 100 - (avg / 500) * 30; cls = 'success'; label = 'System performance: nominal';
+    } else if (avg < 1500) {
+      pct = 70 - ((avg - 500) / 1000) * 30; cls = 'warning'; label = 'System performance: degraded';
+    } else {
+      pct = 40 - Math.min(((avg - 1500) / 1500) * 30, 30); cls = 'danger'; label = 'System performance: critical';
+    }
+    if (els.perfBar) {
+      els.perfBar.style.width = `${Math.max(0, Math.min(100, pct))}%`;
+      els.perfBar.classList.remove('success', 'warning', 'danger');
+      if (cls) els.perfBar.classList.add(cls);
+    }
+    if (els.perfLabel) els.perfLabel.textContent = label;
+  }
+
+  function renderStatusError() {
+    [els.uptime, els.rulesLoaded, els.activeRegimes, els.memory, els.avgResp, els.p95Resp].forEach((el) => {
+      if (el) el.textContent = '--';
+    });
+    if (els.perfLabel) els.perfLabel.textContent = 'System performance: unreachable';
+    if (els.perfBar)   els.perfBar.style.width = '0%';
+  }
+
+  function renderRecent({ recent }) {
+    if (!els.recentList) return;
+    if (els.recentCount) els.recentCount.textContent = recent.length;
+
+    if (!recent.length) {
+      els.recentList.innerHTML =
+        '<div class="text-mono text-xs text-muted text-center" style="padding: var(--space-8) var(--space-4);">' +
+        'No classifications yet. Run a request through <code>/api/analyze</code> and it will appear here within five seconds.' +
+        '</div>';
+      return;
+    }
+
+    els.recentList.innerHTML = recent.map((r) => {
+      const dec     = (r.decision || 'unknown').toLowerCase();
+      const time    = formatLocal(r.timestamp, false);
+      const summary = escapeHtml(r.summary || '(no summary)');
+      const regimes = (r.regimes_fired || []).join(' · ');
+      const latency = r.latency_ms ? `${formatMs(r.latency_ms)}` : '';
+      return `
+        <div class="classification-row">
+          <div class="classification-row__top">
+            <div class="flex items-center gap-3">
+              <span class="decision-badge ${dec}">${escapeHtml(r.decision || '?')}</span>
+              ${latency ? `<span class="mono-tag">${latency}</span>` : ''}
+            </div>
+            <span class="classification-row__time">${time}</span>
+          </div>
+          <div class="classification-row__summary">${summary}</div>
+          ${regimes ? `<div class="classification-row__regimes">${escapeHtml(regimes)}</div>` : ''}
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderRecentError() {
+    if (!els.recentList) return;
+    els.recentList.innerHTML =
+      '<div class="text-mono text-xs text-danger text-center" style="padding: var(--space-6);">' +
+      'Could not reach <code>/api/admin/recent</code>.' +
+      '</div>';
+  }
+
+  function renderPerformance(p) {
+    if (els.perfWindow) els.perfWindow.textContent = `last ${p.window_minutes} min`;
+    if (els.perfTotal)  els.perfTotal.textContent  = p.total_samples;
+
+    const valid = (p.buckets || []).filter((b) => b.avg_ms != null);
+    const ms    = valid.map((b) => b.avg_ms);
+
+    if (els.perfMin) els.perfMin.textContent = ms.length ? formatMs(Math.min(...ms)) : '--';
+    if (els.perfMax) els.perfMax.textContent = ms.length ? formatMs(Math.max(...ms)) : '--';
+
+    drawChart(els.perfChartHost, p.buckets || []);
+  }
+
+  function renderPerfError() {
+    if (!els.perfChartHost) return;
+    els.perfChartHost.classList.add('perf-chart-empty');
+    els.perfChartHost.innerHTML = 'Could not reach <code>/api/admin/performance</code>.';
+  }
+
+  // ── Inline SVG line chart ───────────────────────────────────────────────
+  function drawChart(host, buckets) {
+    if (!host) return;
+
+    const valid = buckets.filter((b) => b.avg_ms != null);
+    if (!valid.length) {
+      host.classList.add('perf-chart-empty');
+      host.classList.remove('perf-chart');
+      host.innerHTML = 'No requests in the last 30 minutes. The chart fills in as <code>/api/analyze</code> calls land.';
+      return;
+    }
+
+    host.classList.remove('perf-chart-empty');
+
+    const W = host.clientWidth || 600;
+    const H = 240;
+    const PAD = { top: 16, right: 16, bottom: 28, left: 44 };
+    const innerW = W - PAD.left - PAD.right;
+    const innerH = H - PAD.top  - PAD.bottom;
+
+    const values = valid.map((b) => b.avg_ms);
+    const minY   = 0;
+    const rawMax = Math.max(...values);
+    const maxY   = niceCeil(rawMax * 1.2);
+
+    const xAt = (i) => PAD.left + (i / Math.max(1, buckets.length - 1)) * innerW;
+    const yAt = (v) => PAD.top + innerH - ((v - minY) / (maxY - minY)) * innerH;
+
+    // Path: skip null buckets to draw gaps
+    let pathParts = [];
+    let pen = false;
+    buckets.forEach((b, i) => {
+      if (b.avg_ms != null) {
+        pathParts.push(`${pen ? 'L' : 'M'} ${xAt(i).toFixed(1)} ${yAt(b.avg_ms).toFixed(1)}`);
+        pen = true;
+      } else {
+        pen = false;
+      }
+    });
+    const linePath = pathParts.join(' ');
+
+    // Area path: same as line, then close to baseline
+    let areaParts = [];
+    let aPen = false;
+    let firstX = null, lastX = null;
+    buckets.forEach((b, i) => {
+      if (b.avg_ms != null) {
+        const x = xAt(i), y = yAt(b.avg_ms);
+        areaParts.push(`${aPen ? 'L' : 'M'} ${x.toFixed(1)} ${y.toFixed(1)}`);
+        if (firstX == null) firstX = x;
+        lastX = x;
+        aPen = true;
+      } else {
+        aPen = false;
+      }
+    });
+    let areaPath = '';
+    if (firstX != null && lastX != null) {
+      const baselineY = yAt(0);
+      areaPath = areaParts.join(' ') + ` L ${lastX.toFixed(1)} ${baselineY.toFixed(1)} L ${firstX.toFixed(1)} ${baselineY.toFixed(1)} Z`;
+    }
+
+    // Y-axis labels (4 gridlines)
+    const ySteps = 4;
+    const yLabels = [];
+    for (let i = 0; i <= ySteps; i++) {
+      const v = minY + ((maxY - minY) * i) / ySteps;
+      yLabels.push({ v, y: yAt(v) });
+    }
+
+    // X-axis labels (start, mid, end)
+    const xLabels = [];
+    [0, Math.floor(buckets.length / 2), buckets.length - 1].forEach((i) => {
+      const t = buckets[i]?.t;
+      if (t != null) xLabels.push({ x: xAt(i), label: formatHHMM(t) });
+    });
+
+    const svg = `
+      <svg class="perf-chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+        <!-- gridlines -->
+        ${yLabels.map((l) => `
+          <line x1="${PAD.left}" x2="${W - PAD.right}" y1="${l.y}" y2="${l.y}"
+                stroke="var(--border-subtle)" stroke-width="1" />
+          <text x="${PAD.left - 8}" y="${l.y + 3}" text-anchor="end"
+                font-family="var(--font-mono)" font-size="10" fill="var(--text-muted)">
+            ${formatMsShort(l.v)}
+          </text>
+        `).join('')}
+
+        <!-- area under -->
+        ${areaPath ? `<path d="${areaPath}" fill="var(--accent-primary-dim)" />` : ''}
+
+        <!-- line -->
+        ${linePath ? `<path d="${linePath}" stroke="var(--accent-primary)" stroke-width="2"
+                            fill="none" stroke-linejoin="round" stroke-linecap="round"
+                            style="filter: drop-shadow(0 0 6px var(--accent-primary-glow));" />` : ''}
+
+        <!-- x labels -->
+        ${xLabels.map((l) => `
+          <text x="${l.x}" y="${H - 8}" text-anchor="middle"
+                font-family="var(--font-mono)" font-size="10" fill="var(--text-muted)">
+            ${l.label}
+          </text>
+        `).join('')}
+      </svg>
     `;
-    toast.textContent = msg;
-    document.body.appendChild(toast);
 
-    setTimeout(() => {
-      toast.style.opacity = '0';
-      toast.style.transition = 'opacity 0.3s';
-      setTimeout(() => toast.remove(), 300);
-    }, 4000);
+    host.innerHTML = svg;
   }
 
-  function setEngineStatus(status, label) {
-    engineStatus.className = `status-pill ${status}`;
-    engineStatus.textContent = label;
+  // ── Helpers ─────────────────────────────────────────────────────────────
+  function pad2(n) { return String(n).padStart(2, '0'); }
+
+  function setText(el, v) { if (el) el.textContent = (v == null ? '--' : String(v)); }
+
+  function formatMs(ms) {
+    if (ms == null) return '--';
+    if (ms < 1000) return `${Math.round(ms)} ms`;
+    return `${(ms / 1000).toFixed(2)} s`;
   }
 
-  function updateThresholdDisplay() {
-    refuseValue.textContent = Math.round(refuseThresholdSlider.value * 100) + '%';
-    allowValue.textContent = Math.round(allowThresholdSlider.value * 100) + '%';
-    crossRegimeValue.textContent = crossRegimeSlider.value + (crossRegimeSlider.value == 1 ? ' regime' : ' regimes');
+  function formatMsShort(ms) {
+    if (ms < 1000) return `${Math.round(ms)}`;
+    return `${(ms / 1000).toFixed(1)}s`;
   }
 
-  // Slider event listeners
-  refuseThresholdSlider.addEventListener('input', updateThresholdDisplay);
-  allowThresholdSlider.addEventListener('input', updateThresholdDisplay);
-  crossRegimeSlider.addEventListener('input', updateThresholdDisplay);
+  function formatLocal(epoch, withDate) {
+    if (!epoch) return '--';
+    const d = new Date(epoch * 1000);
+    const hh = pad2(d.getHours());
+    const mm = pad2(d.getMinutes());
+    const ss = pad2(d.getSeconds());
+    if (!withDate) return `${hh}:${mm}:${ss}`;
+    const month = d.toLocaleString('en-US', { month: 'short' }).toUpperCase();
+    const day = pad2(d.getDate());
+    return `${month} ${day}, ${hh}:${mm}`;
+  }
 
-  async function loadSystemStatus() {
-    try {
-      const response = await fetch('/api/admin/status');
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const data = await response.json();
+  function formatHHMM(epoch) {
+    const d = new Date(epoch * 1000);
+    return `${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+  }
 
-      // Update system metrics
-      document.getElementById('uptime-value').textContent = data.uptime || '4h 27m';
-      document.getElementById('rules-loaded').textContent = data.rules_loaded || 85;
-      document.getElementById('active-regimes').textContent = data.active_regimes || 3;
-      document.getElementById('memory-usage').textContent = data.memory_usage || '247 MB';
-      document.getElementById('response-time').textContent = data.response_time || '840ms';
+  function niceCeil(v) {
+    if (v <= 0) return 100;
+    const mag = Math.pow(10, Math.floor(Math.log10(v)));
+    const norm = v / mag;
+    const n = norm <= 1 ? 1 : norm <= 2 ? 2 : norm <= 5 ? 5 : 10;
+    return n * mag;
+  }
 
-      // Update engine status
-      if (data.engine_status === 'online') {
-        setEngineStatus('running', 'ENGINE ONLINE');
-      } else if (data.engine_status === 'degraded') {
-        setEngineStatus('error', 'ENGINE DEGRADED');
-      } else {
-        setEngineStatus('standby', 'ENGINE OFFLINE');
-      }
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, (c) =>
+      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
 
-      // Update regime rule counts
-      if (data.regime_counts) {
-        document.getElementById('usml-rule-count').textContent = `${data.regime_counts.usml || 42} rules`;
-        document.getElementById('cwc-rule-count').textContent = `${data.regime_counts.cwc || 28} rules`;
-        document.getElementById('mtcr-rule-count').textContent = `${data.regime_counts.mtcr || 15} rules`;
-        document.getElementById('ear-rule-count').textContent = `${data.regime_counts.ear || 0} rules`;
-        document.getElementById('dea-rule-count').textContent = `${data.regime_counts.dea || 0} rules`;
-        document.getElementById('select-agents-rule-count').textContent = `${data.regime_counts.select_agents || 0} rules`;
-      }
+  // ── Wire-up ─────────────────────────────────────────────────────────────
+  els.refreshBtn?.addEventListener('click', async () => {
+    els.refreshBtnText.innerHTML = '<span class="spinner-tactical" style="width:10px;height:10px;"></span>&nbsp;&nbsp;Refreshing';
+    els.refreshBtn.disabled = true;
+    await refreshAll();
+    els.refreshBtnText.textContent = 'Refresh now';
+    els.refreshBtn.disabled = false;
+  });
 
-      // Update recent activity
-      if (data.recent_activity) {
-        updateRecentActivity(data.recent_activity);
-      }
+  // Initial fetch + polling
+  refreshAll();
+  pollHandle = setInterval(refreshAll, POLL_MS);
 
-      // Update performance chart
-      if (data.performance_history) {
-        updatePerformanceChart(data.performance_history);
-      }
-
-      return data;
-    } catch (err) {
-      showMessage(`Status update failed: ${err.message}`, 'error');
-      setEngineStatus('error', 'ENGINE ERROR');
-      return null;
+  // Pause polling when tab is hidden, resume on focus
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      if (pollHandle) { clearInterval(pollHandle); pollHandle = null; }
+    } else if (!pollHandle) {
+      refreshAll();
+      pollHandle = setInterval(refreshAll, POLL_MS);
     }
-  }
-
-  function updateRecentActivity(activities) {
-    const container = document.getElementById('recent-activity');
-    
-    container.innerHTML = activities.slice(0, 4).map(activity => `
-      <div class="activity-item">
-        <div class="d-flex justify-content-between align-items-center mb-1">
-          <span class="decision-badge ${activity.decision.toLowerCase()}">${activity.decision}</span>
-          <span class="mono-tag">${activity.timestamp}</span>
-        </div>
-        <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4;">
-          ${activity.summary}
-        </div>
-      </div>
-    `).join('');
-  }
-
-  function initPerformanceChart() {
-    const ctx = document.getElementById('performance-chart');
-    if (!ctx) return;
-
-    performanceChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: Array.from({length: 20}, (_, i) => `${16 + Math.floor(i/4)}:${(i%4)*15}`),
-        datasets: [{
-          label: 'Classifications/min',
-          data: [12, 15, 11, 18, 22, 19, 25, 23, 28, 31, 27, 33, 29, 35, 32, 38, 34, 41, 37, 44],
-          borderColor: 'rgba(0, 212, 255, 0.8)',
-          backgroundColor: 'rgba(0, 212, 255, 0.1)',
-          tension: 0.4,
-          pointRadius: 0,
-          pointHoverRadius: 4
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false }
-        },
-        scales: {
-          x: {
-            display: true,
-            grid: { color: 'rgba(42, 58, 90, 0.3)' },
-            ticks: { 
-              color: 'rgba(139, 150, 173, 0.8)',
-              font: { family: 'JetBrains Mono', size: 10 }
-            }
-          },
-          y: {
-            display: true,
-            grid: { color: 'rgba(42, 58, 90, 0.3)' },
-            ticks: { 
-              color: 'rgba(139, 150, 173, 0.8)',
-              font: { family: 'JetBrains Mono', size: 10 }
-            }
-          }
-        },
-        interaction: { intersect: false },
-        elements: {
-          line: { borderWidth: 2 }
-        }
-      }
-    });
-  }
-
-  function updatePerformanceChart(historyData) {
-    if (!performanceChart || !historyData) return;
-
-    // Update chart with new data
-    performanceChart.data.datasets[0].data = historyData.slice(-20);
-    performanceChart.update('none'); // No animation for real-time updates
-  }
-
-  async function saveRegimeConfiguration() {
-    const regimeConfig = {
-      usml: {
-        enabled: document.getElementById('regime-usml').checked,
-        categories: {
-          cat_iv: document.getElementById('usml-cat-iv').checked,
-          cat_v: document.getElementById('usml-cat-v').checked,
-          cat_xiv: document.getElementById('usml-cat-xiv').checked,
-          cat_xv: document.getElementById('usml-cat-xv').checked
-        }
-      },
-      cwc: {
-        enabled: document.getElementById('regime-cwc').checked,
-        schedules: {
-          schedule_1: document.getElementById('cwc-schedule-1').checked,
-          schedule_2: document.getElementById('cwc-schedule-2').checked,
-          schedule_3: document.getElementById('cwc-schedule-3').checked,
-          patterns: document.getElementById('cwc-patterns').checked
-        }
-      },
-      mtcr: {
-        enabled: document.getElementById('regime-mtcr').checked,
-        categories: {
-          cat_1: document.getElementById('mtcr-cat-1').checked,
-          cat_2: document.getElementById('mtcr-cat-2').checked
-        }
-      },
-      ear: {
-        enabled: document.getElementById('regime-ear').checked,
-        categories: {
-          cat_1: document.getElementById('ear-cat-1').checked,
-          cat_4: document.getElementById('ear-cat-4').checked,
-          entity_list: document.getElementById('ear-entity-list').checked
-        }
-      },
-      dea: {
-        enabled: document.getElementById('regime-dea').checked,
-        schedules: {
-          schedule_i: document.getElementById('dea-schedule-i').checked,
-          schedule_ii: document.getElementById('dea-schedule-ii').checked,
-          precursors: document.getElementById('dea-precursors').checked
-        }
-      },
-      select_agents: {
-        enabled: document.getElementById('regime-select-agents').checked,
-        sources: {
-          hhs: document.getElementById('hhs-select').checked,
-          usda: document.getElementById('usda-select').checked,
-          australia_group: document.getElementById('australia-group').checked
-        }
-      }
-    };
-
-    saveRegimesBtn.disabled = true;
-    saveRegimesBtn.innerHTML = '<span class="spinner-tactical d-inline-block align-middle me-2" style="width:12px;height:12px;border-width:1.5px;"></span>Applying';
-
-    try {
-      const response = await fetch('/api/admin/regimes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(regimeConfig)
-      });
-
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const result = await response.json();
-
-      if (result.success) {
-        showMessage(`✓ Regime configuration updated. ${result.rules_loaded} rules loaded.`, 'success');
-        setEngineStatus('running', 'ENGINE ONLINE');
-        
-        // Refresh status to show updated rule counts
-        setTimeout(loadSystemStatus, 500);
-      } else {
-        throw new Error(result.error || 'Configuration failed');
-      }
-    } catch (err) {
-      showMessage(`Configuration failed: ${err.message}`, 'error');
-      setEngineStatus('error', 'CONFIG ERROR');
-    } finally {
-      saveRegimesBtn.disabled = false;
-      saveRegimesBtn.textContent = 'Apply Changes';
-    }
-  }
-
-  async function saveThresholdConfiguration() {
-    const thresholdConfig = {
-      refuse_threshold: parseFloat(refuseThresholdSlider.value),
-      allow_threshold: parseFloat(allowThresholdSlider.value),
-      cross_regime_threshold: parseInt(crossRegimeSlider.value),
-      extraction_model: document.getElementById('extraction-model').value,
-      features: {
-        counterfactuals: document.getElementById('enable-counterfactuals').checked,
-        interactive_queries: document.getElementById('enable-interactive-queries').checked,
-        cross_regime: document.getElementById('enable-cross-regime').checked,
-        audit_log: document.getElementById('enable-audit-log').checked,
-        proof_graph: document.getElementById('enable-proof-graph').checked,
-        debug_mode: document.getElementById('debug-mode').checked
-      }
-    };
-
-    saveThresholdsBtn.disabled = true;
-    saveThresholdsBtn.innerHTML = '<span class="spinner-tactical d-inline-block align-middle me-2" style="width:12px;height:12px;border-width:1.5px;"></span>Applying';
-
-    try {
-      const response = await fetch('/api/admin/thresholds', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(thresholdConfig)
-      });
-
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const result = await response.json();
-
-      if (result.success) {
-        showMessage('✓ Decision thresholds updated successfully.', 'success');
-      } else {
-        throw new Error(result.error || 'Threshold update failed');
-      }
-    } catch (err) {
-      showMessage(`Threshold update failed: ${err.message}`, 'error');
-    } finally {
-      saveThresholdsBtn.disabled = false;
-      saveThresholdsBtn.textContent = 'Apply Changes';
-    }
-  }
-
-  // Event listeners
-  saveRegimesBtn.addEventListener('click', saveRegimeConfiguration);
-  saveThresholdsBtn.addEventListener('click', saveThresholdConfiguration);
-  refreshStatusBtn.addEventListener('click', loadSystemStatus);
-
-  // Regime toggle dependencies
-  document.getElementById('regime-usml').addEventListener('change', (e) => {
-    const subcats = document.querySelectorAll('#usml-subcats input');
-    subcats.forEach(input => input.disabled = !e.target.checked);
-  });
-
-  document.getElementById('regime-cwc').addEventListener('change', (e) => {
-    const subcats = document.querySelectorAll('#cwc-subcats input');
-    subcats.forEach(input => input.disabled = !e.target.checked);
-  });
-
-  document.getElementById('regime-mtcr').addEventListener('change', (e) => {
-    const subcats = document.querySelectorAll('#mtcr-subcats input');
-    subcats.forEach(input => input.disabled = !e.target.checked);
-  });
-
-  document.getElementById('regime-ear').addEventListener('change', (e) => {
-    const subcats = document.querySelectorAll('#ear-subcats input');
-    subcats.forEach(input => input.disabled = !e.target.checked);
-  });
-
-  document.getElementById('regime-dea').addEventListener('change', (e) => {
-    const subcats = document.querySelectorAll('#dea-subcats input');
-    subcats.forEach(input => input.disabled = !e.target.checked);
-  });
-
-  document.getElementById('regime-select-agents').addEventListener('change', (e) => {
-    const subcats = document.querySelectorAll('#select-agents-subcats input');
-    subcats.forEach(input => input.disabled = !e.target.checked);
-  });
-
-  // Auto-refresh status every 30 seconds
-  function startAutoRefresh() {
-    setInterval(() => {
-      loadSystemStatus();
-    }, 30000);
-  }
-
-  // Initialize
-  updateThresholdDisplay();
-  initPerformanceChart();
-  loadSystemStatus();
-  startAutoRefresh();
-
-  // Add some visual feedback for regime toggles
-  const allRegimeCheckboxes = document.querySelectorAll('input[id^="regime-"]');
-  allRegimeCheckboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', (e) => {
-      const regimeGroup = e.target.closest('.regime-control-group');
-      if (regimeGroup) {
-        if (e.target.checked) {
-          regimeGroup.style.opacity = '1.0';
-          regimeGroup.style.borderLeft = '2px solid var(--accent-primary)';
-        } else {
-          regimeGroup.style.opacity = '0.6';
-          regimeGroup.style.borderLeft = '2px solid var(--border-subtle)';
-        }
-      }
-    });
   });
 })();
